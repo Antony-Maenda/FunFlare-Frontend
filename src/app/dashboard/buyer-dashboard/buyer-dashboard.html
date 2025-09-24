@@ -1,0 +1,153 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Header / Navbar -->
+  <header class="bg-white shadow-md">
+    <nav class="container mx-auto flex items-center justify-between py-4 px-6">
+      <!-- Include Google Font in <head> -->
+      <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+      <!-- Logo -->
+            <div
+        class="text-5xl font-bold"
+        style="font-family: 'Rubik Glitch', cursive;"
+      >
+        <span
+          class="bg-gradient-to-r from-gray-600 via-white-500 to-cyan-200 bg-clip-text text-transparent drop-shadow-lg"
+        >
+          FunFlare
+        </span>
+      </div>
+
+
+      <!-- Hamburger (mobile only) -->
+      <div class="sm:hidden">
+  <button (click)="toggleMenu()" class="text-gray-700 focus:outline-none">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</div>
+
+<!-- Mobile Menu -->
+<div *ngIf="isMenuOpen" class="sm:hidden px-6 pb-4">
+  <!-- Search -->
+  <div class="mb-4">
+    <input type="text" placeholder="Search events..."
+      class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-600">
+  </div>
+
+      <!-- Center Search (hidden on small screens) -->
+      <div class="hidden sm:flex flex-1 mx-6">
+        <input type="text" placeholder="Search events..."
+          class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-600">
+      </div>
+
+      <!-- Right-side actions -->
+      <div class="hidden sm:flex items-center space-x-4">
+        <button class="px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600">Wallet</button>
+        <button class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">Points</button>
+        <button class="px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600">🔔</button>
+        <button class="px-4 py-2 bg-gray-300 text-black rounded-full hover:bg-gray-400">Profile</button>
+      </div>
+    
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="mobile-menu" class="sm:hidden hidden px-6 pb-4">
+      <!-- Search -->
+      <div class="mb-4">
+        <input type="text" placeholder="Search events..."
+          class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-600">
+      </div>
+      <!-- Buttons -->
+      <div class="flex flex-col space-y-2">
+        <button class="px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600">Wallet</button>
+        <button class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600">Points</button>
+        <button class="px-4 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 flex items-center space-x-2">
+          <span>Notifications</span> 🔔
+        </button>
+        <button class="px-4 py-2 bg-gray-300 text-black rounded-full hover:bg-gray-400 flex items-center space-x-2">
+          <span>Profile</span> 👤
+        </button>
+      </div>
+    </div>
+  
+
+  <!-- Featured Events Section -->
+  <section class="py-16">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-12">Featured Events</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div *ngFor="let event of featuredEvents"
+          class="bg-white rounded-xl shadow overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+          <img [src]="event.image" [alt]="event.name" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">{{ event.name }}</h3>
+            <p class="text-gray-600">{{ event.venue }} • {{ event.date }}</p>
+            <p class="text-lg font-bold text-purple-600 mt-2">KSh {{ event.price }}</p>
+            <button
+              class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+              Get Ticket
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative bg-cover bg-center text-white py-12 mt-auto bg-fixed sm:bg-fixed"
+    style="background-image: url('https://images.unsplash.com/photo-1518972559570-7cc1309f3229?auto=format&fit=crop&w=600&q=60')">
+    <div class="absolute inset-0 bg-clear bg-opacity-70"></div>
+
+    <div
+      class="relative container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline">Home</a></li>
+          <li><a href="#" class="hover:underline">Events</a></li>
+          <li><a href="#" class="hover:underline">About Us</a></li>
+          <li><a href="#" class="hover:underline">Contact</a></li>
+          <li><a href="#" class="hover:underline">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Categories</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline">Concerts</a></li>
+          <li><a href="#" class="hover:underline">Sports</a></li>
+          <li><a href="#" class="hover:underline">Festivals</a></li>
+          <li><a href="#" class="hover:underline">Conferences</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+        <ul class="space-y-2">
+          <li>Email: <a href="mailto:info@funflare.co.ke" class="hover:underline">info@funflare.co.ke</a></li>
+          <li>Phone: <a href="tel:+254768597285" class="hover:underline">+254 768 597 285</a></li>
+          <li>Location: 123 Event Street, Nairobi</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="relative mt-8 text-center border-t border-purple-300 border-opacity-40 pt-6">
+      <p class="mb-4">&copy; 2025 FunFlare. All rights reserved.</p>
+      <!-- Socials ... -->
+    </div>
+  </footer>
+</div>
+<script>
+  // Toggle mobile menu
+  document.getElementById('menu-btn').addEventListener('click', function () {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  });
+</script>
