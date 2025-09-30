@@ -13,35 +13,47 @@ import { AuthService } from '../../services/auth';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private userRegistrationService: AuthService,
     private router: Router
   ) {
-    // ✅ Build form with validation
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      organization: [''], // optional
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      isOrganizer: [false] // checkbox
+      emailAdress: ['', [Validators.required, Validators.email]], // Changed from email
+      phoneNumber: ['', Validators.required], // Changed from phone
+      organization_name: [''], // Changed from organization, not required for attendees
+      password: ['', [Validators.required, Validators.minLength(8)]], // Changed to minLength(8)
+      isOrganizer: [false]
     });
   }
 
   onSubmit() {
-  if (this.registerForm.valid) {
-    this.authService.register(this.registerForm.value).subscribe({
-      next: () => {
-        alert('✅ Registration successful! Please check your email to verify your account.');
-        this.router.navigate(['/login']); // optional, or wait until after email verification
-      },
-      error: () => {
-        alert('❌ Registration failed. Try again.');
-      }
-    });
+    if (this.registerForm.valid) {
+      console.log('Form valid:', this.registerForm.valid);
+      console.log('Form value:', this.registerForm.value);
+      this.isLoading = true;
+      this.userRegistrationService.register(this.registerForm.value).subscribe({
+        next: (response) => {
+          console.log('Registration response:', response);
+          alert('✅ Registration successful! Please check your email to verify your account.');
+          this.registerForm.reset();
+          this.router.navigate(['/login']);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Registration error:', error);
+          const errorMessage = error.error?.message || 'Registration failed. Please check your input and try again.';
+          alert(`❌ ${errorMessage}`);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      console.log('Form invalid:', this.registerForm.errors);
+      console.log('Form controls:', this.registerForm.controls);
+    }
   }
-}
 }

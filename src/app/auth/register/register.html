@@ -7,9 +7,9 @@
     <!-- First Name -->
     <div>
       <label class="block text-sm font-medium text-gray-700">First Name</label>
-      <input 
-        type="text" 
-        formControlName="firstName" 
+      <input
+        type="text"
+        formControlName="firstName"
         placeholder="Enter your first name"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
@@ -21,9 +21,9 @@
     <!-- Last Name -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Last Name</label>
-      <input 
-        type="text" 
-        formControlName="lastName" 
+      <input
+        type="text"
+        formControlName="lastName"
         placeholder="Enter your last name"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
@@ -32,16 +32,16 @@
       </div>
     </div>
 
-    <!-- Email -->
+    <!-- Email Address -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Email</label>
-      <input 
-        type="email" 
-        formControlName="email" 
+      <label class="block text-sm font-medium text-gray-700">Email Address</label>
+      <input
+        type="email"
+        formControlName="emailAdress"
         placeholder="Enter your email"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
-      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm">
+      <div *ngIf="registerForm.get('emailAdress')?.invalid && registerForm.get('emailAdress')?.touched" class="text-red-500 text-sm">
         Please enter a valid email.
       </div>
     </div>
@@ -49,9 +49,9 @@
     <!-- Phone Number -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Phone Number</label>
-      <input 
-        type="text" 
-        formControlName="phoneNumber" 
+      <input
+        type="text"
+        formControlName="phoneNumber"
         placeholder="Enter your phone number"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
@@ -63,23 +63,23 @@
     <!-- Password -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Password</label>
-      <input 
-        type="password" 
-        formControlName="password" 
+      <input
+        type="password"
+        formControlName="password"
         placeholder="Enter your password"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
       <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm">
-        Password must be at least 6 characters.
+        Password must be at least 8 characters.
       </div>
     </div>
 
     <!-- Organization Name (Optional) -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Organization Name (Optional)</label>
-      <input 
-        type="text" 
-        formControlName="organizationName" 
+      <input
+        type="text"
+        formControlName="organization_name"
         placeholder="Enter your organization name"
         class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
       />
@@ -87,8 +87,8 @@
 
     <!-- Checkbox: Register as Organizer -->
     <div class="flex items-center">
-      <input 
-        type="checkbox" 
+      <input
+        type="checkbox"
         formControlName="isOrganizer"
         class="h-4 w-4 text-purple-600 border-gray-300 rounded"
       />
@@ -98,12 +98,19 @@
     </div>
 
     <!-- Submit Button -->
-    <button 
-      type="submit" 
-      [disabled]="registerForm.invalid"
-      class="w-full px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50">
-      Register
+    <button
+      type="submit"
+      [disabled]="registerForm.invalid || isLoading"
+      class="w-full px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 flex items-center justify-center"
+    >
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading" class="flex items-center">
+        <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Registering...
+      </span>
     </button>
   </form>
 </div>
-

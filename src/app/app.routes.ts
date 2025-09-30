@@ -6,8 +6,9 @@ import { BuyerDashboard } from './dashboard/buyer-dashboard/buyer-dashboard';
 import { RegisterComponent } from './auth/register/register';
 import { VerifyEmailComponent } from './verify-email/verify-email';
 
+
 export const routes: Routes = [
-    { path: '', component: LandingPage },
+     { path: '', component: LandingPage },
     { path: 'login', component: LoginComponent },
     {path: 'buyer-dashboard', component: BuyerDashboard},
     {path: 'register', component: RegisterComponent},
