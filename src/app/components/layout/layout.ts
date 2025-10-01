@@ -1,24 +1,21 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Layout } from '../components/layout/layout';
 interface Event {
   id: number;
   name: string;
   date: string;
   location: string;
 }
+
 @Component({
-  selector: 'app-landing-page',
-  standalone: true,
-  imports: [RouterLink, FormsModule, CommonModule, Layout],
-  templateUrl: './landing-page.html',
-  styleUrl: './landing-page.css'
-  
+  selector: 'app-layout',
+  imports: [FormsModule, CommonModule],
+  templateUrl: './layout.html',
+  styleUrl: './layout.css'
 })
-export class LandingPage {
-   searchQuery: string = '';
+export class Layout {
+  searchQuery: string = '';
   filteredEvents: any[] = [];
 
   events = [
@@ -63,4 +60,5 @@ export class LandingPage {
       e.venue.toLowerCase().includes(query)
     );
   }
+
 }

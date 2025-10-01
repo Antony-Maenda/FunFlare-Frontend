@@ -14,6 +14,7 @@ styleUrls: ['./login.css']
 export class LoginComponent {
 loginForm: FormGroup;
 isLoading = false;
+showPassword = false;
 errorMessage = '';
 
 constructor(
@@ -23,7 +24,7 @@ private router: Router
 ) {
 this.loginForm = this.fb.group({
 emailAdress: ['', [Validators.required, Validators.email]], // keep consistent with register.ts
-password: ['', Validators.required]
+password: ['', Validators.required, Validators.minLength(8)]
 });
 }
 

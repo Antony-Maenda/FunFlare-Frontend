@@ -14,21 +14,34 @@ import { AuthService } from '../../services/auth';
 export class RegisterComponent {
   registerForm: FormGroup;
   isLoading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
     private userRegistrationService: AuthService,
     private router: Router
   ) {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      emailAdress: ['', [Validators.required, Validators.email]], // Changed from email
-      phoneNumber: ['', Validators.required], // Changed from phone
-      organization_name: [''], // Changed from organization, not required for attendees
-      password: ['', [Validators.required, Validators.minLength(8)]], // Changed to minLength(8)
-      isOrganizer: [false]
-    });
+    this.registerForm = this.fb.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        emailAdress: ['', [Validators.required, Validators.email]], // 👈 important
+        phoneNumber: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+        organization_name: [''],
+        isOrganizer: [false]
+      },
+      { validators: this.passwordMatchValidator } // ✅ custom validator
+    );
+  }
+
+  // ✅ custom validator to match password and confirm password
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
   onSubmit() {
@@ -36,6 +49,7 @@ export class RegisterComponent {
       console.log('Form valid:', this.registerForm.valid);
       console.log('Form value:', this.registerForm.value);
       this.isLoading = true;
+
       this.userRegistrationService.register(this.registerForm.value).subscribe({
         next: (response) => {
           console.log('Registration response:', response);
@@ -46,7 +60,8 @@ export class RegisterComponent {
         },
         error: (error) => {
           console.error('Registration error:', error);
-          const errorMessage = error.error?.message || 'Registration failed. Please check your input and try again.';
+          const errorMessage =
+            error.error?.message || 'Registration failed. Please check your input and try again.';
           alert(`❌ ${errorMessage}`);
           this.isLoading = false;
         }
