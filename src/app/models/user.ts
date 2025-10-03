@@ -2,8 +2,8 @@ export interface User {
     firstName?: string;
     lastName?: string;
     email: string;
-    phoneNumber?: string;
-    organizationName?: string;
+    phone: string;
+    organization: string;
     password: string;
     isOrganizer: boolean;
     
@@ -11,5 +11,4 @@ export interface User {
 export interface LoginCredentials {
    email: string;
    password: string;
-   isOrganizer: boolean;
 }

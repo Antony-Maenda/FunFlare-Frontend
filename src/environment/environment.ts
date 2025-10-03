@@ -1,13 +1,5 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-environments',
-  imports: [],
-  templateUrl: './environment.html',
-  styleUrl: './environment.css'
-})
-export class Environment {
-  static readonly apiUrl: string = 'http://192.168.1.178:8080';
-  production = false;
-}
-
+export const environment = {
+  production: false,
+  // Add your environment variables here
+  apiUrl: 'http://localhost:8080/' // example base URL
+};
