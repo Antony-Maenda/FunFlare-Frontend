@@ -1,22 +1,8 @@
+// events.ts
 import { Component } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
-interface EventData {
-  eventName: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  capacity: number;
-  category: string;
-  description: string;
-  poster: File | null;
-}
+import { EventService, EventCreate } from '../services/event.service';
 
 @Component({
   selector: 'app-events',
@@ -26,21 +12,21 @@ interface EventData {
   styleUrls: ['./events.css']
 })
 export class EventsComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private eventService: EventService) {}
 
-  formModel: EventData = {
-    eventName: '',
+  formModel: EventCreate = {
+    name: '',
     location: '',
-    startDate: '',
-    endDate: '',
-    startTime: '',
-    endTime: '',
-    capacity: 0,
-    category: '',
-    description: '',
-    poster: null
+    eventStartDate: '',
+    eventEndDate: '',
+    eventStartTime: '',
+    eventEndTime: '',
+    eventCapacity: 0,
+    eventCategory: '',
+    description: ''
   };
 
+  poster: File | null = null;
   posterPreview: string | null = null;
   filterText: string = ''; // Optional filter field for consistency
 
@@ -49,7 +35,7 @@ export class EventsComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
-      this.formModel.poster = file;
+      this.poster = file;
 
       const reader = new FileReader();
       reader.onload = () => {
@@ -61,7 +47,7 @@ export class EventsComponent {
 
   // ✅ Remove selected poster
   removePoster(): void {
-    this.formModel.poster = null;
+    this.poster = null;
     this.posterPreview = null;
     const fileInput = document.getElementById('poster') as HTMLInputElement;
     if (fileInput) fileInput.value = ''; // Reset input field
@@ -80,50 +66,34 @@ export class EventsComponent {
       return;
     }
 
-    const eventData = { ...this.formModel };
+    const eventData: EventCreate = { ...this.formModel };
 
-    const start = new Date(`${eventData.startDate} ${eventData.startTime}`);
-    const end = new Date(`${eventData.endDate} ${eventData.endTime}`);
+    const start = new Date(`${eventData.eventStartDate} ${eventData.eventStartTime}`);
+    const end = new Date(`${eventData.eventEndDate} ${eventData.eventEndTime}`);
 
     if (start >= end) {
       console.error('End date and time must be after start date and time.');
       return;
     }
 
-    if (eventData.capacity <= 0) {
+    if (eventData.eventCapacity && eventData.eventCapacity <= 0) {
       console.error('Capacity must be greater than zero.');
       return;
     }
 
-    const formData = new FormData();
-    Object.entries(eventData).forEach(([key, value]) => {
-      if (key !== 'poster' && value !== null) {
-        formData.append(key, value.toString());
-      }
-    });
-
-    if (eventData.poster) {
-      formData.append('poster', eventData.poster, eventData.poster.name);
-    }
-
-    // ✅ Post to API with error handling
-    this.http.post('https://api.example.com/events', formData, { responseType: 'json' })
-      .pipe(
-        catchError(error => {
-          console.error('Submission failed:', error);
-          return throwError(() => new Error('Failed to create event. Please try again.'));
-        })
-      )
+    // ✅ Use service to create event
+    this.eventService.createEvent(eventData, this.poster ?? undefined)
       .subscribe({
         next: response => {
           console.log('Event created successfully:', response);
           form.resetForm();
+          this.poster = null;
           this.posterPreview = null;
           alert('Event created successfully!');
         },
         error: error => {
           console.error('Error during submission:', error);
-          alert('Failed to create event. Please try again.');
+          alert(error.message || 'Failed to create event. Please try again.');
         }
       });
   }

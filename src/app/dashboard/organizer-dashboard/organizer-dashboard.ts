@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+// organizer-dashboard.ts
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -10,82 +11,81 @@ import { CommonModule } from '@angular/common';
   templateUrl: './organizer-dashboard.html',
   styleUrls: ['./organizer-dashboard.css']
 })
-export class OrganizerDashboardComponent implements AfterViewInit, OnDestroy {
-  // ✅ Sidebar
+export class OrganizerDashboardComponent implements OnInit {
+  // Sidebar
   isSidebarOpen = false;
 
-  // ✅ Dropdown control
+  // Dropdown states
   profileOpen = false;
-
-  // ✅ User info
-  userName: string = 'Organizer';
+  userName: string = 'Guest';
   avatarUrl: string | null = null;
-
-  @ViewChild('profileTrigger') profileTrigger!: ElementRef;
-  @ViewChild('profileDropdownElement') profileDropdownElement!: ElementRef;
 
   constructor(public router: Router) {}
 
-  /** ✅ Toggles the sidebar for mobile view */
+  ngOnInit() {
+    // Fetch username and avatar from storage
+    const storedUsername = localStorage.getItem('username');
+    const storedAvatar = localStorage.getItem('avatarUrl');
+    if (storedUsername) {
+      this.userName = storedUsername;
+    }
+    if (storedAvatar) {
+      this.avatarUrl = storedAvatar;
+    }
+
+    // Redirect if no token
+    if (!localStorage.getItem('jwtToken')) {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  /** Toggles the sidebar for mobile view */
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  /** ✅ Handles dropdown toggle */
-  toggleDropdown(type: string): void {
-    if (type === 'profile') {
-      this.profileOpen = !this.profileOpen;
-    }
+  toggleDropdown(type: string) {
+    // Close all dropdowns first
+    this.profileOpen = false;
+
+    // Open only the clicked dropdown
+    if (type === 'profile') this.profileOpen = true;
   }
 
-  /** ✅ Handles avatar upload */
-  onAvatarUpload(event: Event): void {
+  onAvatarUpload(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-
-    if (file) {
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
       const reader = new FileReader();
       reader.onload = () => {
         this.avatarUrl = reader.result as string;
-        localStorage.setItem('avatarUrl', this.avatarUrl); // persist avatar between reloads
+        localStorage.setItem('avatarUrl', this.avatarUrl);
       };
       reader.readAsDataURL(file);
     }
   }
 
-  /** ✅ Click outside handler to close dropdown */
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    const clickedInsideDropdown = this.profileDropdownElement?.nativeElement.contains(target);
-    const clickedTrigger = this.profileTrigger?.nativeElement.contains(target);
+  logout() {
+    // Clear session
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('avatarUrl');
 
-    if (this.profileOpen && !clickedInsideDropdown && !clickedTrigger) {
+    this.userName = 'Guest';
+    this.avatarUrl = null;
+    console.log('Logged out');
+
+    this.router.navigate(['/login']);
+  }
+
+  // Close dropdowns when clicking outside
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown-btn') && !target.closest('.dropdown-menu')) {
       this.profileOpen = false;
     }
-  }
-
-  /** ✅ Add listener after view init */
-  ngAfterViewInit(): void {
-    document.addEventListener('click', this.onDocumentClick.bind(this));
-
-    // Load persisted avatar (if available)
-    const storedAvatar = localStorage.getItem('avatarUrl');
-    if (storedAvatar) {
-      this.avatarUrl = storedAvatar;
-    }
-  }
-
-  /** ✅ Clean up */
-  ngOnDestroy(): void {
-    document.removeEventListener('click', this.onDocumentClick.bind(this));
-  }
-
-  /** ✅ Logout logic */
-  logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('avatarUrl');
-    this.router.navigate(['/login']).then(() => {
-      console.log('Logged out and redirected to login');
-    });
   }
 }

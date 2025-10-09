@@ -4,12 +4,12 @@
   <!-- Bind form to Angular NgForm -->
   <form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)" class="space-y-4">
     <div>
-      <label for="eventName" class="block text-sm sm:text-base font-medium text-gray-700">Event Name</label>
+      <label for="name" class="block text-sm sm:text-base font-medium text-gray-700">Event Name</label>
       <input
         type="text"
-        id="eventName"
-        name="eventName"
-        [(ngModel)]="formModel.eventName"
+        id="name"
+        name="name"
+        [(ngModel)]="formModel.name"
         class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
         placeholder="Enter event name"
         required
@@ -31,23 +31,23 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label for="startDate" class="block text-sm sm:text-base font-medium text-gray-700">Start Date</label>
+        <label for="eventStartDate" class="block text-sm sm:text-base font-medium text-gray-700">Start Date</label>
         <input
           type="date"
-          id="startDate"
-          name="startDate"
-          [(ngModel)]="formModel.startDate"
+          id="eventStartDate"
+          name="eventStartDate"
+          [(ngModel)]="formModel.eventStartDate"
           class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
           required
         />
       </div>
       <div>
-        <label for="endDate" class="block text-sm sm:text-base font-medium text-gray-700">End Date</label>
+        <label for="eventEndDate" class="block text-sm sm:text-base font-medium text-gray-700">End Date</label>
         <input
           type="date"
-          id="endDate"
-          name="endDate"
-          [(ngModel)]="formModel.endDate"
+          id="eventEndDate"
+          name="eventEndDate"
+          [(ngModel)]="formModel.eventEndDate"
           class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
           required
         />
@@ -56,23 +56,23 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label for="startTime" class="block text-sm sm:text-base font-medium text-gray-700">Start Time</label>
+        <label for="eventStartTime" class="block text-sm sm:text-base font-medium text-gray-700">Start Time</label>
         <input
           type="time"
-          id="startTime"
-          name="startTime"
-          [(ngModel)]="formModel.startTime"
+          id="eventStartTime"
+          name="eventStartTime"
+          [(ngModel)]="formModel.eventStartTime"
           class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
           required
         />
       </div>
       <div>
-        <label for="endTime" class="block text-sm sm:text-base font-medium text-gray-700">End Time</label>
+        <label for="eventEndTime" class="block text-sm sm:text-base font-medium text-gray-700">End Time</label>
         <input
           type="time"
-          id="endTime"
-          name="endTime"
-          [(ngModel)]="formModel.endTime"
+          id="eventEndTime"
+          name="eventEndTime"
+          [(ngModel)]="formModel.eventEndTime"
           class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
           required
         />
@@ -80,12 +80,12 @@
     </div>
 
     <div>
-      <label for="capacity" class="block text-sm sm:text-base font-medium text-gray-700">Capacity</label>
+      <label for="eventCapacity" class="block text-sm sm:text-base font-medium text-gray-700">Capacity</label>
       <input
         type="number"
-        id="capacity"
-        name="capacity"
-        [(ngModel)]="formModel.capacity"
+        id="eventCapacity"
+        name="eventCapacity"
+        [(ngModel)]="formModel.eventCapacity"
         min="1"
         class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
         placeholder="Enter capacity"
@@ -94,11 +94,11 @@
     </div>
 
     <div>
-      <label for="category" class="block text-sm sm:text-base font-medium text-gray-700">Event Category</label>
+      <label for="eventCategory" class="block text-sm sm:text-base font-medium text-gray-700">Event Category</label>
       <select
-        id="category"
-        name="category"
-        [(ngModel)]="formModel.category"
+        id="eventCategory"
+        name="eventCategory"
+        [(ngModel)]="formModel.eventCategory"
         class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
         required
       >

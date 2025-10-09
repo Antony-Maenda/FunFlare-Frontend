@@ -1,3 +1,4 @@
+<!-- organizer-dashboard.html -->
 <div class="flex min-h-screen bg-gray-50">
   <!-- Sidebar -->
   <aside
@@ -24,6 +25,32 @@
       aria-label="Organizer Dashboard Navigation"
     >
       <div class="space-y-6">
+        <!-- Home -->
+        <a
+          routerLink="/organizer-dashboard"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          [routerLinkActiveOptions]="{ exact: true }"
+          aria-label="Home"
+          [attr.aria-current]="router.isActive('/organizer-dashboard', true) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientHome)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientHome" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#8B5CF6;" />
+                <stop offset="100%" style="stop-color:#3B82F6;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+          Home
+        </a>
+
         <!-- Events -->
         <a
           routerLink="/organizer-dashboard/events"
@@ -118,59 +145,62 @@
 
   <!-- Main Content -->
   <main class="flex-1 p-4 md:ml-64">
-    <!-- ✅ Navbar inside main content -->
-    <div class="flex justify-between items-center mb-6 bg-white/80 backdrop-blur-sm shadow-sm rounded-lg px-6 py-3">
+    <!-- Navbar inside main content -->
+    <div class="flex justify-between items-center mb-6 bg-white/80 backdrop-blur-sm shadow-sm rounded-lg px-6 py-3 z-10">
       <h1 class="text-2xl font-bold font-inter text-gray-800">Dashboard</h1>
 
-      <!-- ✅ Profile dropdown moved here -->
-      <div class="relative">
-    <button
-      (click)="toggleDropdown('profile')"
-      class="dropdown-btn w-10 h-10 flex items-center justify-center rounded-full hover:ring-1 hover:ring-indigo-300 transition-colors duration-150 overflow-hidden"
-      [ngClass]="{
-        'bg-gradient-to-r from-pink-500 to-purple-500': !avatarUrl,
-        'bg-gray-200': avatarUrl
-      }"
-      aria-label="View Profile"
-      [attr.aria-expanded]="profileOpen"
-      aria-describedby="profile-dropdown"
-    >
-      <img
-        *ngIf="avatarUrl"
-        [src]="avatarUrl"
-        class="w-full h-full object-cover"
-        alt="User Avatar"
-        loading="lazy"
-      />
-      <span *ngIf="!avatarUrl" class="font-bungee text-white text-lg">{{ userName.charAt(0).toUpperCase() }}</span>
-    </button>
-    <div
-      *ngIf="profileOpen"
-      id="profile-dropdown"
-      class="dropdown-menu absolute right-0 mt-1 w-44 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm py-1 z-20 transition-all duration-150 ease-in-out transform origin-top"
-      [ngClass]="{
-        'opacity-0 scale-95 -translate-y-2': !profileOpen,
-        'opacity-100 scale-100 translate-y-0': profileOpen
-      }"
-    >
-      <p class="px-3 py-1 text-gray-800 text-sm">{{ userName }}</p>
-      <label class="block px-3 py-1 text-gray-800 text-sm hover:bg-gray-50 cursor-pointer">
-        Upload Avatar
-        <input
-          type="file"
-          accept="image/*"
-          (change)="onAvatarUpload($event)"
-          class="hidden"
-        />
-      </label>
-      <button
-        (click)="logout()"
-        class="block w-full text-left px-3 py-1 text-red-600 hover:bg-red-50 text-sm"
-      >
-        Logout
-      </button>
-    </div>
-  </div>
+      <!-- Profile dropdown -->
+      <div class="flex items-center gap-4" *ngIf="userName !== 'Guest'">
+        <!-- Profile -->
+        <div class="relative">
+          <button
+            (click)="toggleDropdown('profile')"
+            class="dropdown-btn w-10 h-10 flex items-center justify-center rounded-full hover:ring-1 hover:ring-indigo-300 transition-colors duration-150 overflow-hidden"
+            [ngClass]="{
+              'bg-gradient-to-r from-pink-500 to-purple-500': !avatarUrl,
+              'bg-gray-200': avatarUrl
+            }"
+            aria-label="View Profile"
+            [attr.aria-expanded]="profileOpen"
+            aria-describedby="profile-dropdown"
+          >
+            <img
+              *ngIf="avatarUrl"
+              [src]="avatarUrl"
+              class="w-full h-full object-cover"
+              alt="User Avatar"
+              loading="lazy"
+            />
+            <span *ngIf="!avatarUrl" class="font-bungee text-white text-lg">{{ userName.charAt(0).toUpperCase() }}</span>
+          </button>
+          <div
+            *ngIf="profileOpen"
+            id="profile-dropdown"
+            class="dropdown-menu absolute right-0 mt-1 w-44 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm py-1 z-50 transition-all duration-150 ease-in-out transform origin-top"
+            [ngClass]="{
+              'opacity-0 scale-95 -translate-y-2': !profileOpen,
+              'opacity-100 scale-100 translate-y-0': profileOpen
+            }"
+          >
+            <p class="px-3 py-1 text-gray-800 text-sm">{{ userName }}</p>
+            <label class="block px-3 py-1 text-gray-800 text-sm hover:bg-gray-50 cursor-pointer">
+              Upload Avatar
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onAvatarUpload($event)"
+                class="hidden"
+              />
+            </label>
+            <button
+              (click)="logout()"
+              class="block w-full text-left px-3 py-1 text-red-600 hover:bg-red-50 text-sm"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Main Panel -->
