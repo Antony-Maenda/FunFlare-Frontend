@@ -1,0 +1,14 @@
+/* Smooth hover zoom for poster image */
+.group:hover img {
+  transform: scale(1.05);
+}
+
+/* Subtle glow on hover */
+.group:hover {
+  box-shadow: 0 6px 20px rgba(0, 200, 255, 0.15);
+}
+
+/* Button hover animation */
+button[title="Remove poster"]:hover {
+  transform: scale(1.1);
+}
