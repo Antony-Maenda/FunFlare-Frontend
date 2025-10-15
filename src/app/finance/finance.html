@@ -1,0 +1,49 @@
+<div class="mx-auto p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md max-w-2xl md:max-w-3xl lg:max-w-4xl">
+  <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-4">My Wallet</h2>
+
+  <div class="space-y-6">
+    <!-- Net Earnings -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Net Earnings</h3>
+      <p class="text-2xl font-bold text-green-600">${{ wallet.netEarnings.toFixed(2) }}</p>
+    </div>
+
+    <!-- Amount Withdrawn -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Amount Withdrawn</h3>
+      <p class="text-2xl font-bold text-red-600">${{ wallet.amountWithdrawn.toFixed(2) }}</p>
+    </div>
+
+    <!-- Current Balance -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Current Balance</h3>
+      <p class="text-2xl font-bold text-blue-600">${{ wallet.currentBalance.toFixed(2) }}</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="text-red-600 text-sm mt-2">{{ error }}</div>
+
+    <!-- Withdrawal Section -->
+    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Withdraw Funds</h3>
+      <div class="mt-2 flex gap-2 items-center">
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Enter amount to withdraw"
+          #withdrawAmountInput
+          class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
+          min="0"
+        />
+        <button
+          type="button"
+          (click)="onWithdraw(withdrawAmountInput.value)"
+          class="py-2 px-6 bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg shadow-md hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transform hover:scale-105 transition-all duration-300"
+        >
+          Withdraw
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

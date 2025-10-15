@@ -1,0 +1,182 @@
+<!-- src/app/events/events.component.html -->
+<div
+  class="mx-auto p-6 sm:p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg max-w-2xl md:max-w-3xl lg:max-w-4xl"
+>
+  <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-6 text-center">
+    Create New Event
+  </h2>
+
+  <form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)" novalidate class="space-y-6">
+    <!-- Event Name -->
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700">Event Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="formModel.name"
+        required
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        placeholder="Enter event name"
+      />
+    </div>
+
+    <!-- Location -->
+    <div>
+      <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        [(ngModel)]="formModel.location"
+        required
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        placeholder="Enter event location"
+      />
+    </div>
+
+    <!-- Dates -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="eventStartDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+        <input
+          type="date"
+          id="eventStartDate"
+          name="eventStartDate"
+          [(ngModel)]="formModel.eventStartDate"
+          [min]="minDate"
+          required
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <div>
+        <label for="eventEndDate" class="block text-sm font-medium text-gray-700">End Date</label>
+        <input
+          type="date"
+          id="eventEndDate"
+          name="eventEndDate"
+          [(ngModel)]="formModel.eventEndDate"
+          [min]="minDate"
+          required
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        />
+      </div>
+    </div>
+
+    <!-- Times -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label for="eventStartTime" class="block text-sm font-medium text-gray-700">Start Time</label>
+        <input
+          type="time"
+          id="eventStartTime"
+          name="eventStartTime"
+          [(ngModel)]="formModel.eventStartTime"
+          required
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        />
+      </div>
+      <div>
+        <label for="eventEndTime" class="block text-sm font-medium text-gray-700">End Time</label>
+        <input
+          type="time"
+          id="eventEndTime"
+          name="eventEndTime"
+          [(ngModel)]="formModel.eventEndTime"
+          required
+          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        />
+      </div>
+    </div>
+
+    <!-- Capacity -->
+    <div>
+      <label for="eventCapacity" class="block text-sm font-medium text-gray-700">Event Capacity</label>
+      <input
+        type="number"
+        id="eventCapacity"
+        name="eventCapacity"
+        [(ngModel)]="formModel.eventCapacity"
+        min="1"
+        required
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        placeholder="Enter number of attendees"
+      />
+    </div>
+
+    <!-- Category -->
+    <div>
+      <label for="eventCategory" class="block text-sm font-medium text-gray-700">Event Category</label>
+      <select
+        id="eventCategory"
+        name="eventCategory"
+        [(ngModel)]="formModel.eventCategory"
+        required
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+      >
+        <option value="" disabled selected>Select a category</option>
+        <option value="sports">Sports</option>
+        <option value="concert">Concert</option>
+        <option value="conference">Conference</option>
+        <option value="festival">Festival</option>
+        <option value="party">Party</option>
+        <option value="movie">Movie</option>
+      </select>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="formModel.description"
+        rows="4"
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+        placeholder="Enter a short event description"
+      ></textarea>
+    </div>
+
+    <!-- Poster Upload -->
+    <div>
+      <label for="poster" class="block text-sm font-medium text-gray-700">Upload Event Poster</label>
+      <input
+        type="file"
+        id="poster"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
+      />
+
+      <div *ngIf="posterPreview" class="relative mt-4 group">
+        <p class="text-sm text-gray-600 mb-2">Preview:</p>
+        <div
+          class="relative rounded-xl overflow-hidden shadow-lg border border-cyan-200 bg-gradient-to-br from-cyan-50 to-white group-hover:scale-[1.02] transition-transform"
+        >
+          <img
+            [src]="posterPreview"
+            alt="Poster preview"
+            class="w-full h-64 object-cover transition-transform group-hover:scale-105 duration-500"
+          />
+          <button
+            type="button"
+            (click)="removePoster()"
+            class="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 shadow-lg transition duration-200"
+            title="Remove poster"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-150"
+      [disabled]="!eventForm.valid"
+    >
+      Continue to Tickets
+    </button>
+  </form>
+</div>

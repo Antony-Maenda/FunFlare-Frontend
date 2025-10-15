@@ -1,0 +1,11 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-md text-center">
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Email Verification</h2>
+    <p [class.text-green-600]="isSuccess" [class.text-red-600]="!isSuccess">
+      {{ message }}
+    </p>
+    <div *ngIf="isSuccess" class="mt-4">
+      <p class="text-gray-600">You will be redirected shortly...</p>
+    </div>
+  </div>
+</div>

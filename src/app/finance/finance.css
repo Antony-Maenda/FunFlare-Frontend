@@ -1,0 +1,27 @@
+/* finance.component.css */
+:host {
+  display: block;
+}
+
+.bg-gray-50 {
+  transition: box-shadow 0.3s ease;
+}
+
+.bg-gray-50:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom button focus state for accessibility */
+button:focus {
+  outline: none; /* Remove default focus outline */
+}

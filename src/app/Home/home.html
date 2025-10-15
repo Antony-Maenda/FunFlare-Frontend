@@ -1,0 +1,85 @@
+<!-- home.html -->
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <h2 class="text-2xl font-bold font-inter text-gray-800">Your Events</h2>
+    <a
+      routerLink="/organizer-dashboard/events"
+      class="text-cyan-600 hover:text-cyan-800 font-medium transition-colors duration-150"
+    >
+      Create New Event
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && events.length === 0" class="text-center py-12 text-gray-500">
+    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-4a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+    </svg>
+    <p class="text-lg font-medium">No events yet</p>
+    <p class="mt-1">Get started by creating your first event.</p>
+  </div>
+
+  <div *ngIf="!loading && events.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      *ngFor="let event of events"
+      class="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-md transition-shadow duration-200"
+    >
+      <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+        <img
+          *ngIf="event.eventPosterBase64"
+          [src]="'data:image/png;base64,' + event.eventPosterBase64"
+          [alt]="event.name"
+          class="w-full h-full object-cover"
+          loading="lazy"
+          (error)="onImageError($event, event.name)"
+        />
+        <div *ngIf="!event.eventPosterBase64" class="text-gray-500 text-lg font-medium">
+          {{ event.name }}
+        </div>
+      </div>
+      <div class="p-4">
+        <h3 class="text-lg font-semibold font-inter text-gray-800 mb-2 line-clamp-2">{{ event.name }}</h3>
+        <p class="text-sm text-gray-600 mb-3 line-clamp-3">{{ event.description }}</p>
+        <div class="space-y-2 mb-4">
+          <div class="flex items-center text-sm text-gray-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {{ event.location }}
+          </div>
+          <div class="flex items-center text-sm text-gray-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {{ event.eventStartDate }} at {{ event.eventStartTime }}
+          </div>
+          <div class="flex items-center text-sm text-gray-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Capacity: {{ event.eventCapacity }}
+          </div>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-1 rounded-full font-medium">
+            {{ event.eventCategory }}
+          </span>
+          <a
+            [routerLink]="['/organizer-dashboard/events', event.id]"
+            class="text-cyan-600 hover:text-cyan-800 text-sm font-medium transition-colors duration-150"
+          >
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

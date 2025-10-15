@@ -1,0 +1,268 @@
+<!-- Background wrapper -->
+
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+  <h2 class="text-2xl font-bold text-center text-purple-700 mb-4">
+    Register for FunFlare
+  </h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- First Name -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">First Name</label>
+      <input
+        type="text"
+        formControlName="firstName"
+        placeholder="Enter your first name"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
+      />
+      <div
+        *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+        class="text-red-500 text-sm"
+      >
+        First name is required.
+      </div>
+    </div>
+
+    <!-- Last Name -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Last Name</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        placeholder="Enter your last name"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
+      />
+      <div
+        *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+        class="text-red-500 text-sm"
+      >
+        Last name is required.
+      </div>
+    </div>
+
+    <!-- Email Address -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Email Address</label>
+      <input
+        type="email"
+        formControlName="emailAdress"
+        placeholder="Enter your email"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
+      />
+      <div
+        *ngIf="registerForm.get('emailAdress')?.invalid && registerForm.get('emailAdress')?.touched"
+        class="text-red-500 text-sm"
+      >
+        Please enter a valid email.
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+      <input
+        type="text"
+        formControlName="phoneNumber"
+        placeholder="Enter your phone number"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
+      />
+      <div
+        *ngIf="registerForm.get('phoneNumber')?.invalid && registerForm.get('phoneNumber')?.touched"
+        class="text-red-500 text-sm"
+      >
+        Phone number is required.
+      </div>
+    </div>
+
+    <!-- Password with toggle -->
+    <div class="relative">
+      <label class="block text-sm font-medium text-gray-700">Password</label>
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Enter your password"
+        class="w-full border rounded-lg p-2 pr-10 focus:ring focus:ring-purple-200"
+      />
+
+      <!-- Toggle Icon -->
+      <button
+        type="button"
+        (click)="showPassword = !showPassword"
+        class="absolute inset-y-10 right-0 px-1 flex items-center text-gray-500 hover:text-purple-700 focus:outline-none"
+      >
+        <svg
+          *ngIf="!showPassword"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-15 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <svg
+          *ngIf="showPassword"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.965 9.965 0 012.341-3.968m3.296-2.307A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.965 9.965 0 01-4.347 5.447M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3l18 18"
+          />
+        </svg>
+      </button>
+
+      <!-- Password validation errors -->
+      <div
+        *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        class="text-red-500 text-sm mt-1"
+      >
+        Password must be at least 8 characters.
+      </div>
+    </div>
+
+    <!-- Confirm Password with toggle -->
+    <div class="relative">
+      <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        formControlName="confirmPassword"
+        placeholder="Confirm your password"
+        class="w-full border rounded-lg p-2 pr-10 focus:ring focus:ring-purple-200"
+      />
+
+      <!-- Toggle Icon -->
+      <button
+        type="button"
+        (click)="showConfirmPassword = !showConfirmPassword"
+        class="absolute inset-y-10 right-0 px-1 flex items-center text-gray-500 hover:text-purple-700 focus:outline-none"
+      >
+        <svg
+          *ngIf="!showConfirmPassword"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-15 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+        <svg
+          *ngIf="showConfirmPassword"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.965 9.965 0 012.341-3.968m3.296-2.307A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.965 9.965 0 01-4.347 5.447M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3l18 18"
+          />
+        </svg>
+      </button>
+
+      <!-- Password match error -->
+      <div
+        *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched"
+        class="text-red-500 text-sm mt-1"
+      >
+        Password Does Not Match
+      </div>
+    </div>
+
+    <!-- Organization Name (Optional) -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Organization Name (Optional)</label>
+      <input
+        type="text"
+        formControlName="organization_name"
+        placeholder="Enter your organization name"
+        class="w-full border rounded-lg p-2 focus:ring focus:ring-purple-200"
+      />
+    </div>
+
+    <!-- Checkbox: Register as Organizer -->
+    <div class="flex items-center">
+      <input
+        type="checkbox"
+        formControlName="isOrganizer"
+        class="h-4 w-4 text-purple-600 border-gray-300 rounded"
+      />
+      <label class="ml-2 block text-sm text-gray-700"> Register as Organizer </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      [disabled]="registerForm.invalid || registerForm.hasError('passwordMismatch') || isLoading"
+      class="w-full px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 flex items-center justify-center"
+    >
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading" class="flex items-center">
+        <svg
+          class="animate-spin h-5 w-5 mr-2 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+        Registering...
+      </span>
+    </button>
+  </form>
+</div>

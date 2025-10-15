@@ -1,0 +1,247 @@
+<div class="flex min-h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <aside
+    class="fixed inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md shadow-sm transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full md:w-64 z-30"
+    [ngClass]="{ 'translate-x-0': isSidebarOpen }"
+  >
+    <!-- Sidebar Header -->
+    <div class="p-4 border-b border-gray-200/50">
+      <div
+        class="text-2xl font-bold font-bungee transform -rotate-2"
+        style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"
+        aria-label="FunFlare Logo"
+      >
+        <span class="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+          FunFlare
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+      class="flex-1 p-4 flex flex-col justify-between h-[75%]"
+      role="navigation"
+      aria-label="Organizer Dashboard Navigation"
+    >
+      <div class="space-y-6">
+        <!-- Home -->
+        <a
+          routerLink="/organizer-dashboard"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          [routerLinkActiveOptions]="{ exact: true }"
+          aria-label="Home"
+          [attr.aria-current]="router.isActive('/organizer-dashboard', true) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientHome)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientHome" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#8B5CF6;" />
+                <stop offset="100%" style="stop-color:#3B82F6;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+          Home
+        </a>
+
+        <!-- Events -->
+        <a
+          routerLink="/organizer-dashboard/events"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          [routerLinkActiveOptions]="{ exact: false }"
+          aria-label="Events"
+          [attr.aria-current]="router.isActive('/organizer-dashboard/events', false) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientEvents)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientEvents" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#FF0000;" />
+                <stop offset="100%" style="stop-color:#00FF00;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          Events
+        </a>
+
+        <!-- Tickets -->
+        <a
+          routerLink="/organizer-dashboard/tickets"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          [routerLinkActiveOptions]="{ exact: false }"
+          aria-label="Tickets"
+          [attr.aria-current]="router.isActive('/organizer-dashboard/tickets', false) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientTickets)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientTickets" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#FFFF00;" />
+                <stop offset="100%" style="stop-color:#FF00FF;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H7a2 2 0 00-2 2v2m14 0h2m-2 0h-2"
+            />
+          </svg>
+          Tickets
+        </a>
+
+        <!-- Orders -->
+        <a
+          routerLink="/organizer-dashboard/orders"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          [routerLinkActiveOptions]="{ exact: false }"
+          aria-label="Orders"
+          [attr.aria-current]="router.isActive('/organizer-dashboard/orders', false) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientOrders)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientOrders" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#FFFF00;" />
+                <stop offset="100%" style="stop-color:#FF00FF;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 3h18M3 7h18M3 12h18m-6 5h6"
+            />
+          </svg>
+          Orders
+        </a>
+
+        <!-- Finance -->
+        <a
+          routerLink="/organizer-dashboard/finance"
+          routerLinkActive="bg-cyan-100 text-cyan-700"
+          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
+          aria-label="Finance"
+          [attr.aria-current]="router.isActive('/organizer-dashboard/finance', false) ? 'page' : undefined"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientFinance)" viewBox="0 0 24 24">
+            <defs>
+              <linearGradient id="gradientFinance" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00FFFF;" />
+                <stop offset="100%" style="stop-color:#FF4500;" />
+              </linearGradient>
+            </defs>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          Finance
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button
+    class="md:hidden fixed top-4 left-4 z-40 p-2 bg-cyan-400 text-white rounded-full hover:bg-[#0e7490] transition-colors duration-150"
+    (click)="toggleSidebar()"
+    aria-label="Toggle Sidebar"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-4 md:ml-64">
+    <!-- Navbar -->
+    <div
+      class="flex justify-between items-center mb-6 bg-white/80 backdrop-blur-sm shadow-sm rounded-lg px-6 py-3 z-10"
+    >
+      <h1 class="text-2xl font-bold font-inter text-gray-800">Dashboard</h1>
+
+      <!-- Profile Dropdown -->
+      <div class="flex items-center gap-4" *ngIf="userName !== 'Guest'">
+        <div class="relative">
+          <button
+            #profileTrigger
+            (click)="toggleDropdown('profile'); $event.stopPropagation()"
+            class="dropdown-btn w-10 h-10 flex items-center justify-center rounded-full hover:ring-1 hover:ring-indigo-300 transition-colors duration-150 overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            [ngClass]="{
+              'bg-gradient-to-r from-pink-500 to-purple-500': !avatarUrl,
+              'bg-gray-200': avatarUrl
+            }"
+            aria-label="View Profile"
+            [attr.aria-expanded]="profileOpen ? 'true' : 'false'"
+            [attr.aria-controls]="profileOpen ? 'profile-dropdown' : null"
+            aria-haspopup="true"
+          >
+            <img
+              *ngIf="avatarUrl"
+              [src]="avatarUrl"
+              class="w-full h-full object-cover"
+              alt="User Avatar"
+              loading="lazy"
+            />
+            <span *ngIf="!avatarUrl" class="font-bungee text-white text-lg">
+              {{ userName.charAt(0).toUpperCase() }}
+            </span>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div
+            #profileDropdownElement
+            *ngIf="profileOpen"
+            id="profile-dropdown"
+            role="menu"
+            class="dropdown-menu absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg py-2 z-50"
+            [ngClass]="{
+              'opacity-0 scale-95 -translate-y-2': !profileOpen,
+              'opacity-100 scale-100 translate-y-0': profileOpen
+            }"
+            (click)="$event.stopPropagation()"
+          >
+            <p class="px-4 py-2 text-gray-800 text-sm"> {{ userName }}</p>
+            <label
+              class="block px-4 py-2 text-gray-800 text-sm hover:bg-gray-50 cursor-pointer"
+            >
+              Upload Avatar
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onAvatarUpload($event)"
+                class="hidden"
+              />
+            </label>
+            <button
+              (click)="logout(); $event.stopPropagation()"
+              class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 text-sm"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="bg-white/9  rounded-lg shadow-sm p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
