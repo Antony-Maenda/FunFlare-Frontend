@@ -2,7 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { EventService, EventCreate } from '../services/event.service';
+import { TempEventService } from '../services/temp-event.service'; // Adjust path if needed
 
 @Component({
   selector: 'app-events',
@@ -12,7 +14,11 @@ import { EventService, EventCreate } from '../services/event.service';
   styleUrls: ['./events.css']
 })
 export class EventsComponent implements OnInit {
-  constructor(private eventService: EventService) {}
+  constructor(
+    private eventService: EventService,
+    private router: Router,
+    private tempEventService: TempEventService
+  ) {}
 
   // ✅ Form model structure
   formModel: EventCreate = {
@@ -28,6 +34,7 @@ export class EventsComponent implements OnInit {
   };
 
   poster: File | null = null;
+  posterFilename: string = '';
   posterPreview: string | null = null;
   filterText: string = '';
   minDate: string = ''; // ✅ For date validation
@@ -45,6 +52,7 @@ export class EventsComponent implements OnInit {
     const file = input.files?.[0];
     if (file) {
       this.poster = file;
+      this.posterFilename = file.name;
 
       const reader = new FileReader();
       reader.onload = () => {
@@ -57,6 +65,7 @@ export class EventsComponent implements OnInit {
   // ✅ Remove selected poster
   removePoster(): void {
     this.poster = null;
+    this.posterFilename = '';
     this.posterPreview = null;
     const fileInput = document.getElementById('poster') as HTMLInputElement;
     if (fileInput) fileInput.value = ''; // Reset input field
@@ -90,20 +99,14 @@ export class EventsComponent implements OnInit {
       return;
     }
 
-    // ✅ Use EventService to create event
-    this.eventService.createEvent(eventData, this.poster ?? undefined)
-      .subscribe({
-        next: (response) => {
-          console.log('Event created successfully:', response);
-          form.resetForm();
-          this.poster = null;
-          this.posterPreview = null;
-          alert('Event created successfully!');
-        },
-        error: (error) => {
-          console.error('Error during submission:', error);
-          alert(error.message || 'Failed to create event. Please try again.');
-        }
-      });
+    // ✅ Store event data temporarily in service (including poster File directly) and redirect to tickets
+    this.tempEventService.setTempData(eventData, this.poster, this.posterFilename);
+    this.router.navigate(['/organizer-dashboard/tickets']);
+
+    // Reset form after storing
+    form.resetForm();
+    this.poster = null;
+    this.posterFilename = '';
+    this.posterPreview = null;
   }
 }
