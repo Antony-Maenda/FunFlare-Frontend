@@ -12,6 +12,7 @@
             id="quantity-{{i}}"
             [(ngModel)]="ticket.quantity"
             (change)="onQuantityChange(i, $event)"
+            name="quantity-{{i}}"
             min="0"
             [max]="eventCapacity"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
@@ -25,7 +26,9 @@
             type="number"
             id="price-{{i}}"
             [(ngModel)]="ticket.price"
-            min="0"
+            (input)="onPriceChange(i, $event)"
+            name="price-{{i}}"
+            min="0.01"
             step="0.01"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             placeholder="Enter price"
@@ -36,8 +39,8 @@
     </div>
 
     <p class="text-sm text-gray-600">
-  Total Tickets: {{ totalTickets }} / {{ eventCapacity }}
-</p>
+      Total Tickets: {{ totalTickets }} / {{ eventCapacity }}
+    </p>
 
     <div *ngIf="error" class="text-red-600 text-sm mt-2">{{ error }}</div>
 

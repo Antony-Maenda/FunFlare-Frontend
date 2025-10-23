@@ -1,0 +1,98 @@
+<div class="max-w-4xl mx-auto p-4 sm:p-6">
+  <div class="flex justify-between items-center mb-4">
+    <a routerLink="/organizer-dashboard/home" class="text-cyan-600 hover:text-cyan-800 text-sm font-medium">
+      &larr; Back to Events
+    </a>
+    <div *ngIf="event" class="space-x-2">
+      <button (click)="editEvent(event.id)" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-150">
+        Edit Event
+      </button>
+      <button (click)="deleteEvent(event.id)" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-150">
+        Delete Event
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && event" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/50 overflow-hidden">
+    <div class="h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+      <img
+        *ngIf="event.eventPosterUrl"
+        [src]="event.eventPosterUrl"
+        [alt]="event.name"
+        class="w-full h-full object-cover"
+        loading="lazy"
+        (error)="onImageError($event, event.name)"
+      />
+      <div *ngIf="!event.eventPosterUrl" class="text-gray-500 text-lg font-medium">
+        {{ event.name }}
+      </div>
+    </div>
+    <div class="p-6">
+      <h2 class="text-2xl font-bold font-inter text-gray-800 mb-4">{{ event.name }}</h2>
+      <p class="text-gray-600 mb-6">{{ event.description }}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div>
+          <div class="flex items-center text-sm text-gray-500 mb-2">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>{{ event.location }}</span>
+          </div>
+          <div class="flex items-center text-sm text-gray-500 mb-2">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Starts: {{ event.eventStartDate }} at {{ event.eventStartTime }}</span>
+          </div>
+          <div class="flex items-center text-sm text-gray-500 mb-2">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Ends: {{ event.eventEndDate }} at {{ event.eventEndTime }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center text-sm text-gray-500 mb-2">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Capacity: {{ event.eventCapacity }}</span>
+          </div>
+          <div class="flex items-center text-sm text-gray-500 mb-2">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+            </svg>
+            <span>Category: {{ event.eventCategory }}</span>
+          </div>
+        </div>
+      </div>
+      <h3 class="text-xl font-semibold font-inter text-gray-800 mb-4">Ticket Types</h3>
+      <div *ngIf="tickets.length === 0" class="text-gray-500 text-sm">
+        No tickets available for this event.
+      </div>
+      <div *ngIf="tickets.length > 0" class="space-y-4">
+        <div *ngFor="let ticket of tickets" class="border-b pb-4">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-700">{{ ticket.type | titlecase }}</span>
+            <span class="text-sm text-gray-500">Ksh {{ ticket.price.toFixed(2) }}</span>
+          </div>
+          <div class="text-sm text-gray-500 mt-1">
+            Quantity: {{ ticket.quantity }}
+          </div>
+          <div class="text-sm text-gray-500 mt-1">
+            Sales: {{ ticket.saleStartDate }} {{ ticket.saleStartTime }} - {{ ticket.saleEndDate }} {{ ticket.saleEndTime }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
