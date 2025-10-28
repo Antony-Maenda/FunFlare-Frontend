@@ -1,15 +1,17 @@
+<!-- src/app/tickets/tickets.html (Updated with sale date/time fields and name attributes for ngModel) -->
 <div class="mx-auto p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md max-w-2xl md:max-w-3xl lg:max-w-4xl">
   <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-4">Set Tickets for {{ eventData.name || 'New Event' }}</h2>
 
   <form class="space-y-6">
     <div *ngFor="let ticket of ticketTypes; let i = index" class="border-b pb-4">
       <h3 class="text-lg sm:text-xl font-medium text-gray-700">{{ ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) }} Tickets</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
         <div>
           <label for="quantity-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Quantity</label>
           <input
             type="number"
             id="quantity-{{i}}"
+            name="quantity-{{i}}"
             [(ngModel)]="ticket.quantity"
             (change)="onQuantityChange(i, $event)"
             min="0"
@@ -24,11 +26,59 @@
           <input
             type="number"
             id="price-{{i}}"
+            name="price-{{i}}"
             [(ngModel)]="ticket.price"
-            min="0"
+            (input)="onPriceChange(i, $event)"
+            min="0.01"
             step="0.01"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             placeholder="Enter price"
+            required
+          />
+        </div>
+        <div>
+          <label for="saleStartDate-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale Start Date</label>
+          <input
+            type="date"
+            id="saleStartDate-{{i}}"
+            name="saleStartDate-{{i}}"
+            [(ngModel)]="ticket.saleStartDate"
+            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label for="saleStartTime-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale Start Time</label>
+          <input
+            type="time"
+            id="saleStartTime-{{i}}"
+            name="saleStartTime-{{i}}"
+            [(ngModel)]="ticket.saleStartTime"
+            step="1"
+            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label for="saleEndDate-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale End Date</label>
+          <input
+            type="date"
+            id="saleEndDate-{{i}}"
+            name="saleEndDate-{{i}}"
+            [(ngModel)]="ticket.saleEndDate"
+            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label for="saleEndTime-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale End Time</label>
+          <input
+            type="time"
+            id="saleEndTime-{{i}}"
+            name="saleEndTime-{{i}}"
+            [(ngModel)]="ticket.saleEndTime"
+            step="1"
+            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
           />
         </div>
@@ -36,15 +86,16 @@
     </div>
 
     <p class="text-sm text-gray-600">
-  Total Tickets: {{ totalTickets }} / {{ eventCapacity }}
-</p>
+      Total Tickets: {{ totalTickets }} / {{ eventCapacity }}
+    </p>
 
     <div *ngIf="error" class="text-red-600 text-sm mt-2">{{ error }}</div>
 
     <button
       type="button"
       (click)="onFinish()"
-      class="w-full py-2 sm:py-3 px-4 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-150 text-sm sm:text-base"
+      [disabled]="error || totalTickets === 0"
+      class="w-full py-2 sm:py-3 px-4 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-150 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
     >
       Finish
     </button>

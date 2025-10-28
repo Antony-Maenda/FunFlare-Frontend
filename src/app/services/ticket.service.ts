@@ -1,4 +1,4 @@
-// src/app/services/ticket.service.ts (Fixed TypeScript errors)
+// src/app/services/ticket.service.ts (Confirmed: Already passes date/time fields in payload)
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, forkJoin } from 'rxjs';

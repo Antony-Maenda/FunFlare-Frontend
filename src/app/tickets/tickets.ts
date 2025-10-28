@@ -1,4 +1,4 @@
-// src/app/tickets/tickets.ts (Updated with price defaults and input handling)
+// src/app/tickets/tickets.ts (Confirmed: Already accommodates date/time fields with validation)
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,9 +16,9 @@ import { TempEventService } from '../services/temp-event.service';
 })
 export class TicketsComponent implements OnInit {
   ticketTypes: Omit<TicketCreate, 'eventId'>[] = [ // Omit eventId; add in service
-    { type: 'earlybird', quantity: 0, price: 50.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'advanced', quantity: 0, price: 75.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'VIP', quantity: 0, price: 100.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
+    { type: 'earlybird', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'advanced', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'VIP', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
   ];
 
   eventCapacity: number = 0;
@@ -83,33 +83,59 @@ export class TicketsComponent implements OnInit {
   }
 
   onQuantityChange(index: number, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const oldQuantity = this.ticketTypes[index].quantity;
-    const newQuantity = parseInt(input.value, 10) || 0;
+  const input = event.target as HTMLInputElement;
+  const oldQuantity = this.ticketTypes[index].quantity;
+  const newQuantity = parseInt(input.value, 10) || 0;
+
+  // ✅ Calculate totals BEFORE setting quantity
+  const currentTotal = this.totalTickets;
+  const otherTotal = currentTotal - oldQuantity;  // Sum of all other types (unchanged)
+
+  if (otherTotal + newQuantity > this.eventCapacity) {
+    const maxAllowed = Math.max(0, this.eventCapacity - otherTotal);
+    this.ticketTypes[index].quantity = maxAllowed;
+    input.value = maxAllowed.toString();  // ✅ Sync input to show the cap
+    this.error = `Total tickets cannot exceed event capacity (${this.eventCapacity}). Max for this type: ${maxAllowed}.`;
+  } else {
     this.ticketTypes[index].quantity = newQuantity;
-
-    const otherTotal = this.totalTickets - newQuantity + oldQuantity;
-    if (otherTotal + newQuantity > this.eventCapacity) {
-      const maxAllowed = this.eventCapacity - otherTotal;
-      this.ticketTypes[index].quantity = Math.max(0, maxAllowed);
-      this.error = 'Total tickets cannot exceed event capacity.';
-    } else {
-      this.error = null;
-    }
+    this.error = null;
   }
+}
 
-  // ✅ New method for price input handling and validation
+  // ✅ Method for price input handling and validation (dynamic organizer input)
   onPriceChange(index: number, event: Event): void {
     const input = event.target as HTMLInputElement;
     let price = parseFloat(input.value) || 0;
     if (price < 0.01) {
       price = 0.01; // Enforce minimum price
-      this.error = 'Price must be at least $0.01.';
-      // Optionally, update input value: input.value = price.toFixed(2);
+      this.error = 'Price must be at least Ksh 0.01.';
     } else {
       this.error = null;
     }
     this.ticketTypes[index].price = price;
+  }
+
+  // ✅ New methods for date/time validation (optional; called from template if needed)
+  onSaleStartDateChange(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const startDate = input.value;
+    const endDate = this.ticketTypes[index].saleEndDate;
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      this.error = 'Sale start date must be before or equal to end date.';
+    } else {
+      this.error = null;
+    }
+  }
+
+  onSaleEndDateChange(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const endDate = input.value;
+    const startDate = this.ticketTypes[index].saleStartDate;
+    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+      this.error = 'Sale end date must be after or equal to start date.';
+    } else {
+      this.error = null;
+    }
   }
 
   onFinish(): void {
@@ -125,10 +151,20 @@ export class TicketsComponent implements OnInit {
       return;
     }
 
-    // ✅ Additional check for non-zero prices
+    // ✅ Check for non-zero prices on selected types
     const hasValidPrices = this.ticketTypes.some(t => t.quantity > 0 && t.price > 0);
     if (!hasValidPrices) {
-      this.error = 'All ticket types must have a price greater than $0.00.';
+      this.error = 'Selected ticket types must have a price greater than Ksh 0.00.';
+      return;
+    }
+
+    // ✅ Validate dates/times for selected types (basic checks)
+    const invalidDate = this.ticketTypes.find(t => t.quantity > 0 && (
+      !t.saleStartDate || !t.saleEndDate || !t.saleStartTime || !t.saleEndTime ||
+      new Date(t.saleStartDate + 'T' + t.saleStartTime) >= new Date(t.saleEndDate + 'T' + t.saleEndTime)
+    ));
+    if (invalidDate) {
+      this.error = 'Sale dates and times must be valid and start before end.';
       return;
     }
 
@@ -140,6 +176,9 @@ export class TicketsComponent implements OnInit {
         next: (eventResponse) => {
           this.eventId = eventResponse.id;
           console.log('Event created successfully:', eventResponse);
+          console.log('All ticketTypes before filter:', JSON.stringify(this.ticketTypes, null, 2));
+          const validTickets = this.ticketTypes.filter(t => t.quantity > 0);
+          console.log('Sending tickets:', JSON.stringify(validTickets, null, 2));
 
           // Step 2: Create tickets (one per type, parallel)
           this.ticketService.createTickets(this.eventId!, validTickets)
