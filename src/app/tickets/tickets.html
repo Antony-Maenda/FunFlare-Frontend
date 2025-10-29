@@ -14,6 +14,7 @@
             name="quantity-{{i}}"
             [(ngModel)]="ticket.quantity"
             (change)="onQuantityChange(i, $event)"
+            name="quantity-{{i}}"
             min="0"
             [max]="eventCapacity"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
@@ -29,6 +30,7 @@
             name="price-{{i}}"
             [(ngModel)]="ticket.price"
             (input)="onPriceChange(i, $event)"
+            name="price-{{i}}"
             min="0.01"
             step="0.01"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
@@ -43,6 +45,7 @@
             id="saleStartDate-{{i}}"
             name="saleStartDate-{{i}}"
             [(ngModel)]="ticket.saleStartDate"
+            (change)="onSaleStartDateChange(i, $event)"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
           />
@@ -66,6 +69,7 @@
             id="saleEndDate-{{i}}"
             name="saleEndDate-{{i}}"
             [(ngModel)]="ticket.saleEndDate"
+            (change)="onSaleEndDateChange(i, $event)"
             class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
           />

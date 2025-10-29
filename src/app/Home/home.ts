@@ -1,29 +1,14 @@
-// home.ts (OrganizerDashboardHomeComponent)
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { EventService, EventCreate } from '../services/event.service';
-
-export interface Event {
-  id: number;
-  name: string;
-  description: string;
-  location: string;
-  eventPosterUrl?: string;
-  eventPosterBase64?: string; // Base64 encoded image
-  eventCapacity: number;
-  eventCategory: string;
-  eventStartDate: string;
-  eventStartTime: string;
-  // Add other fields as needed
-}
+import { EventService, Event } from '../services/event.service';
 
 @Component({
   selector: 'app-organizer-dashboard-home',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
-  styleUrls: ['./home.css'] // Optional, if needed
+  styleUrls: ['./home.css']
 })
 export class OrganizerDashboardHomeComponent implements OnInit {
   events: Event[] = [];
@@ -37,7 +22,6 @@ export class OrganizerDashboardHomeComponent implements OnInit {
   }
 
   private loadEvents(): void {
-    // Assuming EventService has a method getOrganizerEvents(): Observable<Event[]>
     this.eventService.getOrganizerEvents().subscribe({
       next: (events) => {
         this.events = events;
@@ -51,9 +35,12 @@ export class OrganizerDashboardHomeComponent implements OnInit {
     });
   }
 
-  onImageError(event: any, altText: string): void {
-    (event.target as HTMLImageElement).src = ''; // Clear broken image
-    // Optionally, show fallback or log error
-    console.warn(`Failed to load image for event: ${altText}`);
+  onImageError(event: ErrorEvent, eventName: string): void {
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
+    const parent = img.parentElement;
+    if (parent) {
+      parent.innerHTML = `<div class="text-gray-500 text-lg font-medium">${eventName}</div>`;
+    }
   }
 }

@@ -10,15 +10,15 @@ import { TempEventService } from '../services/temp-event.service';
 @Component({
   selector: 'app-tickets',
   standalone: true,
-  imports: [ FormsModule, CommonModule ],
+  imports: [FormsModule, CommonModule],
   templateUrl: './tickets.html',
   styleUrls: ['./tickets.css']
 })
 export class TicketsComponent implements OnInit {
   ticketTypes: Omit<TicketCreate, 'eventId'>[] = [ // Omit eventId; add in service
-    { type: 'earlybird', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'advanced', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'VIP', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
+    { type: 'earlybird', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'advanced', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'VIP', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
   ];
 
   eventCapacity: number = 0;
@@ -56,7 +56,6 @@ export class TicketsComponent implements OnInit {
       this.eventData = tempData;
       this.eventCapacity = this.eventData?.eventCapacity ?? 0;
 
-      // ✅ Set defaults for sale dates/times based on event (full period; adjust UI if needed)
       const startDate = this.eventData.eventStartDate;
       const endDate = this.eventData.eventEndDate;
       const startTime = this.eventData.eventStartTime || '00:00:00';
@@ -107,12 +106,13 @@ export class TicketsComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     let price = parseFloat(input.value) || 0;
     if (price < 0.01) {
-      price = 0.01; // Enforce minimum price
-      this.error = 'Price must be at least Ksh 0.01.';
+      price = 0.01;
+      this.error = `Price for ${this.ticketTypes[index].type} must be at least Ksh 0.01.`;
+      input.value = price.toFixed(2);
     } else {
       this.error = null;
     }
-    this.ticketTypes[index].price = price;
+    this.ticketTypes[index].price = parseFloat(price.toFixed(2));
   }
 
   // ✅ New methods for date/time validation (optional; called from template if needed)
@@ -151,10 +151,10 @@ export class TicketsComponent implements OnInit {
       return;
     }
 
-    // ✅ Check for non-zero prices on selected types
-    const hasValidPrices = this.ticketTypes.some(t => t.quantity > 0 && t.price > 0);
+    // ✅ Check for valid prices on all selected types (fixed: use every() to ensure ALL selected have price >= 0.01)
+    const hasValidPrices = this.ticketTypes.every(t => t.quantity === 0 || t.price >= 0.01);
     if (!hasValidPrices) {
-      this.error = 'Selected ticket types must have a price greater than Ksh 0.00.';
+      this.error = 'All ticket types with quantity > 0 must have a price of at least Ksh 0.01.';
       return;
     }
 
@@ -170,7 +170,6 @@ export class TicketsComponent implements OnInit {
 
     const validTickets = this.ticketTypes.filter(t => t.quantity > 0);
 
-    // Step 1: Create event
     this.eventService.createEvent(this.eventData, this.eventData.poster ?? undefined)
       .subscribe({
         next: (eventResponse) => {
@@ -180,7 +179,6 @@ export class TicketsComponent implements OnInit {
           const validTickets = this.ticketTypes.filter(t => t.quantity > 0);
           console.log('Sending tickets:', JSON.stringify(validTickets, null, 2));
 
-          // Step 2: Create tickets (one per type, parallel)
           this.ticketService.createTickets(this.eventId!, validTickets)
             .subscribe({
               next: (ticketResponses: TicketResponse[]) => {

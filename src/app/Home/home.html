@@ -1,4 +1,3 @@
-<!-- home.html -->
 <div class="space-y-6">
   <div class="flex justify-between items-center">
     <h2 class="text-2xl font-bold font-inter text-gray-800">Your Events</h2>
@@ -33,14 +32,14 @@
     >
       <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
         <img
-          *ngIf="event.eventPosterBase64"
-          [src]="'data:image/png;base64,' + event.eventPosterBase64"
+          *ngIf="event.eventPosterUrl"
+          [src]="event.eventPosterUrl"
           [alt]="event.name"
           class="w-full h-full object-cover"
           loading="lazy"
           (error)="onImageError($event, event.name)"
         />
-        <div *ngIf="!event.eventPosterBase64" class="text-gray-500 text-lg font-medium">
+        <div *ngIf="!event.eventPosterUrl" class="text-gray-500 text-lg font-medium">
           {{ event.name }}
         </div>
       </div>
