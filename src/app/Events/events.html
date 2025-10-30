@@ -1,182 +1,239 @@
 <!-- src/app/events/events.component.html -->
-<div
-  class="mx-auto p-6 sm:p-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg max-w-2xl md:max-w-3xl lg:max-w-4xl"
->
-  <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-6 text-center">
-    Create New Event
-  </h2>
-
-  <form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)" novalidate class="space-y-6">
-    <!-- Event Name -->
-    <div>
-      <label for="name" class="block text-sm font-medium text-gray-700">Event Name</label>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        [(ngModel)]="formModel.name"
-        required
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        placeholder="Enter event name"
-      />
-    </div>
-
-    <!-- Location -->
-    <div>
-      <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-      <input
-        type="text"
-        id="location"
-        name="location"
-        [(ngModel)]="formModel.location"
-        required
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        placeholder="Enter event location"
-      />
-    </div>
-
-    <!-- Dates -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div>
-        <label for="eventStartDate" class="block text-sm font-medium text-gray-700">Start Date</label>
-        <input
-          type="date"
-          id="eventStartDate"
-          name="eventStartDate"
-          [(ngModel)]="formModel.eventStartDate"
-          [min]="minDate"
-          required
-          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        />
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-teal-50 py-8 px-4">
+  <div class="mx-auto max-w-2xl md:max-w-3xl lg:max-w-4xl">
+    <!-- Glassmorphic Card -->
+    <div class="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl ring-1 ring-white/20 p-6 sm:p-8 lg:p-10 border border-white/30">
+      
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent">
+          Create New Event
+        </h2>
+        <p class="mt-3 text-sm text-gray-600">Fill in the details to get started</p>
       </div>
-      <div>
-        <label for="eventEndDate" class="block text-sm font-medium text-gray-700">End Date</label>
-        <input
-          type="date"
-          id="eventEndDate"
-          name="eventEndDate"
-          [(ngModel)]="formModel.eventEndDate"
-          [min]="minDate"
-          required
-          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        />
-      </div>
-    </div>
 
-    <!-- Times -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div>
-        <label for="eventStartTime" class="block text-sm font-medium text-gray-700">Start Time</label>
-        <input
-          type="time"
-          id="eventStartTime"
-          name="eventStartTime"
-          [(ngModel)]="formModel.eventStartTime"
-          required
-          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        />
-      </div>
-      <div>
-        <label for="eventEndTime" class="block text-sm font-medium text-gray-700">End Time</label>
-        <input
-          type="time"
-          id="eventEndTime"
-          name="eventEndTime"
-          [(ngModel)]="formModel.eventEndTime"
-          required
-          class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        />
-      </div>
-    </div>
+      <!-- Form -->
+      <form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)" class="space-y-7" novalidate>
 
-    <!-- Capacity -->
-    <div>
-      <label for="eventCapacity" class="block text-sm font-medium text-gray-700">Event Capacity</label>
-      <input
-        type="number"
-        id="eventCapacity"
-        name="eventCapacity"
-        [(ngModel)]="formModel.eventCapacity"
-        min="1"
-        required
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        placeholder="Enter number of attendees"
-      />
-    </div>
-
-    <!-- Category -->
-    <div>
-      <label for="eventCategory" class="block text-sm font-medium text-gray-700">Event Category</label>
-      <select
-        id="eventCategory"
-        name="eventCategory"
-        [(ngModel)]="formModel.eventCategory"
-        required
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-      >
-        <option value="" disabled selected>Select a category</option>
-        <option value="sports">Sports</option>
-        <option value="concert">Concert</option>
-        <option value="conference">Conference</option>
-        <option value="festival">Festival</option>
-        <option value="party">Party</option>
-        <option value="movie">Movie</option>
-      </select>
-    </div>
-
-    <!-- Description -->
-    <div>
-      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-      <textarea
-        id="description"
-        name="description"
-        [(ngModel)]="formModel.description"
-        rows="4"
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-        placeholder="Enter a short event description"
-      ></textarea>
-    </div>
-
-    <!-- Poster Upload -->
-    <div>
-      <label for="poster" class="block text-sm font-medium text-gray-700">Upload Event Poster</label>
-      <input
-        type="file"
-        id="poster"
-        accept="image/*"
-        (change)="onFileSelected($event)"
-        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg"
-      />
-
-      <div *ngIf="posterPreview" class="relative mt-4 group">
-        <p class="text-sm text-gray-600 mb-2">Preview:</p>
-        <div
-          class="relative rounded-xl overflow-hidden shadow-lg border border-cyan-200 bg-gradient-to-br from-cyan-50 to-white group-hover:scale-[1.02] transition-transform"
-        >
-          <img
-            [src]="posterPreview"
-            alt="Poster preview"
-            class="w-full h-64 object-cover transition-transform group-hover:scale-105 duration-500"
+        <!-- Event Name -->
+        <div class="relative group">
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="formModel.name"
+            required
+            class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            placeholder="Event Name"
           />
-          <button
-            type="button"
-            (click)="removePoster()"
-            class="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 shadow-lg transition duration-200"
-            title="Remove poster"
-          >
-            ✕
-          </button>
+          <label for="name"
+            class="absolute left-5 -top-3.5 text-sm font-semibold text-cyan-600 bg-white px-2 transition-all duration-300 
+                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-cyan-600">
+            Event Name
+          </label>
         </div>
-      </div>
-    </div>
 
-    <!-- Submit -->
-    <button
-      type="submit"
-      class="w-full py-3 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-150"
-      [disabled]="!eventForm.valid"
-    >
-      Continue to Tickets
-    </button>
-  </form>
+        <!-- Location -->
+        <div class="relative group">
+          <input
+            type="text"
+            id="location"
+            name="location"
+            [(ngModel)]="formModel.location"
+            required
+            class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            placeholder="Location"
+          />
+          <label for="location"
+            class="absolute left-5 -top-3.5 text-sm font-semibold text-teal-600 bg-white px-2 transition-all duration-300 
+                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-teal-600">
+            Location
+          </label>
+        </div>
+
+        <!-- Dates Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="relative group">
+            <input
+              type="date"
+              id="eventStartDate"
+              name="eventStartDate"
+              [(ngModel)]="formModel.eventStartDate"
+              [min]="minDate"
+              required
+              class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            />
+            <label for="eventStartDate"
+              class="absolute left-5 -top-3.5 text-sm font-semibold text-emerald-600 bg-white px-2 transition-all duration-300">
+              Start Date
+            </label>
+          </div>
+          <div class="relative group">
+            <input
+              type="date"
+              id="eventEndDate"
+              name="eventEndDate"
+              [(ngModel)]="formModel.eventEndDate"
+              [min]="minDate"
+              required
+              class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            />
+            <label for="eventEndDate"
+              class="absolute left-5 -top-3.5 text-sm font-semibold text-emerald-600 bg-white px-2 transition-all duration-300">
+              End Date
+            </label>
+          </div>
+        </div>
+
+        <!-- Times Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="relative group">
+            <input
+              type="time"
+              id="eventStartTime"
+              name="eventStartTime"
+              [(ngModel)]="formModel.eventStartTime"
+              required
+              class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            />
+            <label for="eventStartTime"
+              class="absolute left-5 -top-3.5 text-sm font-semibold text-indigo-600 bg-white px-2 transition-all duration-300">
+              Start Time
+            </label>
+          </div>
+          <div class="relative group">
+            <input
+              type="time"
+              id="eventEndTime"
+              name="eventEndTime"
+              [(ngModel)]="formModel.eventEndTime"
+              required
+              class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            />
+            <label for="eventEndTime"
+              class="absolute left-5 -top-3.5 text-sm font-semibold text-indigo-600 bg-white px-2 transition-all duration-300">
+              End Time
+            </label>
+          </div>
+        </div>
+
+        <!-- Capacity -->
+        <div class="relative group">
+          <input
+            type="number"
+            id="eventCapacity"
+            name="eventCapacity"
+            [(ngModel)]="formModel.eventCapacity"
+            min="1"
+            required
+            class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-inner"
+            placeholder="Capacity"
+          />
+          <label for="eventCapacity"
+            class="absolute left-5 -top-3.5 text-sm font-semibold text-purple-600 bg-white px-2 transition-all duration-300 
+                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-purple-600">
+            Event Capacity
+          </label>
+        </div>
+
+        <!-- Category -->
+        <div class="relative group">
+          <select
+            id="eventCategory"
+            name="eventCategory"
+            [(ngModel)]="formModel.eventCategory"
+            required
+            class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-300 shadow-inner cursor-pointer"
+          >
+            <option value="" disabled selected>Select category</option>
+            <option value="sports">Sports</option>
+            <option value="concert">Concert</option>
+            <option value="conference">Conference</option>
+            <option value="festival">Festival</option>
+            <option value="party">Party</option>
+            <option value="movie">Movie</option>
+            <option value="theater">Theater</option>
+          </select>
+          <label for="eventCategory"
+            class="absolute left-5 -top-3.5 text-sm font-semibold text-amber-600 bg-white px-2 transition-all duration-300">
+            Event Category
+          </label>
+          <div class="absolute right-5 top-1/2 transform -translate-y-1/2 pointer-events-none">
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="relative group">
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="formModel.description"
+            rows="4"
+            class="peer w-full px-5 py-4 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all duration-300 shadow-inner resize-none"
+            placeholder="Description"
+          ></textarea>
+          <label for="description"
+            class="absolute left-5 -top-3.5 text-sm font-semibold text-rose-600 bg-white px-2 transition-all duration-300 
+                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-rose-600">
+            Description
+          </label>
+        </div>
+
+        <!-- Poster Upload -->
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-fuchsia-600">Upload Event Poster</label>
+          <div class="relative">
+            <input
+              type="file"
+              id="poster"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              class="block w-full text-sm text-gray-700 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gradient-to-r file:from-fuchsia-500 file:to-pink-500 file:text-white hover:file:from-fuchsia-600 hover:file:to-pink-600 cursor-pointer transition-all duration-200"
+            />
+          </div>
+
+          <!-- Preview -->
+          <div *ngIf="posterPreview" class="relative mt-6 group rounded-3xl overflow-hidden shadow-2xl ring-2 ring-cyan-200/50">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
+            <img
+              [src]="posterPreview"
+              alt="Poster preview"
+              class="w-full h-72 object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <button
+              type="button"
+              (click)="removePoster()"
+              class="absolute top-4 right-4 z-20 bg-red-500/90 hover:bg-red-600 text-white rounded-full p-2.5 shadow-xl transform hover:scale-110 transition-all duration-200"
+              title="Remove"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div class="absolute bottom-5 left-5 text-white font-bold text-xl z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              Event Poster
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="!eventForm.valid"
+          class="w-full mt-10 py-4 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-[1.02] focus:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
+        >
+          <span class="relative z-10">Continue to Tickets</span>
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+          <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 blur-xl opacity-0 group-hover:opacity-70 transition-opacity duration-500 -z-10 animate-pulse"></div>
+        </button>
+      </form>
+    </div>
+  </div>
 </div>

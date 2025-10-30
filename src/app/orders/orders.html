@@ -1,19 +1,37 @@
-<div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl">
-  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold font-inter mb-6 text-gray-900">Orders</h2>
-  <div class="mb-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
-    <input
-      type="text"
-      [(ngModel)]="filterText"
-      placeholder="Filter by name or email..."
-      class="p-3 sm:p-4 border border-gray-200 rounded-xl w-full sm:w-1/2 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
-      (input)="applyFilter()"
-      aria-label="Filter orders by name or email"
-    >
+<div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-gray-100/50">
+  <!-- Header -->
+  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+    Orders
+  </h2>
+
+  <!-- Filter & Sort Bar -->
+  <div class="mb-6 flex flex-col sm:flex-row gap-3">
+    <!-- Filter Input -->
+    <div class="relative group flex-1 sm:max-w-md">
+      <input
+        type="text"
+        [(ngModel)]="filterText"
+        (input)="applyFilter()"
+        placeholder="Search name or email..."
+        class="peer w-full px-4 py-3 bg-white/60 border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-200"
+        aria-label="Filter orders"
+      />
+      <label class="absolute left-4 -top-2.5 text-xs font-medium text-cyan-600 bg-white px-2 transition-all duration-200 
+                    peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                    peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-cyan-600">
+        Search
+      </label>
+      <svg class="absolute right-3 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+    </div>
+
+    <!-- Sort Field -->
     <select
       [(ngModel)]="sortField"
-      class="p-3 sm:p-4 border border-gray-200 rounded-xl w-full sm:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
       (change)="applySort()"
-      aria-label="Sort field"
+      class="px-4 py-3 bg-white/60 border border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-200 cursor-pointer"
+      aria-label="Sort by"
     >
       <option value="orderNumber">Order Number</option>
       <option value="name">Name</option>
@@ -23,41 +41,79 @@
       <option value="method">Method</option>
       <option value="status">Status</option>
     </select>
+
+    <!-- Sort Direction -->
     <select
       [(ngModel)]="sortDirection"
-      class="p-3 sm:p-4 border border-gray-200 rounded-xl w-full sm:w-1/4 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition-all duration-200"
       (change)="applySort()"
-      aria-label="Sort direction"
+      class="px-4 py-3 bg-white/60 border border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-200 cursor-pointer"
+      aria-label="Sort order"
     >
       <option value="asc">Ascending</option>
       <option value="desc">Descending</option>
     </select>
   </div>
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm sm:text-base lg:text-lg border-separate border-spacing-0">
-      <thead class="sticky top-0 bg-gray-50">
+
+  <!-- Table -->
+  <div class="overflow-x-auto rounded-xl shadow-sm">
+    <table class="w-full text-sm sm:text-base bg-white/50">
+      <thead class="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700">
         <tr>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('orderNumber')">Order Number</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('name')">Name</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('email')">Email</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('phone')">Phone</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('date')">Date</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('method')">Method</th>
-          <th class="p-3 sm:p-4 text-left font-medium text-gray-700 border-b-2 border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors duration-200" (click)="sort('status')">Status</th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150 rounded-tl-xl" (click)="sort('orderNumber')">
+            <div class="flex items-center gap-1">
+              Order #
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
+              </svg>
+            </div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150" (click)="sort('name')">
+            <div class="flex items-center gap-1">Name</div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150" (click)="sort('email')">
+            <div class="flex items-center gap-1">Email</div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150" (click)="sort('phone')">
+            <div class="flex items-center gap-1">Phone</div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150" (click)="sort('date')">
+            <div class="flex items-center gap-1">Date</div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150" (click)="sort('method')">
+            <div class="flex items-center gap-1">Method</div>
+          </th>
+          <th class="p-3 sm:p-4 text-left font-semibold cursor-pointer hover:bg-gray-200/75 transition-colors duration-150 rounded-tr-xl" (click)="sort('status')">
+            <div class="flex items-center gap-1">Status</div>
+          </th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let order of filteredOrders" class="border-b border-gray-100 hover:bg-gray-50/75 transition-colors duration-200">
-          <td class="p-3 sm:p-4">{{ order.orderNumber }}</td>
-          <td class="p-3 sm:p-4">{{ order.name }}</td>
-          <td class="p-3 sm:p-4">{{ order.email }}</td>
-          <td class="p-3 sm:p-4">{{ order.phone }}</td>
-          <td class="p-3 sm:p-4">{{ order.date }}</td>
-          <td class="p-3 sm:p-4">{{ order.method }}</td>
-          <td class="p-3 sm:p-4" [ngClass]="{'text-green-600': order.status === 'Completed', 'text-yellow-600': order.status === 'Pending', 'text-red-600': order.status === 'Failed'}">{{ order.status }}</td>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let order of filteredOrders" class="hover:bg-cyan-50/50 transition-colors duration-150">
+          <td class="p-3 sm:p-4 font-medium text-gray-900">{{ order.orderNumber }}</td>
+          <td class="p-3 sm:p-4 text-gray-700">{{ order.name }}</td>
+          <td class="p-3 sm:p-4 text-gray-600">{{ order.email }}</td>
+          <td class="p-3 sm:p-4 text-gray-600">{{ order.phone }}</td>
+          <td class="p-3 sm:p-4 text-gray-600">{{ order.date }}</td>
+          <td class="p-3 sm:p-4 text-gray-600">{{ order.method }}</td>
+          <td class="p-3 sm:p-4">
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-green-100 text-green-800': order.status === 'Completed',
+                'bg-yellow-100 text-yellow-800': order.status === 'Pending',
+                'bg-red-100 text-red-800': order.status === 'Failed'
+              }"
+            >
+              {{ order.status }}
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p *ngIf="filteredOrders.length === 0" class="text-center text-gray-500 mt-6">No orders found.</p>
+
+  <!-- Empty State -->
+  <p *ngIf="filteredOrders.length === 0" class="text-center text-gray-500 mt-6 text-sm font-medium">
+    No orders found.
+  </p>
 </div>

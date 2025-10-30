@@ -1,195 +1,140 @@
-<div class="flex min-h-screen bg-gray-50">
+<div class="flex min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50">
   <!-- Sidebar -->
   <aside
-    class="fixed inset-y-0 left-0 w-64 bg-white/10 backdrop-blur-md shadow-sm transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full md:w-64 z-30"
+    class="fixed inset-y-0 left-0 w-64 bg-white/75 backdrop-blur-lg shadow-2xl ring-1 ring-white/20 transition-transform duration-300 ease-out transform md:translate-x-0 -translate-x-full z-40"
     [ngClass]="{ 'translate-x-0': isSidebarOpen }"
   >
-    <!-- Sidebar Header -->
-    <div class="p-4 border-b border-gray-200/50">
-      <div
-        class="text-2xl font-bold font-bungee transform -rotate-2"
-        style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);"
-        aria-label="FunFlare Logo"
-      >
-        <span class="bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+    <!-- Logo -->
+    <div class="p-5 border-b border-white/20">
+      <div class="text-3xl font-extrabold font-bungee tracking-tight">
+        <span class="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-lg">
           FunFlare
         </span>
       </div>
     </div>
 
     <!-- Navigation -->
-    <nav
-      class="flex-1 p-4 flex flex-col justify-between h-[75%]"
-      role="navigation"
-      aria-label="Organizer Dashboard Navigation"
-    >
-      <div class="space-y-6">
-        <!-- Home -->
-        <a
-          routerLink="/organizer-dashboard"
-          routerLinkActive="bg-cyan-100 text-cyan-700"
-          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
-          [routerLinkActiveOptions]="{ exact: true }"
-          aria-label="Home"
-          [attr.aria-current]="router.isActive('/organizer-dashboard', true) ? 'page' : undefined"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientHome)" viewBox="0 0 24 24">
-            <defs>
-              <linearGradient id="gradientHome" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#8B5CF6;" />
-                <stop offset="100%" style="stop-color:#3B82F6;" />
-              </linearGradient>
-            </defs>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-            />
+    <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+      <!-- Home -->
+      <a
+        routerLink="/organizer-dashboard"
+        routerLinkActive="bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 shadow-md"
+        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-teal-50 hover:text-cyan-600 rounded-xl transition-all duration-200"
+        [routerLinkActiveOptions]="{ exact: true }"
+        aria-label="Home"
+        [attr.aria-current]="router.isActive('/organizer-dashboard', true) ? 'page' : undefined"
+      >
+        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-purple-400 to-blue-500 p-2 group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
-          Home
-        </a>
+        </div>
+        <span class="ml-3">Home</span>
+      </a>
 
-        <!-- Events -->
-        <a
-          routerLink="/organizer-dashboard/events"
-          routerLinkActive="bg-cyan-100 text-cyan-700"
-          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
-          [routerLinkActiveOptions]="{ exact: false }"
-          aria-label="Events"
-          [attr.aria-current]="router.isActive('/organizer-dashboard/events', false) ? 'page' : undefined"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientEvents)" viewBox="0 0 24 24">
-            <defs>
-              <linearGradient id="gradientEvents" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#FF0000;" />
-                <stop offset="100%" style="stop-color:#00FF00;" />
-              </linearGradient>
-            </defs>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
+      <!-- Events -->
+      <a
+        routerLink="/organizer-dashboard/events"
+        routerLinkActive="bg-gradient-to-r from-pink-100 to-red-100 text-pink-700 shadow-md"
+        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-red-50 hover:text-pink-600 rounded-xl transition-all duration-200"
+        [routerLinkActiveOptions]="{ exact: false }"
+        aria-label="Events"
+        [attr.aria-current]="router.isActive('/organizer-dashboard/events', false) ? 'page' : undefined"
+      >
+        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-red-400 to-pink-500 p-2 group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
-          Events
-        </a>
+        </div>
+        <span class="ml-3">Events</span>
+      </a>
 
-        <!-- Tickets -->
-        <a
-          routerLink="/organizer-dashboard/tickets"
-          routerLinkActive="bg-cyan-100 text-cyan-700"
-          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
-          [routerLinkActiveOptions]="{ exact: false }"
-          aria-label="Tickets"
-          [attr.aria-current]="router.isActive('/organizer-dashboard/tickets', false) ? 'page' : undefined"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientTickets)" viewBox="0 0 24 24">
-            <defs>
-              <linearGradient id="gradientTickets" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#FFFF00;" />
-                <stop offset="100%" style="stop-color:#FF00FF;" />
-              </linearGradient>
-            </defs>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H7a2 2 0 00-2 2v2m14 0h2m-2 0h-2"
-            />
+      <!-- Tickets -->
+      <a
+        routerLink="/organizer-dashboard/tickets"
+        routerLinkActive="bg-gradient-to-r from-yellow-100 to-amber-100 text-amber-700 shadow-md"
+        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-amber-50 hover:text-amber-600 rounded-xl transition-all duration-200"
+        [routerLinkActiveOptions]="{ exact: false }"
+        aria-label="Tickets"
+        [attr.aria-current]="router.isActive('/organizer-dashboard/tickets', false) ? 'page' : undefined"
+      >
+        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 p-2 group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H7a2 2 0 00-2 2v2m14 0h2m-2 0h-2"/>
           </svg>
-          Tickets
-        </a>
+        </div>
+        <span class="ml-3">Tickets</span>
+      </a>
 
-        <!-- Orders -->
-        <a
-          routerLink="/organizer-dashboard/orders"
-          routerLinkActive="bg-cyan-100 text-cyan-700"
-          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
-          [routerLinkActiveOptions]="{ exact: false }"
-          aria-label="Orders"
-          [attr.aria-current]="router.isActive('/organizer-dashboard/orders', false) ? 'page' : undefined"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientOrders)" viewBox="0 0 24 24">
-            <defs>
-              <linearGradient id="gradientOrders" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#FFFF00;" />
-                <stop offset="100%" style="stop-color:#FF00FF;" />
-              </linearGradient>
-            </defs>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 3h18M3 7h18M3 12h18m-6 5h6"
-            />
+      <!-- Orders -->
+      <a
+        routerLink="/organizer-dashboard/orders"
+        routerLinkActive="bg-gradient-to-r from-green-100 to-emerald-100 text-emerald-700 shadow-md"
+        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-emerald-600 rounded-xl transition-all duration-200"
+        [routerLinkActiveOptions]="{ exact: false }"
+        aria-label="Orders"
+        [attr.aria-current]="router.isActive('/organizer-dashboard/orders', false) ? 'page' : undefined"
+      >
+        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 p-2 group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 7h18M3 12h18m-6 5h6"/>
           </svg>
-          Orders
-        </a>
+        </div>
+        <span class="ml-3">Orders</span>
+      </a>
 
-        <!-- Finance -->
-        <a
-          routerLink="/organizer-dashboard/finance"
-          routerLinkActive="bg-cyan-100 text-cyan-700"
-          class="flex px-3 py-2 text-lg text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-lg font-inter transition-colors duration-150 items-center"
-          aria-label="Finance"
-          [attr.aria-current]="router.isActive('/organizer-dashboard/finance', false) ? 'page' : undefined"
-        >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="url(#gradientFinance)" viewBox="0 0 24 24">
-            <defs>
-              <linearGradient id="gradientFinance" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#00FFFF;" />
-                <stop offset="100%" style="stop-color:#FF4500;" />
-              </linearGradient>
-            </defs>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+      <!-- Finance -->
+      <a
+        routerLink="/organizer-dashboard/finance"
+        routerLinkActive="bg-gradient-to-r from-indigo-100 to-purple-100 text-purple-700 shadow-md"
+        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-purple-600 rounded-xl transition-all duration-200"
+        aria-label="Finance"
+        [attr.aria-current]="router.isActive('/organizer-dashboard/finance', false) ? 'page' : undefined"
+      >
+        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 p-2 group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/>
+            <path d="M16 12h4"/>
+            <circle cx="18" cy="12" r="1"/>
           </svg>
-          Finance
-        </a>
-      </div>
+        </div>
+        <span class="ml-3">Finance</span>
+      </a>
     </nav>
   </aside>
 
-  <!-- Mobile Sidebar Toggle -->
+  <!-- Mobile Toggle -->
   <button
-    class="md:hidden fixed top-4 left-4 z-40 p-2 bg-cyan-400 text-white rounded-full hover:bg-[#0e7490] transition-colors duration-150"
+    class="md:hidden fixed top-4 left-4 z-50 p-3 bg-gradient-to-r from-cyan-500 to-teal-500 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 focus:scale-95 transition-all duration-200"
     (click)="toggleSidebar()"
     aria-label="Toggle Sidebar"
   >
     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
     </svg>
   </button>
 
   <!-- Main Content -->
   <main class="flex-1 p-4 md:ml-64">
     <!-- Navbar -->
-    <div
-      class="flex justify-between items-center mb-6 bg-white/80 backdrop-blur-sm shadow-sm rounded-lg px-6 py-3 z-10"
-    >
-      <h1 class="text-2xl font-bold font-inter text-gray-800">Dashboard</h1>
+    <div class="flex justify-between items-center mb-6 bg-white/80 backdrop-blur-md shadow-lg rounded-2xl px-6 py-4 ring-1 ring-white/20">
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">
+        Dashboard
+      </h1>
 
-      <!-- Profile Dropdown -->
-      <div class="flex items-center gap-4" *ngIf="userName !== 'Guest'">
-        <div class="relative">
+      <!-- Profile (Replicated from Buyer Dashboard) -->
+      <div class="flex items-center gap-3" *ngIf="userName !== 'Guest'">
+        <div class="relative group">
           <button
-            #profileTrigger
-            (click)="toggleDropdown('profile'); $event.stopPropagation()"
-            class="dropdown-btn w-10 h-10 flex items-center justify-center rounded-full hover:ring-1 hover:ring-indigo-300 transition-colors duration-150 overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            (click)="toggleDropdown('profile')"
+            class="dropdown-btn w-12 h-12 rounded-full overflow-hidden ring-4 ring-white shadow-lg hover:ring-cyan-400 transition-all duration-300"
             [ngClass]="{
               'bg-gradient-to-r from-pink-500 to-purple-500': !avatarUrl,
               'bg-gray-200': avatarUrl
             }"
             aria-label="View Profile"
-            [attr.aria-expanded]="profileOpen ? 'true' : 'false'"
-            [attr.aria-controls]="profileOpen ? 'profile-dropdown' : null"
-            aria-haspopup="true"
+            [attr.aria-expanded]="profileOpen"
+            aria-describedby="profile-dropdown"
           >
             <img
               *ngIf="avatarUrl"
@@ -197,30 +142,29 @@
               class="w-full h-full object-cover"
               alt="User Avatar"
               loading="lazy"
+              decoding="async"
             />
-            <span *ngIf="!avatarUrl" class="font-bungee text-white text-lg">
-              {{ userName.charAt(0).toUpperCase() }}
-            </span>
+            <span *ngIf="!avatarUrl" class="font-bungee text-white text-xl">{{ userName.charAt(0).toUpperCase() }}</span>
           </button>
 
-          <!-- Dropdown Menu -->
+          <!-- Dropdown -->
           <div
-            #profileDropdownElement
             *ngIf="profileOpen"
             id="profile-dropdown"
-            role="menu"
-            class="dropdown-menu absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg py-2 z-50"
+            class="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-gray-200/50 py-3 z-50 transition-all duration-300 ease-out"
             [ngClass]="{
               'opacity-0 scale-95 -translate-y-2': !profileOpen,
               'opacity-100 scale-100 translate-y-0': profileOpen
             }"
-            (click)="$event.stopPropagation()"
           >
-            <p class="px-4 py-2 text-gray-800 text-sm"> {{ userName }}</p>
-            <label
-              class="block px-4 py-2 text-gray-800 text-sm hover:bg-gray-50 cursor-pointer"
-            >
-              Upload Avatar
+            <div class="px-4 py-3 border-b border-gray-100">
+              <p class="text-base font-bold text-gray-800">{{ userName }}</p>
+            </div>
+            <label class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+              </svg>
+              <span class="text-sm text-gray-700">Upload Avatar</span>
               <input
                 type="file"
                 accept="image/*"
@@ -229,9 +173,12 @@
               />
             </label>
             <button
-              (click)="logout(); $event.stopPropagation()"
-              class="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 text-sm"
+              (click)="logout()"
+              class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-medium text-sm transition-colors flex items-center gap-3"
             >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
               Logout
             </button>
           </div>
@@ -239,8 +186,8 @@
       </div>
     </div>
 
-    <!-- Main Panel -->
-    <div class="bg-white/9  rounded-lg shadow-sm p-4">
+    <!-- Content Area -->
+    <div class="bg-white/70 shadow-xl p-6 ring-1 ring-white/30 min-h-[calc(100vh-12rem)] rounded-2xl">
       <router-outlet></router-outlet>
     </div>
   </main>

@@ -1,126 +1,203 @@
 <!-- Hero Section -->
 <section
-  class="flex-1 bg-cover bg-center text-white flex items-center justify-center text-center py-8 mt-auto"
-  style="background-image: url('https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=800&q=60'); background-attachment: fixed;"
+  class="relative min-h-screen bg-cover bg-center bg-fixed flex items-center justify-center text-center py-16 overflow-hidden"
+  style="background-image: url('https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=1600&q=80');"
 >
-  <div class="bg-white/10 backdrop-blur-sm p-4 rounded-lg max-w-md mx-4">
-    <h1 class="text-3xl md:text-4xl font-bungee mb-3" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" id="hero-heading">Every Ticket Earns You More</h1>
-    <p class="text-sm md:text-base mb-4 text-white/90" style="text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);" aria-describedby="hero-heading">Explore concerts, sports, festivals, and more. Get your tickets instantly and securely.</p>
-    <button
-      class="px-4 py-1.5 bg-cyan-400 text-white font-semibold rounded-full hover:bg-[#0e7490] shadow-sm hover:shadow-md transition-colors duration-150 will-change-background"
-      aria-label="Browse Events"
-      routerLink="/events"
-    >
-      Browse Events
-    </button>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-4xl mx-4 px-6">
+    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl ring-1 ring-white/20 transform hover:scale-[1.02] transition-transform duration-500">
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-extrabold font-bungee mb-4 bg-gradient-to-r from-cyan-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-2xl"
+        id="hero-heading"
+      >
+        Every Ticket Earns You More
+      </h1>
+      <p
+        class="text-base sm:text-lg md:text-xl text-white/95 mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+        aria-describedby="hero-heading"
+      >
+        Explore concerts, sports, festivals, and more. Get your tickets instantly and securely.
+      </p>
+      <a
+        routerLink="/events"
+        class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-bold text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 focus:scale-95 transition-all duration-300 group"
+        aria-label="Browse Events"
+      >
+        Browse Events
+        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+    </svg>
   </div>
 </section>
 
 <!-- Services Section -->
-<section class="py-8 bg-cyan-50">
-  <div class="container mx-auto px-4 text-center">
-    <h2 class="text-xl md:text-2xl font-semibold mb-6">Why Choose FunFlare?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm hover:shadow-md transition-all duration-150 will-change-transform-shadow">
-        <h3 class="text-base font-semibold mb-1">Event Discovery</h3>
-        <p class="text-gray-600 text-sm">Find upcoming concerts, sports matches, and exclusive shows near you.</p>
+<section class="py-16 bg-gradient-to-b from-cyan-50 to-white">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+      Why Choose FunFlare?
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-cyan-100/50 hover:shadow-2xl hover:ring-cyan-300/50 transform hover:-translate-y-1 transition-all duration-300">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full flex items-center justify-center shadow-inner">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Event Discovery</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Find upcoming concerts, sports matches, and exclusive shows near you.</p>
       </div>
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm hover:shadow-md transition-all duration-150 will-change-transform-shadow">
-        <h3 class="text-base font-semibold mb-1">Easy Booking</h3>
-        <p class="text-gray-600 text-sm">Book your tickets in just a few clicks with a smooth, user-friendly process.</p>
+
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-cyan-100/50 hover:shadow-2xl hover:ring-cyan-300/50 transform hover:-translate-y-1 transition-all duration-300">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full flex items-center justify-center shadow-inner">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Easy Booking</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Book your tickets in just a few clicks with a smooth, user-friendly process.</p>
       </div>
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm hover:shadow-md transition-all duration-150 will-change-transform-shadow">
-        <h3 class="text-base font-semibold mb-1">Secure Payments</h3>
-        <p class="text-gray-600 text-sm">Pay safely online with multiple payment options and instant confirmation.</p>
+
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-cyan-100/50 hover:shadow-2xl hover:ring-cyan-300/50 transform hover:-translate-y-1 transition-all duration-300">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-full flex items-center justify-center shadow-inner">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Secure Payments</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Pay safely online with multiple payment options and instant confirmation.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Featured Events Section -->
-<section class="py-8">
-  <div class="container mx-auto px-4">
-    <h2 class="text-xl md:text-2xl font-semibold text-center mb-6">Featured Events</h2>
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      Featured Events
+    </h2>
+
     <div *ngIf="filteredEvents.length > 0; else noEvents">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <article
           *ngFor="let event of filteredEvents"
-          class="bg-white/90 rounded-lg shadow-sm overflow-hidden transition-all duration-150 hover:scale-105 hover:shadow-md will-change-transform-shadow"
+          class="group bg-white/95 backdrop-blur-lg rounded-2xl shadow-lg overflow-hidden ring-1 ring-gray-100/50 hover:shadow-2xl hover:ring-cyan-200/50 transform hover:-translate-y-2 transition-all duration-300"
         >
-          <img
-            [src]="event.image"
-            [alt]="event.title"
-            class="w-full h-40 object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="p-4">
-            <h3 class="text-base font-semibold mb-1">{{ event.title }}</h3>
-            <p class="text-gray-600 text-sm">{{ event.venue }} • {{ event.date }}</p>
-            <p class="text-sm font-bold text-indigo-600 mt-1">{{ event.price }}</p>
-            <button
-              class="mt-2 px-3 py-1 bg-cyan-400 text-white rounded-full hover:bg-[#0e7490] transition-colors duration-150"
-              aria-label="Get Ticket for {{ event.title }}"
-            >
-              Get Ticket
-            </button>
+          <div class="relative h-48 overflow-hidden">
+            <img
+              [src]="event.image"
+              [alt]="event.title"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
-        </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-lg font-bold text-gray-800 line-clamp-1 group-hover:text-cyan-600 transition-colors">
+              {{ event.title }}
+            </h3>
+            <p class="text-sm text-gray-600 flex items-center">
+              <svg class="w-4 h-4 mr-1 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              {{ event.venue }}
+            </p>
+            <p class="text-sm text-gray-600 flex items-center">
+              <svg class="w-4 h-4 mr-1 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              {{ event.date }}
+            </p>
+            <div class="flex justify-between items-center pt-3">
+              <span class="text-lg font-bold text-emerald-600">{{ event.price }}</span>
+              <button
+                class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-sm font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                aria-label="Get Ticket for {{ event.title }}"
+              >
+                Get Ticket
+              </button>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
+
     <ng-template #noEvents>
-      <p class="text-center text-red-500 font-semibold text-sm mt-4">
-        Event not available
-      </p>
+      <div class="text-center py-12">
+        <div class="mx-auto w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <p class="text-lg font-semibold text-red-600">Event not available</p>
+      </div>
     </ng-template>
   </div>
 </section>
 
 <!-- Testimonials Section -->
-<section class="py-8 bg-cyan-50">
-  <div class="container mx-auto px-4 text-center">
-    <h2 class="text-xl md:text-2xl font-semibold mb-6">What People Say</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm transition-all duration-150 hover:scale-105 hover:shadow-md will-change-transform-shadow">
+<section class="py-16 bg-gradient-to-b from-white to-cyan-50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+      What People Say
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-pink-100/50 hover:shadow-2xl hover:ring-pink-300/50 transform hover:-translate-y-1 transition-all duration-300">
         <img
-          src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=120&h=120&q=60"
+          src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=200&h=200&q=80"
           alt="Sarah"
-          class="w-12 h-12 mx-auto rounded-full object-cover border-2 border-cyan-100 mb-2"
+          class="w-20 h-20 mx-auto rounded-full object-cover ring-4 ring-pink-200 mb-4 shadow-md"
           loading="lazy"
           decoding="async"
         />
-        <p class="text-gray-600 text-sm">"Booking tickets has never been easier! FunFlare is my go-to platform."</p>
-        <h4 class="mt-2 font-semibold text-sm">— Sarah, Event Goer</h4>
-        <div class="flex justify-center mt-1 text-yellow-400 text-sm">
-          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        <p class="text-gray-700 text-sm italic mb-3">"Booking tickets has never been easier! FunFlare is my go-to platform."</p>
+        <h4 class="font-bold text-gray-800">— Sarah, Event Goer</h4>
+        <div class="flex justify-center mt-2 text-yellow-500 text-lg">
+          <span>5 stars</span><span>5 stars</span><span>5 stars</span><span>5 stars</span><span>5 stars</span>
         </div>
       </div>
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm transition-all duration-150 hover:scale-105 hover:shadow-md will-change-transform-shadow">
+
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-purple-100/50 hover:shadow-2xl hover:ring-purple-300/50 transform hover:-translate-y-1 transition-all duration-300">
         <img
-          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=60"
+          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80"
           alt="James"
-          class="w-12 h-12 mx-auto rounded-full object-cover border-2 border-cyan-100 mb-2"
+          class="w-20 h-20 mx-auto rounded-full object-cover ring-4 ring-purple-200 mb-4 shadow-md"
           loading="lazy"
           decoding="async"
         />
-        <p class="text-gray-600 text-sm">"As an organizer, selling tickets online is seamless and efficient."</p>
-        <h4 class="mt-2 font-semibold text-sm">— James, Event Organizer</h4>
-        <div class="flex justify-center mt-1 text-yellow-400 text-sm">
-          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+        <p class="text-gray-700 text-sm italic mb-3">"As an organizer, selling tickets online is seamless and efficient."</p>
+        <h4 class="font-bold text-gray-800">— James, Event Organizer</h4>
+        <div class="flex justify-center mt-2 text-yellow-500 text-lg">
+          <span>5 stars</span><span>5 stars</span><span>5 stars</span><span>5 stars</span><span>4 stars</span>
         </div>
       </div>
-      <div class="p-4 bg-white/90 rounded-lg shadow-sm transition-all duration-150 hover:scale-105 hover:shadow-md will-change-transform-shadow">
+
+      <div class="group bg-white/90 backdrop-blur-lg rounded-2xl p-6 shadow-lg ring-1 ring-cyan-100/50 hover:shadow-2xl hover:ring-cyan-300/50 transform hover:-translate-y-1 transition-all duration-300">
         <img
-          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&h=120&q=60"
+          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80"
           alt="Maria"
-          class="w-12 h-12 mx-auto rounded-full object-cover border-2 border-cyan-100 mb-2"
+          class="w-20 h-20 mx-auto rounded-full object-cover ring-4 ring-cyan-200 mb-4 shadow-md"
           loading="lazy"
           decoding="async"
         />
-        <p class="text-gray-600 text-sm">"Love how fast I get my e-tickets. No hassle at all!"</p>
-        <h4 class="mt-2 font-semibold text-sm">— Maria, Concert Fan</h4>
-        <div class="flex justify-center mt-1 text-yellow-400 text-sm">
-          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        <p class="text-gray-700 text-sm italic mb-3">"Love how fast I get my e-tickets. No hassle at all!"</p>
+        <h4 class="font-bold text-gray-800">— Maria, Concert Fan</h4>
+        <div class="flex justify-center mt-2 text-yellow-500 text-lg">
+          <span>5 stars</span><span>5 stars</span><span>5 stars</span><span>5 stars</span><span>5 stars</span>
         </div>
       </div>
     </div>
@@ -129,72 +206,62 @@
 
 <!-- Footer -->
 <footer
-  class="relative bg-cover bg-center text-white py-8 mt-auto"
-  style="background-image: url('https://images.unsplash.com/photo-1518972559570-7cc1309f3229?auto=format&fit=crop&w=600&q=60'); background-attachment: fixed;"
+  class="relative bg-cover bg-center bg-fixed text-white py-16"
+  style="background-image: url('https://images.unsplash.com/photo-1518972559570-7cc1309f3229?auto=format&fit=crop&w=1600&q=80');"
 >
-  <div class="absolute inset-0 bg-black/50"></div>
-  <div class="relative container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-left">
-    <!-- Quick Links -->
-    <div>
-      <h3 class="text-sm font-semibold mb-2">Quick Links</h3>
-      <ul class="space-y-1 text-sm">
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Home</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Events</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">About Us</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Contact</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">FAQ</a></li>
-      </ul>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
+  <div class="relative container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+      <!-- Quick Links -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-bold mb-4 text-cyan-300">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-cyan-300 transition-colors">Home</a></li>
+          <li><a href="#" class="hover:text-cyan-300 transition-colors">Events</a></li>
+          <li><a href="#" class="hover:text-cyan-300 transition-colors">About Us</a></li>
+          <li><a href="#" class="hover:text-cyan-300 transition-colors">Contact</a></li>
+          <li><a href="#" class="hover:text-cyan-300 transition-colors">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Categories -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-bold mb-4 text-pink-300">Categories</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-pink-300 transition-colors">Concerts</a></li>
+          <li><a href="#" class="hover:text-pink-300 transition-colors">Sports</a></li>
+          <li><a href="#" class="hover:text-pink-300 transition-colors">Festivals</a></li>
+          <li><a href="#" class="hover:text-pink-300 transition-colors">Conferences</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="text-center md:text-left">
+        <h3 class="text-lg font-bold mb-4 text-teal-300">Contact Us</h3>
+        <ul class="space-y-2 text-sm">
+          <li>Email: <a href="mailto:info@funflare.co.ke" class="hover:text-teal-300 transition-colors">info@funflare.co.ke</a></li>
+          <li>Phone: <a href="tel:+254768597285" class="hover:text-teal-300 transition-colors">+254 768 597 285</a></li>
+          <li>Location: 123 Event Street, Nairobi</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Categories -->
-    <div>
-      <h3 class="text-sm font-semibold mb-2">Categories</h3>
-      <ul class="space-y-1 text-sm">
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Concerts</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Sports</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Festivals</a></li>
-        <li><a href="#" class="hover:text-indigo-300 transition-colors duration-150">Conferences</a></li>
-      </ul>
-    </div>
-
-    <!-- Contact -->
-    <div>
-      <h3 class="text-sm font-semibold mb-2">Contact Us</h3>
-      <ul class="space-y-1 text-sm">
-        <li>
-          Email: <a href="mailto:info@funflare.co.ke" class="hover:text-indigo-300 transition-colors duration-150">info@funflare.co.ke</a>
-        </li>
-        <li>
-          Phone: <a href="tel:+254768597285" class="hover:text-indigo-300 transition-colors duration-150">+254 768 597 285</a>
-        </li>
-        <li>Location: 123 Event Street, Nairobi</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="relative mt-4 text-center border-t border-indigo-300/40 pt-3">
-    <p class="text-xs mb-2">&copy; 2025 FunFlare. All rights reserved.</p>
-    <div class="flex justify-center space-x-3">
-      <a href="#" aria-label="Facebook" class="hover:text-indigo-300 transition-colors duration-150">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M22.676 0H1.326C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.676 0" />
-        </svg>
-      </a>
-      <a href="#" aria-label="Instagram" class="hover:text-indigo-300 transition-colors duration-150">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.343 3.608 1.318.975.975 1.256 2.242 1.318 3.608.058 1.266.07 1.646.07 4.84s-.012 3.575-.07 4.84c-.062 1.366-.343 2.633-1.318 3.608-.975.975-2.242 1.256-3.608 1.318-1.266.058-1.646.07-4.85.07s-3.575-.012-4.84-.07c-1.366-.062-2.633-.343-3.608-1.318-.975-.975-1.256-2.242-1.318-3.608C2.175 15.578 2.163 15.198 2.163 12s.012-3.575.07-4.84c.062-1.366.343-2.633 1.318-3.608.975-.975 2.242-1.256 3.608-1.318C8.425 2.175 8.805 2.163 12 2.163zm0 1.687c-3.17 0-3.548.012-4.795.07-1.036.047-1.602.218-1.975.363-.497.193-.85.424-1.223.797-.373.373-.604.726-.797 1.223-.145.373-.316.939-.363 1.975-.058 1.247-.07 1.625-.07 4.795s.012 3.548.07 4.795c.047 1.036.218 1.602.363 1.975.193.497.424.85.797 1.223.373.373.726.604 1.223.797.373.145.939.316 1.975.363 1.247.058 1.625.07 4.795.07s3.548-.012 4.795-.07c1.036-.047 1.602-.218 1.975-.363.497-.193.85-.424 1.223-.797.373-.373.604-.726.797-1.223.145-.373.316-.939.363-1.975.058-1.247.07-1.625.07-4.795s-.012-3.548-.07-4.795c-.047-1.036-.218-1.602-.363-1.975-.193-.497-.424-.85-.797-1.223-.373-.373-.726-.604-1.223-.797-.373-.145-.939-.316-1.975-.363-1.247-.058-1.625-.07-4.795-.07zm0 3.89a5.947 5.947 0 1 0 0 11.895 5.947 5.947 0 0 0 0-11.895zm0 9.82a3.873 3.873 0 1 1 0-7.746 3.873 3.873 0 0 1 0 7.746zm6.406-10.845a1.387 1.387 0 1 1 0-2.774 1.387 1.387 0 0 1 0 2.774z" />
-        </svg>
-      </a>
-      <a href="#" aria-label="Twitter" class="hover:text-indigo-300 transition-colors duration-150">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M24 4.56c-.883.392-1.83.656-2.828.775 1.017-.611 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.204-4.924 4.924 0 .386.044.762.128 1.124-4.094-.205-7.725-2.167-10.152-5.144-.424.728-.666 1.577-.666 2.475 0 1.708.87 3.215 2.188 4.099-.807-.026-1.566-.248-2.229-.616v.062c0 2.385 1.698 4.374 3.95 4.828-.414.112-.849.171-1.296.171-.317 0-.626-.031-.928-.088.627 1.956 2.444 3.379 4.6 3.419-1.68 1.318-3.809 2.105-6.115 2.105-.397 0-.788-.023-1.175-.069 2.179 1.397 4.768 2.212 7.557 2.212 9.054 0 14-7.496 14-13.986 0-.213-.005-.425-.014-.636.962-.694 1.797-1.562 2.457-2.549z" />
-        </svg>
-      </a>
-      <a href="#" aria-label="TikTok" class="hover:text-indigo-300 transition-colors duration-150">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 48 48">
-          <path d="M41,15.19a11.09,11.09,0,0,1-6.36-2A11.22,11.22,0,0,1,31,6.23V4H25.07V31.17a6,6,0,1,1-4.43-5.8V19.2A12,12,0,1,0,29.5,31.17V17.92a16.91,16.91,0,0,0,11.5,4.47Z" />
-        </svg>
-      </a>
+    <div class="border-t border-white/20 pt-6 text-center">
+      <p class="text-xs mb-3">&copy; 2025 FunFlare. All rights reserved.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="#" aria-label="Facebook" class="hover:text-cyan-300 transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.676 0H1.326C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.918.001c-1.504 0-1.796.715-1.796 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.676 0"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram" class="hover:text-pink-300 transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.343 3.608 1.318.975.975 1.256 2.242 1.318 3.608.058 1.266.07 1.646.07 4.84s-.012 3.575-.07 4.84c-.062 1.366-.343 2.633-1.318 3.608-.975.975-2.242 1.256-3.608 1.318-1.266.058-1.646.07-4.85.07s-3.575-.012-4.84-.07c-1.366-.062-2.633-.343-3.608-1.318-.975-.975-1.256-2.242-1.318-3.608C2.175 15.578 2.163 15.198 2.163 12s.012-3.575.07-4.84c.062-1.366.343-2.633 1.318-3.608.975-.975 2.242-1.256 3.608-1.318C8.425 2.175 8.805 2.163 12 2.163zm0 1.687c-3.17 0-3.548.012-4.795.07-1.036.047-1.602.218-1.975.363-.497.193-.85.424-1.223.797-.373.373-.604.726-.797 1.223-.145.373-.316.939-.363 1.975-.058 1.247-.07 1.625-.07 4.795s.012 3.548.07 4.795c.047 1.036.218 1.602.363 1.975.193.497.424.85.797 1.223.373.373.726.604 1.223.797.373.145.939.316 1.975.363 1.247.058 1.625.07 4.795.07s3.548-.012 4.795-.07c1.036-.047 1.602-.218 1.975-.363.497-.193.85-.424 1.223-.797.373-.373.604-.726.797-1.223.145-.373.316-.939.363-1.975.058-1.247.07-1.625.07-4.795s-.012-3.548-.07-4.795c-.047-1.036-.218-1.602-.363-1.975-.193-.497-.424-.85-.797-1.223-.373-.373-.726-.604-1.223-.797-.373-.145-.939-.316-1.975-.363-1.247-.058-1.625-.07-4.795-.07zm0 3.89a5.947 5.947 0 1 0 0 11.895 5.947 5.947 0 0 0 0-11.895zm0 9.82a3.873 3.873 0 1 1 0-7.746 3.873 3.873 0 0 1 0 7.746zm6.406-10.845a1.387 1.387 0 1 1 0-2.774 1.387 1.387 0 0 1 0 2.774z"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter" class="hover:text-purple-300 transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.56c-.883.392-1.83.656-2.828.775 1.017-.611 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.204-4.924 4.924 0 .386.044.762.128 1.124-4.094-.205-7.725-2.167-10.152-5.144-.424.728-.666 1.577-.666 2.475 0 1.708.87 3.215 2.188 4.099-.807-.026-1.566-.248-2.229-.616v.062c0 2.385 1.698 4.374 3.95 4.828-.414.112-.849.171-1.296.171-.317 0-.626-.031-.928-.088.627 1.956 2.444 3.379 4.6 3.419-1.68 1.318-3.809 2.105-6.115 2.105-.397 0-.788-.023-1.175-.069 2.179 1.397 4.768 2.212 7.557 2.212 9.054 0 14-7.496 14-13.986 0-.213-.005-.425-.014-.636.962-.694 1.797-1.562 2.457-2.549z"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok" class="hover:text-teal-300 transition-colors">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 48 48"><path d="M41,15.19a11.09,11.09,0,0,1-6.36-2A11.22,11.22,0,0,1,31,6.23V4H25.07V31.17a6,6,0,1,1-4.43-5.8V19.2A12,12,0,1,0,29.5,31.17V17.92a16.91,16.91,0,0,0,11.5,4.47Z"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </footer>

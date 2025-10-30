@@ -16,9 +16,9 @@ import { TempEventService } from '../services/temp-event.service';
 })
 export class TicketsComponent implements OnInit {
   ticketTypes: Omit<TicketCreate, 'eventId'>[] = [ // Omit eventId; add in service
-    { type: 'earlybird', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'advanced', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
-    { type: 'VIP', quantity: 0, price: 0.00, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
+    { type: 'earlybird', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'advanced', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' },
+    { type: 'VIP', quantity: 0, price: 0, saleStartDate: '', saleEndDate: '', saleStartTime: '', saleEndTime: '' }
   ];
 
   eventCapacity: number = 0;
@@ -105,9 +105,9 @@ export class TicketsComponent implements OnInit {
   onPriceChange(index: number, event: Event): void {
     const input = event.target as HTMLInputElement;
     let price = parseFloat(input.value) || 0;
-    if (price < 0.01) {
-      price = 0.01;
-      this.error = `Price for ${this.ticketTypes[index].type} must be at least Ksh 0.01.`;
+    if (price < 0) {
+      price = 0;
+      this.error = `Price for ${this.ticketTypes[index].type} must be at least Ksh 1.`;
       input.value = price.toFixed(2);
     } else {
       this.error = null;

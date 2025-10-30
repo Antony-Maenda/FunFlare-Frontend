@@ -1,98 +1,194 @@
-<div class="max-w-4xl mx-auto p-4 sm:p-6">
-  <div class="flex justify-between items-center mb-4">
-    <a routerLink="/organizer-dashboard/home" class="text-cyan-600 hover:text-cyan-800 text-sm font-medium">
-      &larr; Back to Events
+<div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
+  <!-- Header Actions -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <a
+      routerLink="/organizer-dashboard/home"
+      class="inline-flex items-center text-cyan-600 hover:text-cyan-800 font-medium text-sm transition-colors duration-200 group"
+    >
+      <svg class="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Back to Events
     </a>
-    <div *ngIf="eventWithTickets" class="space-x-2">
-      <button (click)="editEvent(eventWithTickets.id)" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-150">
+
+    <div *ngIf="eventWithTickets" class="flex flex-wrap gap-3">
+      <button
+        (click)="editEvent(eventWithTickets.id)"
+        class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:scale-105 focus:scale-95 transition-all duration-200"
+      >
         Edit Event
       </button>
-      <button (click)="deleteEvent(eventWithTickets.id)" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-150">
+      <button
+        (click)="deleteEvent(eventWithTickets.id)"
+        class="px-5 py-2.5 bg-gradient-to-r from-red-500 to-rose-600 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:scale-105 focus:scale-95 transition-all duration-200"
+      >
         Delete Event
       </button>
     </div>
   </div>
 
-  <div *ngIf="loading" class="flex justify-center py-8">
-    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-600"></div>
+  <!-- Loading -->
+  <div *ngIf="loading" class="flex justify-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent"></div>
   </div>
 
-  <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+  <!-- Error -->
+  <div *ngIf="error" class="bg-red-50/80 backdrop-blur-sm border border-red-200/50 rounded-xl p-4 text-red-700 text-sm shadow-sm mb-6">
     {{ error }}
   </div>
 
-  <div *ngIf="!loading && eventWithTickets" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-200/50 overflow-hidden">
-    <div class="h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative">
+  <!-- Event Card -->
+  <article *ngIf="!loading && eventWithTickets" class="bg-white/85 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-white/30 overflow-hidden">
+    <!-- Poster -->
+    <div class="relative h-64 sm:h-72 lg:h-80 overflow-hidden group">
       <img
         *ngIf="eventWithTickets.eventPosterUrl"
         [src]="eventWithTickets.eventPosterUrl"
         [alt]="eventWithTickets.name"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         loading="lazy"
+        decoding="async"
         (error)="onImageError($event, eventWithTickets.name)"
       />
-      <div *ngIf="!eventWithTickets.eventPosterUrl" class="text-gray-500 text-lg font-medium">
-        {{ eventWithTickets.name }}
+      <div *ngIf="!eventWithTickets.eventPosterUrl" class="flex items-center justify-center h-full bg-gradient-to-br from-gray-100 to-gray-200">
+        <span class="text-3xl font-bold text-gray-600 bg-white/70 px-6 py-3 rounded-xl backdrop-blur-sm">
+          {{ eventWithTickets.name }}
+        </span>
+      </div>
+      <!-- Category Badge -->
+      <div class="absolute top-4 left-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg"
+              [ngClass]="{
+                'bg-gradient-to-r from-purple-500 to-pink-500': eventWithTickets.eventCategory === 'Concert',
+                'bg-gradient-to-r from-green-500 to-teal-500': eventWithTickets.eventCategory === 'Conference',
+                'bg-gradient-to-r from-yellow-500 to-orange-500': eventWithTickets.eventCategory === 'Festival',
+                'bg-gradient-to-r from-blue-500 to-cyan-500': eventWithTickets.eventCategory === 'Sports',
+                'bg-gradient-to-r from-pink-500 to-rose-500': eventWithTickets.eventCategory === 'Party',
+                'bg-gradient-to-r from-indigo-500 to-purple-500': eventWithTickets.eventCategory === 'Theater',
+                'bg-gradient-to-r from-gray-500 to-gray-700': !['Concert','Conference','Festival','Sports','Party','Theater'].includes(eventWithTickets.eventCategory)
+              }">
+          {{ eventWithTickets.eventCategory }}
+        </span>
       </div>
     </div>
-    <div class="p-6">
-      <h2 class="text-2xl font-bold font-inter text-gray-800 mb-4">{{ eventWithTickets.name }}</h2>
-      <p class="text-gray-600 mb-6">{{ eventWithTickets.description }}</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        <div>
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+
+    <!-- Content -->
+    <div class="p-6 sm:p-8 space-y-6">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">
+          {{ eventWithTickets.name }}
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          {{ eventWithTickets.description }}
+        </p>
+      </div>
+
+      <!-- Info Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Location -->
+        <div class="flex items-start group">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-purple-100 to-pink-100 shadow-inner mr-3">
+            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
-            <span>{{ eventWithTickets.location }}</span>
           </div>
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>Starts: {{ eventWithTickets.eventStartDate }} at {{ eventWithTickets.eventStartTime }}</span>
-          </div>
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>Ends: {{ eventWithTickets.eventEndDate }} at {{ eventWithTickets.eventEndTime }}</span>
+          <div>
+            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Location</p>
+            <p class="text-sm font-semibold text-gray-800">{{ eventWithTickets.location }}</p>
           </div>
         </div>
-        <div>
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+        <!-- Start -->
+        <div class="flex items-start group">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-cyan-100 to-teal-100 shadow-inner mr-3">
+            <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <span>Capacity: {{ eventWithTickets.eventCapacity }}</span>
           </div>
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+          <div>
+            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Starts</p>
+            <p class="text-sm font-semibold text-gray-800">{{ eventWithTickets.eventStartDate }} at {{ eventWithTickets.eventStartTime }}</p>
+          </div>
+        </div>
+
+        <!-- End -->
+        <div class="flex items-start group sm:col-span-2 lg:col-span-1">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-pink-100 to-rose-100 shadow-inner mr-3">
+            <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <span>Category: {{ eventWithTickets.eventCategory }}</span>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Ends</p>
+            <p class="text-sm font-semibold text-gray-800">{{ eventWithTickets.eventEndDate }} at {{ eventWithTickets.eventEndTime }}</p>
+          </div>
+        </div>
+
+        <!-- Capacity -->
+        <div class="flex items-start group">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-emerald-100 shadow-inner mr-3">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</p>
+            <p class="text-sm font-semibold text-gray-800">{{ eventWithTickets.eventCapacity }} guests</p>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="flex items-start group sm:col-span-2 lg:col-span-1">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-yellow-100 to-amber-100 shadow-inner mr-3">
+            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Category</p>
+            <p class="text-sm font-semibold text-gray-800">{{ eventWithTickets.eventCategory }}</p>
           </div>
         </div>
       </div>
-      <h3 class="text-xl font-semibold font-inter text-gray-800 mb-4">Ticket Types</h3>
-      <div *ngIf="eventWithTickets.tickets.length === 0" class="text-gray-500 text-sm">
-        No tickets available for this event.
-      </div>
-      <div *ngIf="eventWithTickets.tickets.length > 0" class="space-y-4">
-        <div *ngFor="let ticket of eventWithTickets.tickets" class="border-b pb-4">
-          <div class="flex justify-between items-center">
-            <span class="text-sm font-medium text-gray-700">{{ ticket.type | titlecase }}</span>
-            <span class="text-sm text-gray-500">Ksh {{ ticket.price.toFixed(2) }}</span>
-          </div>
-          <div class="text-sm text-gray-500 mt-1">
-            Quantity: {{ ticket.quantity }}
-          </div>
-          <div class="text-sm text-gray-500 mt-1">
-            Sales: {{ ticket.saleStartDate }} {{ ticket.saleStartTime }} - {{ ticket.saleEndDate }} {{ ticket.saleEndTime }}
+
+      <!-- Tickets Section -->
+      <div class="mt-8">
+        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-5 flex items-center">
+          Ticket Types
+        </h3>
+
+        <div *ngIf="eventWithTickets.tickets.length === 0" class="text-center py-8 text-gray-500">
+          <svg class="mx-auto w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+          </svg>
+          <p class="text-sm">No tickets available for this event.</p>
+        </div>
+
+        <div *ngIf="eventWithTickets.tickets.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div
+            *ngFor="let ticket of eventWithTickets.tickets"
+            class="bg-gradient-to-r from-white/70 to-gray-50/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            <div class="flex justify-between items-start mb-3">
+              <h4 class="text-base font-bold text-gray-800 capitalize">
+                {{ ticket.type }}
+              </h4>
+              <span class="text-lg font-bold text-emerald-600">
+                Ksh {{ ticket.price.toFixed(2) }}
+              </span>
+            </div>
+            <div class="space-y-2 text-sm text-gray-600">
+              <p><span class="font-medium">Quantity:</span> {{ ticket.quantity }}</p>
+              <p class="text-xs">
+                <span class="font-medium">Sales:</span>
+                {{ ticket.saleStartDate }} {{ ticket.saleStartTime }} –
+                {{ ticket.saleEndDate }} {{ ticket.saleEndTime }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </article>
 </div>

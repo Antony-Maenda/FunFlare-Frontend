@@ -1,107 +1,168 @@
-<!-- src/app/tickets/tickets.html (Updated with sale date/time fields and name attributes for ngModel) -->
-<div class="mx-auto p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md max-w-2xl md:max-w-3xl lg:max-w-4xl">
-  <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-4">Set Tickets for {{ eventData.name || 'New Event' }}</h2>
+<div class="mx-auto p-4 sm:p-6 lg:p-8 bg-white/85 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-cyan-100/30 max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
+  <!-- Header -->
+  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
+    Set Tickets for {{ eventData.name || 'New Event' }}
+  </h2>
 
   <form class="space-y-6">
-    <div *ngFor="let ticket of ticketTypes; let i = index" class="border-b pb-4">
-      <h3 class="text-lg sm:text-xl font-medium text-gray-700">{{ ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) }} Tickets</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
-        <div>
-          <label for="quantity-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Quantity</label>
+    <!-- Ticket Type Loop -->
+    <div *ngFor="let ticket of ticketTypes; let i = index" class="border-b border-gray-200/50 pb-6 last:border-0">
+      <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
+        {{ ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) }} Tickets
+      </h3>
+
+      <!-- Responsive Grid: 1 → 2 → 3 → 4 columns -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Quantity -->
+        <div class="relative group">
           <input
             type="number"
             id="quantity-{{i}}"
             name="quantity-{{i}}"
             [(ngModel)]="ticket.quantity"
             (change)="onQuantityChange(i, $event)"
-            name="quantity-{{i}}"
             min="0"
             [max]="eventCapacity"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
-            placeholder="Enter quantity"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Quantity"
           />
+          <label for="quantity-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-cyan-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-cyan-600">
+            Quantity
+          </label>
         </div>
-        <div>
-          <label for="price-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Price (Ksh)</label>
+
+        <!-- Price -->
+        <div class="relative group">
           <input
             type="number"
             id="price-{{i}}"
             name="price-{{i}}"
             [(ngModel)]="ticket.price"
             (input)="onPriceChange(i, $event)"
-            name="price-{{i}}"
-            min="0.01"
-            step="0.01"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
-            placeholder="Enter price"
+            min="0"
+            step="0"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Price (Ksh)"
           />
+          <label for="price-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-teal-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-teal-600">
+            Price (Ksh)
+          </label>
         </div>
-        <div>
-          <label for="saleStartDate-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale Start Date</label>
+
+        <!-- Sale Start Date -->
+        <div class="relative group">
           <input
             type="date"
             id="saleStartDate-{{i}}"
             name="saleStartDate-{{i}}"
             [(ngModel)]="ticket.saleStartDate"
             (change)="onSaleStartDateChange(i, $event)"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Sale Start Date"
           />
+          <label for="saleStartDate-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600">
+            Sale Start Date
+          </label>
         </div>
-        <div>
-          <label for="saleStartTime-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale Start Time</label>
+
+        <!-- Sale Start Time -->
+        <div class="relative group">
           <input
             type="time"
             id="saleStartTime-{{i}}"
             name="saleStartTime-{{i}}"
             [(ngModel)]="ticket.saleStartTime"
             step="1"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Sale Start Time"
           />
+          <label for="saleStartTime-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600">
+            Sale Start Time
+          </label>
         </div>
-        <div>
-          <label for="saleEndDate-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale End Date</label>
+
+        <!-- Sale End Date -->
+        <div class="relative group">
           <input
             type="date"
             id="saleEndDate-{{i}}"
             name="saleEndDate-{{i}}"
             [(ngModel)]="ticket.saleEndDate"
             (change)="onSaleEndDateChange(i, $event)"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Sale End Date"
           />
+          <label for="saleEndDate-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-pink-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-pink-600">
+            Sale End Date
+          </label>
         </div>
-        <div>
-          <label for="saleEndTime-{{i}}" class="block text-sm sm:text-base font-medium text-gray-700">Sale End Time</label>
+
+        <!-- Sale End Time -->
+        <div class="relative group">
           <input
             type="time"
             id="saleEndTime-{{i}}"
             name="saleEndTime-{{i}}"
             [(ngModel)]="ticket.saleEndTime"
             step="1"
-            class="mt-1 block w-full p-2 sm:p-3 border border-gray-300 rounded-lg"
             required
+            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 shadow-inner"
+            placeholder="Sale End Time"
           />
+          <label for="saleEndTime-{{i}}"
+            class="absolute left-4 -top-2.5 text-xs font-medium text-pink-600 bg-white px-2 transition-all duration-200 
+                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
+                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-pink-600">
+            Sale End Time
+          </label>
         </div>
       </div>
     </div>
 
-    <p class="text-sm text-gray-600">
-      Total Tickets: {{ totalTickets }} / {{ eventCapacity }}
-    </p>
+    <!-- Total Tickets -->
+    <div class="flex justify-center items-center py-4">
+      <p class="text-sm sm:text-base font-medium text-gray-700">
+        Total Tickets: 
+        <span class="font-bold text-cyan-600">{{ totalTickets }}</span> / 
+        <span class="text-teal-600">{{ eventCapacity }}</span>
+      </p>
+    </div>
 
-    <div *ngIf="error" class="text-red-600 text-sm mt-2">{{ error }}</div>
+    <!-- Error -->
+    <div *ngIf="error" class="text-red-600 text-sm text-center mt-2 font-medium bg-red-50/60 rounded-lg py-2 px-4 animate-pulse">
+      {{ error }}
+    </div>
 
+    <!-- Finish Button -->
     <button
       type="button"
       (click)="onFinish()"
       [disabled]="error || totalTickets === 0"
-      class="w-full py-2 sm:py-3 px-4 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors duration-150 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-full mt-6 py-3.5 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white font-bold text-base rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.01] focus:scale-[0.99] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
     >
-      Finish
+      <span class="relative z-10">Finish</span>
+      <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+      <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-emerald-400 blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10"></div>
     </button>
   </form>
 </div>

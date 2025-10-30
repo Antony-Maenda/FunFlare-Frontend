@@ -1,49 +1,58 @@
-<div class="mx-auto p-4 sm:p-6 bg-white/90 backdrop-blur-sm rounded-lg shadow-md max-w-2xl md:max-w-3xl lg:max-w-4xl">
-  <h2 class="text-2xl sm:text-3xl font-semibold font-inter mb-4">My Wallet</h2>
+<div >
+  <!-- Title -->
+  <h2 class="text-xl sm:text-2xl font-semibold font-inter text-center mb-4 text-gray-800">
+    My Wallet
+  </h2>
 
-  <div class="space-y-6">
+  <!-- Wallet Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
     <!-- Net Earnings -->
-    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
-      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Net Earnings</h3>
-      <p class="text-2xl font-bold text-green-600">${{ wallet.netEarnings.toFixed(2) }}</p>
+    <div class="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-lg border border-green-200 shadow-sm text-center">
+      <p class="text-xs font-medium text-green-700 uppercase tracking-wider">Earnings</p>
+      <p class="text-lg sm:text-xl font-bold text-green-600 mt-1">
+        ${{ wallet.netEarnings.toFixed(2) }}
+      </p>
     </div>
 
     <!-- Amount Withdrawn -->
-    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
-      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Amount Withdrawn</h3>
-      <p class="text-2xl font-bold text-red-600">${{ wallet.amountWithdrawn.toFixed(2) }}</p>
+    <div class="bg-gradient-to-br from-red-50 to-red-100 p-3 rounded-lg border border-red-200 shadow-sm text-center">
+      <p class="text-xs font-medium text-red-700 uppercase tracking-wider">Withdrawn</p>
+      <p class="text-lg sm:text-xl font-bold text-red-600 mt-1">
+        ${{ wallet.amountWithdrawn.toFixed(2) }}
+      </p>
     </div>
 
     <!-- Current Balance -->
-    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
-      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Current Balance</h3>
-      <p class="text-2xl font-bold text-blue-600">${{ wallet.currentBalance.toFixed(2) }}</p>
+    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-lg border border-blue-200 shadow-sm text-center">
+      <p class="text-xs font-medium text-blue-700 uppercase tracking-wider">Balance</p>
+      <p class="text-lg sm:text-xl font-bold text-blue-600 mt-1">
+        ${{ wallet.currentBalance.toFixed(2) }}
+      </p>
     </div>
+  </div>
 
-    <!-- Error Message -->
-    <div *ngIf="error" class="text-red-600 text-sm mt-2">{{ error }}</div>
+  <!-- Error Message -->
+  <div *ngIf="error" class="text-red-600 text-xs text-center mb-3">{{ error }}</div>
 
-    <!-- Withdrawal Section -->
-    <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
-      <h3 class="text-lg sm:text-xl font-medium text-gray-700">Withdraw Funds</h3>
-      <div class="mt-2 flex gap-2 items-center">
-        <input
-          type="number"
-          step="0.01"
-          placeholder="Enter amount to withdraw"
-          #withdrawAmountInput
-          class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200"
-          min="0"
-        />
-        <button
-          type="button"
-          (click)="onWithdraw(withdrawAmountInput.value)"
-          class="py-2 px-6 bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg shadow-md hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transform hover:scale-105 transition-all duration-300"
-        >
-          Withdraw
-        </button>
-      </div>
+  <!-- Withdrawal Section - Compact & Centered -->
+  <div class="flex flex-col items-center space-y-2">
+    <label class="text-sm font-medium text-gray-700">Withdraw Funds</label>
+    <div class="flex w-full max-w-xs gap-2">
+      <input
+        #withdrawAmountInput
+        type="number"
+        step="0.01"
+        min="0"
+        placeholder="0.00"
+        class="flex-1 p-2 text-sm text-center border border-gray-300 rounded-md focus:ring-1 focus:ring-red-500 focus:border-red-500 transition"
+      />
+      <button
+        type="button"
+        (click)="onWithdraw(withdrawAmountInput.value)"
+        class="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-medium rounded-md shadow hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50 transition transform active:scale-95"
+      >
+        Withdraw
+      </button>
     </div>
   </div>
 </div>
-
