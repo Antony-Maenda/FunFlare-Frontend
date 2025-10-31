@@ -1,64 +1,64 @@
-import { Component } from '@angular/core';
+// src/app/components/layout/layout.component.ts
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-interface Event {
-  id: number;
-  name: string;
-  date: string;
-  location: string;
-}
+import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router'; // CORRECT PATH
+import { EventService, PublicEvent } from '../../services/event.service';
 
 @Component({
   selector: 'app-layout',
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    DatePipe,
+    RouterModule  // Enables routerLink
+  ],
   templateUrl: './layout.html',
   styleUrl: './layout.css'
 })
-export class Layout {
-  searchQuery: string = '';
-  filteredEvents: any[] = [];
+export class LayoutComponent implements OnInit {
+  searchQuery = '';
+  filteredEvents: PublicEvent[] = [];
+  allEvents: PublicEvent[] = [];
+  loading = true;
+  error = false;
 
-  events = [
-    {
-      title: 'Live Concert: The Beats',
-      date: 'Sep 20, 2025',
-      venue: 'Nairobi Arena',
-      price: 'KSh 2,500',
-      image: 'https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      title: 'Championship Finals',
-      date: 'Oct 5, 2025',
-      venue: 'Kasarani Stadium',
-      price: 'KSh 1,800',
-      image: 'https://images.unsplash.com/photo-1600195077074-2e4b0a3c15a9?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      title: 'Food & Culture Festival',
-      date: 'Nov 15, 2025',
-      venue: 'Uhuru Gardens',
-      price: 'KSh 1,200',
-      image: 'https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=80'
-    }
-  ];
+  constructor(private eventService: EventService) {}
 
-  constructor() {
-    // Show all events by default
-    this.filteredEvents = [...this.events];
+  ngOnInit(): void {
+    this.loadPublicEvents();
   }
 
-  searchEvents() {
+  loadPublicEvents(): void {
+    this.loading = true;
+    this.error = false;
+
+    this.eventService.getPublicEvents().subscribe({
+      next: (events) => {
+        this.allEvents = events;
+        this.filteredEvents = [...events];
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load events:', err);
+        this.error = true;
+        this.loading = false;
+      }
+    });
+  }
+
+  searchEvents(): void {
     const query = this.searchQuery.trim().toLowerCase();
 
     if (!query) {
-      this.filteredEvents = [...this.events];
+      this.filteredEvents = [...this.allEvents];
       return;
     }
 
-    this.filteredEvents = this.events.filter(e =>
-      e.title.toLowerCase().includes(query) ||
-      e.venue.toLowerCase().includes(query)
+    this.filteredEvents = this.allEvents.filter(event =>
+      event.name.toLowerCase().includes(query) ||
+      event.location.toLowerCase().includes(query)
     );
   }
-
 }

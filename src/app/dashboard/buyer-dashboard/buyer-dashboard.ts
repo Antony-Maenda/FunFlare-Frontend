@@ -1,13 +1,18 @@
+// src/app/dashboard/buyer-dashboard/buyer-dashboard.ts
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Layout } from '../../components/layout/layout';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LayoutComponent } from '../../components/layout/layout'; // FIXED: Correct class + .component
 
 @Component({
   selector: 'app-buyer-dashboard',
   standalone: true,
-  imports: [CommonModule, Layout, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LayoutComponent  // FIXED: Import the component, not 'Layout'
+  ],
   templateUrl: './buyer-dashboard.html',
   styleUrls: ['./buyer-dashboard.css']
 })
@@ -16,7 +21,7 @@ export class BuyerDashboard implements OnInit {
   walletOpen = false;
   pointsOpen = false;
   profileOpen = false;
-  mobileMenuOpen = false; // New: Mobile menu state
+  mobileMenuOpen = false;
 
   // User data
   userName: string = 'Guest';
@@ -38,22 +43,13 @@ export class BuyerDashboard implements OnInit {
     const storedUsername = localStorage.getItem('username');
     const storedAvatar = localStorage.getItem('avatarUrl');
 
-    if (storedUsername) {
-      this.userName = storedUsername;
-    }
-    if (storedAvatar) {
-      this.avatarUrl = storedAvatar;
-    }
+    if (storedUsername) this.userName = storedUsername;
+    if (storedAvatar) this.avatarUrl = storedAvatar;
   }
 
   /** Toggle dropdowns (desktop) */
   toggleDropdown(type: 'wallet' | 'points' | 'profile'): void {
-    // Close all
-    this.walletOpen = false;
-    this.pointsOpen = false;
-    this.profileOpen = false;
-
-    // Open selected
+    this.walletOpen = this.pointsOpen = this.profileOpen = false;
     if (type === 'wallet') this.walletOpen = true;
     if (type === 'points') this.pointsOpen = true;
     if (type === 'profile') this.profileOpen = true;
@@ -67,7 +63,7 @@ export class BuyerDashboard implements OnInit {
   /** Handle avatar upload */
   onAvatarUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files || !input.files[0]) return;
+    if (!input.files?.[0]) return;
 
     const file = input.files[0];
     const reader = new FileReader();
@@ -83,20 +79,17 @@ export class BuyerDashboard implements OnInit {
 
   /** Logout user */
   logout(): void {
-    // Clear all auth-related data
     const keysToRemove = ['jwtToken', 'role', 'userId', 'username', 'avatarUrl'];
     keysToRemove.forEach(key => localStorage.removeItem(key));
 
-    // Reset state
     this.userName = 'Guest';
     this.avatarUrl = null;
     this.mobileMenuOpen = false;
 
-    console.log('User logged out successfully');
     this.router.navigate(['/login']);
   }
 
-  /** Close all dropdowns & mobile menu when clicking outside */
+  /** Close dropdowns & mobile menu on outside click */
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -104,26 +97,22 @@ export class BuyerDashboard implements OnInit {
     const isDropdownBtn = target.closest('.dropdown-btn');
     const isDropdownMenu = target.closest('.dropdown-menu');
     const isMobileMenuBtn = target.closest('[aria-label="Open Menu"]');
-    const isMobileMenu = target.closest('.mobile-menu'); // optional class
+    const isMobileMenu = target.closest('.mobile-menu');
 
-    // Close dropdowns if click is outside
     if (!isDropdownBtn && !isDropdownMenu) {
-      this.walletOpen = false;
-      this.pointsOpen = false;
-      this.profileOpen = false;
+      this.walletOpen = this.pointsOpen = this.profileOpen = false;
     }
 
-    // Close mobile menu if open and click is outside
     if (this.mobileMenuOpen && !isMobileMenuBtn && !isMobileMenu) {
       this.mobileMenuOpen = false;
     }
   }
 
-  /** Optional: Close mobile menu on route change */
+  /** Auto-close mobile menu on resize */
   @HostListener('window:resize')
   onResize(): void {
     if (window.innerWidth >= 1024) {
-      this.mobileMenuOpen = false; // Auto-close on large screens
+      this.mobileMenuOpen = false;
     }
   }
 }
