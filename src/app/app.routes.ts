@@ -12,14 +12,36 @@ import { OrganizerDashboardHomeComponent } from './Home/home';
 import { TicketsComponent } from './tickets/tickets';
 import { FinanceComponent } from './finance/finance';
 import { EventDetailsComponent } from './event-details/event-details';
+import { GetTicketComponent } from './get-ticket/get-ticket';
+import { LayoutComponent } from './components/layout/layout';
+import { BuyerNavbar } from './navbar/buyer-navbar/buyer-navbar';
+import { LandingPageNavbar } from './navbar/landing-page-navbar/landing-page-navbar';
 
 export const routes: Routes = [
-  { path: '', component: LandingPage },
+  { path: '', 
+    component: LandingPage,
+    children: [
+      { path: 'layout', component: LayoutComponent },
+      { path: 'landing-navbar', component: LandingPageNavbar },
+      
+    ]
+   },
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'buyer-dashboard', component: BuyerDashboard },
+  { path: 'get-ticket/:id', component: GetTicketComponent },
+
+  { path: 'buyer-dashboard', 
+    component: BuyerDashboard,
+    children: [
+      { path: 'layout', component: LayoutComponent },
+      { path: 'buyer-navbar', component: BuyerNavbar },
+    ]
+   },
+
+  
   {
     path: 'organizer-dashboard',
     component: OrganizerDashboardComponent,

@@ -144,11 +144,12 @@
 
               <!-- FIXED: <button> → <a> with routerLink -->
               <a
-                [routerLink]="['/event', event.id]"
+                [routerLink]="['/get-ticket', event.id]"
+                [queryParams]="{ returnUrl: '/get-ticket/' + event.id }"
                 class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-600 text-white text-sm font-medium rounded-full shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 inline-block text-center min-w-[100px]"
                 aria-label="View {{ event.name }}"
               >
-                View Event
+                Get Ticket
               </a>
             </div>
           </div>

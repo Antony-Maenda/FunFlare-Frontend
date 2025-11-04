@@ -3,22 +3,21 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LayoutComponent } from '../../components/layout/layout'; 
-import { BuyerNavbar} from '../../navbar/buyer-navbar/buyer-navbar';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
-  selector: 'app-buyer-dashboard',
+  selector: 'app-buyer-navbar',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-    LayoutComponent,
-    BuyerNavbar
+    RouterModule
   ],
-  templateUrl: './buyer-dashboard.html',
-  styleUrls: ['./buyer-dashboard.css']
+  templateUrl: './buyer-navbar.html',
+  styleUrls: ['./buyer-navbar.css']
 })
-export class BuyerDashboard implements OnInit {
+export class BuyerNavbar implements OnInit {
   // Dropdown states
   walletOpen = false;
   pointsOpen = false;

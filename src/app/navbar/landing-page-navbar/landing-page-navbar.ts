@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { LayoutComponent } from '../components/layout/layout'; // Correct path
-import { LandingPageNavbar } from '../navbar/landing-page-navbar/landing-page-navbar';
+
 
 interface Event {
   title: string;
@@ -15,19 +14,18 @@ interface Event {
 }
 
 @Component({
-  selector: 'app-landing-page',
+  selector: 'app-landing-page-navbar',
   standalone: true,
   imports: [
-    RouterModule,
     FormsModule,
     CommonModule,
-    LayoutComponent,
-    LandingPageNavbar
-],
-  templateUrl: './landing-page.html',
-  styleUrl: './landing-page.css'
+    RouterModule
+   
+  ],
+  templateUrl: './landing-page-navbar.html',
+  styleUrl: './landing-page-navbar.css'
 })
-export class LandingPage {
+export class LandingPageNavbar {
   searchQuery = '';
   filteredEvents: Event[] = [];
 
