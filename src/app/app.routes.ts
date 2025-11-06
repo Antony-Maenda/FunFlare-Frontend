@@ -12,10 +12,10 @@ import { OrganizerDashboardHomeComponent } from './Home/home';
 import { TicketsComponent } from './tickets/tickets';
 import { FinanceComponent } from './finance/finance';
 import { EventDetailsComponent } from './event-details/event-details';
-import { GetTicketComponent } from './get-ticket/get-ticket';
 import { LayoutComponent } from './components/layout/layout';
 import { BuyerNavbar } from './navbar/buyer-navbar/buyer-navbar';
 import { LandingPageNavbar } from './navbar/landing-page-navbar/landing-page-navbar';
+import { GetTicketComponent } from './get-ticket/get-ticket';
 
 export const routes: Routes = [
   { path: '', 
@@ -31,8 +31,9 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'get-ticket/:id', component: GetTicketComponent },
+ 
 
+  
   { path: 'buyer-dashboard', 
     component: BuyerDashboard,
     children: [
@@ -55,7 +56,9 @@ export const routes: Routes = [
       { path: 'tickets', component: TicketsComponent },
       { path: 'finance', component: FinanceComponent }
     ]
-  }
+  },
+
+  { path: 'get-ticket/:id', component: GetTicketComponent }  // New route for GetTicketComponent
 ];
 
 @NgModule({

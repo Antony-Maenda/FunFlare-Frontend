@@ -1,121 +1,149 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
-import { Subscription } from 'rxjs';
-import { LandingPageNavbar } from '../navbar/landing-page-navbar/landing-page-navbar'; 
-import { BuyerNavbar } from '../navbar/buyer-navbar/buyer-navbar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
-
+export interface EventWithTickets {
+  id: number;
+  organizerId: number;
+  name: string;
+  description: string;
+  location: string;
+  eventPosterUrl: string;
+  eventCapacity: number;
+  eventCategory: string;
+  eventStatus: string;
+  createdAt: string;
+  updatedAt: string;
+  eventStartDate: string;
+  eventEndDate: string;
+  eventStartTime: string;
+  eventEndTime: string;
+  tickets: {
+    id: number;
+    type: string;
+    quantity: number;
+    price: number;
+    quantitySold?: number;
+    saleStartDate: string;
+    saleEndDate: string;
+    saleStartTime: string;
+    saleEndTime: string;
+  }[];
+}
 
 @Component({
   selector: 'app-get-ticket',
-  imports: [CommonModule,BuyerNavbar, LandingPageNavbar],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './get-ticket.html',
-  styleUrls: ['./get-ticket.css'],
-  standalone: true
+  styleUrls: ['./get-ticket.css']
 })
-export class GetTicketComponent implements OnInit, OnDestroy {
-  event: any = null;
-  totalAmount = 0;
-  isBuyer = false;
-  private authSub!: Subscription;
+export class GetTicketComponent implements OnInit {
+  eventWithTickets: EventWithTickets | null = null;
+  loading: boolean = true;
+  error: string | null = null;
+
+  // Ticket selection state
+  selectedQuantities: number[] = [];
+  subtotal: number = 0;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-  const id = +this.route.snapshot.paramMap.get('id')!;
+    const eventId = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Event ID:', eventId);
 
-  this.event = this.getMockEvent(id);
-
-  // ← ADD THIS CHECK
-  if (!this.event) {
-    console.error(`Event with id ${id} not found`);
-    this.router.navigate(['/']); // or show 404
-    return;
-  }
-
-  this.event.tickets = (this.event.tickets || []).map((t: any) => ({ ...t, selected: 0 }));
-  this.updateTotal();
-
-  // Auth subscription
-  this.authSub = this.authService.isLoggedIn$.subscribe(loggedIn => {
-    const role = this.authService.getRole();
-    this.isBuyer = loggedIn && role === 'attendee';
-  });
-}
-
-  ngOnDestroy(): void {
-    this.authSub?.unsubscribe();
-  }
-
-  isBuyerLoggedIn(): boolean {
-    return this.isBuyer;
-  }
-
-  private getMockEvent(id: number): any {
-  const mockEvents: any = {
-    1: {
-      id: 1,
-      name: "Afrobeat Summer Fest",
-      eventPosterUrl: "https://images.unsplash.com/photo-1493676304819-0d7a8d93849c", // ← FIXED: removed extra "photo-"
-      description: "Join us for the biggest Afrobeat festival in Nairobi with top artists, food, and vibes!",
-      location: "Uhuru Gardens, Nairobi",
-      startDate: "2025-06-15T00:00:00.000Z",
-      startTime: "14:00",
-      endTime: "23:00",
-      category: "Music",
-      tickets: [
-        { id: 1, type: "Regular", price: 1500, quantity: 200 },
-        { id: 2, type: "VIP", price: 5000, quantity: 50 },
-        { id: 3, type: "VVIP", price: 10000, quantity: 20 }
-      ]
-    },
-    2: {
-      id: 2,
-      name: "Tech Summit 2025",
-      eventPosterUrl: "https://images.unsplash.com/photo-1505373877841-8d25f771d0b7",
-      description: "Explore the future of AI, blockchain, and digital innovation with global experts.",
-      location: "KICC, Nairobi",
-      startDate: "2025-07-20T00:00:00.000Z",
-      startTime: "09:00",
-      endTime: "17:00",
-      category: "Conference",
-      tickets: [
-        { id: 4, type: "Standard", price: 3000, quantity: 150 },
-        { id: 5, type: "Premium", price: 8000, quantity: 40 }
-      ]
+    if (isNaN(eventId)) {
+      this.error = 'Invalid event ID.';
+      this.loading = false;
+      console.error('Invalid event ID:', eventId);
+      return;
     }
-  };
 
-  return mockEvents[id] || null;
-}
+    // Mock data for demonstration (replace with actual API call when service is available)
+    // This simulates the same structure as the real service
+    const mockData: EventWithTickets = {
+      id: eventId,
+      organizerId: 1,
+      name: 'Sample Concert Event',
+      description: 'An amazing live music experience featuring top artists.',
+      location: 'Nairobi, Kenya',
+      eventPosterUrl: 'https://images.unsplash.com/photo-1540039156060-76da999c14d9?auto=format&fit=crop&w=800&q=80',
+      eventCapacity: 5000,
+      eventCategory: 'Concert',
+      eventStatus: 'ACTIVE',
+      createdAt: '2025-01-01T00:00:00Z',
+      updatedAt: '2025-01-01T00:00:00Z',
+      eventStartDate: '2025-12-20',
+      eventEndDate: '2025-12-20',
+      eventStartTime: '19:00',
+      eventEndTime: '23:00',
+      tickets: [
+        {
+          id: 1,
+          type: 'VIP',
+          quantity: 100,
+          price: 5000,
+          saleStartDate: '2025-11-01',
+          saleEndDate: '2025-12-19',
+          saleStartTime: '00:00',
+          saleEndTime: '23:59'
+        },
+        {
+          id: 2,
+          type: 'Regular',
+          quantity: 1000,
+          price: 2000,
+          saleStartDate: '2025-11-01',
+          saleEndDate: '2025-12-19',
+          saleStartTime: '00:00',
+          saleEndTime: '23:59'
+        }
+      ]
+    };
 
-  updateQuantity(ticket: any, change: number): void {
-    const newQty = ticket.selected + change;
-    if (newQty >= 0 && newQty <= (ticket.quantity ?? Infinity)) {
-      ticket.selected = newQty;
-      this.updateTotal();
+    // Simulate API delay
+    setTimeout(() => {
+      console.log('Mock event with tickets data:', mockData);
+      this.eventWithTickets = mockData;
+      this.selectedQuantities = new Array(this.eventWithTickets.tickets.length).fill(0);
+      this.loading = false;
+    }, 800);
+  }
+
+  onImageError(event: ErrorEvent, eventName: string): void {
+    console.log('Image error for event:', eventName);
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
+    const parent = img.parentElement;
+    if (parent) {
+      parent.innerHTML = `<div class="text-gray-500 text-lg font-medium">${eventName}</div>`;
     }
   }
 
-  updateTotal(): void {
-    this.totalAmount = this.event?.tickets?.reduce((sum: number, t: any) => sum + t.selected * t.price, 0) || 0;
+  // Ticket quantity controls
+  incrementQuantity(index: number): void {
+    const ticket = this.eventWithTickets!.tickets[index];
+    if (this.selectedQuantities[index] < ticket.quantity) {
+      this.selectedQuantities[index]++;
+      this.updateSubtotal();
+    }
   }
 
-  proceedToCheckout(): void {
-    if (this.totalAmount === 0) return;
+  decrementQuantity(index: number): void {
+    if (this.selectedQuantities[index] > 0) {
+      this.selectedQuantities[index]--;
+      this.updateSubtotal();
+    }
+  }
 
-    const selected = this.event.tickets
-      .filter((t: any) => t.selected > 0)
-      .map((t: any) => ({ id: t.id, type: t.type, quantity: t.selected, price: t.price }));
-
-    this.router.navigate(['/checkout'], {
-      state: { event: this.event, tickets: selected, total: this.totalAmount }
-    });
+  updateSubtotal(): void {
+    this.subtotal = this.eventWithTickets!.tickets.reduce((sum, ticket, i) => {
+      return sum + (ticket.price * (this.selectedQuantities[i] || 0));
+    }, 0);
   }
 }
