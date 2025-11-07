@@ -15,10 +15,10 @@ export interface EventWithTickets {
   eventStatus: string;
   createdAt: string;
   updatedAt: string;
-  eventStartDate: string;
-  eventEndDate: string;
-  eventStartTime: string;
-  eventEndTime: string;
+  startDate: string;      // ← was eventStartDate
+  endDate: string;
+  startTime: string;      // ← was eventStartTime
+  endTime: string;        // ← was eventEndTime
   tickets: {
     id: number;
     type: string;
@@ -36,27 +36,19 @@ export interface EventWithTickets {
   providedIn: 'root'
 })
 export class GetTicketService {
-  private baseUrl = 'http://localhost:8080/api/events'; // Same as EventDetailsService
+  private baseUrl = 'http://localhost:8080/api/events/public';
 
   constructor(private http: HttpClient) {}
 
-  getEventWithTickets(eventId: number): Observable<EventWithTickets> {
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-      return throwError(() => new Error('No JWT token found. Please log in.'));
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http
-      .get<EventWithTickets>(`${this.baseUrl}/${eventId}/details`, { headers })
-      .pipe(
-        timeout(5000),
-        catchError(err =>
-          throwError(() => err.error?.message || 'Failed to load event details.')
-        )
-      );
-  }
+ // src/app/services/get-ticket.service.ts
+getEventWithTickets(eventId: number): Observable<EventWithTickets> {
+  return this.http
+    .get<EventWithTickets>(`${this.baseUrl}/${eventId}`)  // ← No headers
+    .pipe(
+      timeout(5000),
+      catchError(err =>
+        throwError(() => err.error?.message || 'Event not found')
+      )
+    );
+}
 }
