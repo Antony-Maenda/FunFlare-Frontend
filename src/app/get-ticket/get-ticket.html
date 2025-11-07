@@ -96,19 +96,7 @@
           </div>
         </div>
 
-        <!-- Capacity -->
-        <div class="flex items-start bg-gray-50/70 backdrop-blur-sm rounded-xl p-3.5 border border-gray-200/40 hover:border-gray-300 transition-colors">
-          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 shadow-inner mr-3">
-            <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="text-xs font-medium text-gray-500 uppercase tracking-widest">Capacity</p>
-            <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ eventWithTickets.eventCapacity }} guests</p>
-          </div>
         </div>
-      </div>
 
       <!-- Ticket Selection -->
       <div class="mt-7 bg-gray-50/80 backdrop-blur-sm rounded-2xl p-5 border border-gray-200/40 shadow-inner">
@@ -131,7 +119,6 @@
             <div class="flex-1">
               <h4 class="font-bold text-gray-900 capitalize text-base">{{ ticket.type }}</h4>
               <p class="text-sm text-gray-600">Ksh {{ ticket.price.toFixed(2) }} per ticket</p>
-              <p class="text-xs text-gray-500 mt-1">{{ ticket.quantity }} available</p>
             </div>
 
             <!-- Quantity -->
