@@ -2,17 +2,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetTicketService, EventWithTickets } from '../services/get-ticket.service';  // New import
-
+import { GetTicketService, EventWithTickets } from '../services/get-ticket.service';
 import { HttpErrorResponse } from '@angular/common/http';
+
+// Import the Purchase component (modal form)
+import { PurchaseComponent } from '../purchase/purchase';
 
 @Component({
   selector: 'app-get-ticket',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PurchaseComponent], // PurchaseComponent added
   templateUrl: './get-ticket.html',
   styleUrls: ['./get-ticket.css'],
-  providers: [GetTicketService] // optional if providedIn: 'root'
+  providers: [GetTicketService]
 })
 export class GetTicketComponent implements OnInit {
   eventWithTickets: EventWithTickets | null = null;
@@ -22,6 +24,9 @@ export class GetTicketComponent implements OnInit {
   // Ticket selection
   selectedQuantities: number[] = [];
   subtotal = 0;
+
+  // Purchase form state
+  showPurchaseForm = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +78,7 @@ export class GetTicketComponent implements OnInit {
     if (this.selectedQuantities[index] < ticket.quantity) {
       this.selectedQuantities[index]++;
       this.updateSubtotal();
+      this.saveCartItem(index);
     }
   }
 
@@ -80,6 +86,7 @@ export class GetTicketComponent implements OnInit {
     if (this.selectedQuantities[index] > 0) {
       this.selectedQuantities[index]--;
       this.updateSubtotal();
+      this.saveCartItem(index);
     }
   }
 
@@ -87,5 +94,52 @@ export class GetTicketComponent implements OnInit {
     this.subtotal = this.eventWithTickets!.tickets.reduce((sum, ticket, i) => {
       return sum + ticket.price * (this.selectedQuantities[i] || 0);
     }, 0);
+  }
+
+  // Save selected ticket to cart via navbar
+  saveCartItem(index: number): void {
+    if (!this.eventWithTickets || !this.eventWithTickets.tickets?.[index]) return;
+
+    const ticket = this.eventWithTickets.tickets[index];
+    const qty = this.selectedQuantities[index] || 0;
+    if (qty <= 0) return;
+
+    const selectors = ['app-landing-page-navbar', 'app-buyer-navbar'];
+    for (const sel of selectors) {
+      const navbar = document.querySelector(sel) as any;
+      if (navbar?.saveToCart && typeof navbar.saveToCart === 'function') {
+        navbar.saveToCart(this.eventWithTickets.name, ticket.type, qty, ticket.price);
+        return;
+      }
+    }
+  }
+
+  // ——— PURCHASE FORM METHODS ———
+  openPurchaseForm(): void {
+    this.showPurchaseForm = true;
+  }
+
+  closePurchaseForm(): void {
+    this.showPurchaseForm = false;
+  }
+
+  onPurchaseSubmit(buyer: { name: string; email: string; phone: string }): void {
+    const order = {
+      eventId: this.eventWithTickets!.id,
+      eventName: this.eventWithTickets!.name,
+      tickets: this.eventWithTickets!.tickets
+        .map((t, i) => ({
+          type: t.type,
+          quantity: this.selectedQuantities[i] || 0,
+          price: t.price
+        }))
+        .filter(t => t.quantity > 0),
+      subtotal: this.subtotal,
+      buyer
+    };
+
+    console.log('Purchase confirmed:', order);
+    alert(`Success! Ksh ${this.subtotal.toFixed(2)}`);
+    this.closePurchaseForm();
   }
 }

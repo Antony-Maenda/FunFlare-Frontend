@@ -1,19 +1,21 @@
-// src/app/dashboard/buyer-dashboard/buyer-dashboard.ts
+// src/app/dashboard/buyer-dashboard/buyer-navbar.ts
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 
+interface CartItem {
+  eventName: string;
+  ticketType: string;
+  quantity: number;
+  price: number;
+}
 
 @Component({
   selector: 'app-buyer-navbar',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './buyer-navbar.html',
   styleUrls: ['./buyer-navbar.css']
 })
@@ -28,10 +30,17 @@ export class BuyerNavbar implements OnInit {
   userName: string = 'Guest';
   avatarUrl: string | null = null;
 
+  // Cart state
+  cartOpen = false;
+  cartItems: CartItem[] = [];
+  cartTotal = 0;
+  cartTotalItems = 0;
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.loadUserData();
+    this.updateCartFromStorage(); // Load cart on init
 
     // Redirect if not authenticated
     if (!localStorage.getItem('jwtToken')) {
@@ -61,6 +70,39 @@ export class BuyerNavbar implements OnInit {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
+  /** Toggle cart dropdown */
+  toggleCart(): void {
+    this.cartOpen = !this.cartOpen;
+    if (this.cartOpen) this.updateCartFromStorage();
+  }
+
+  /** Update cart from localStorage */
+  updateCartFromStorage(): void {
+    const raw = localStorage.getItem('eventCart');
+    const cart: CartItem[] = raw ? JSON.parse(raw) : [];
+    this.cartItems = cart;
+    this.cartTotalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
+    this.cartTotal = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  }
+
+  /** Public method: Save ticket to cart (called from get-ticket.component.ts) */
+  saveToCart(eventName: string, ticketType: string, quantity: number, price: number): void {
+    let cart: CartItem[] = JSON.parse(localStorage.getItem('eventCart') || '[]');
+    const existing = cart.find(c => c.eventName === eventName && c.ticketType === ticketType);
+
+    if (existing) {
+      existing.quantity = quantity;
+      if (quantity === 0) {
+        cart = cart.filter(c => c !== existing);
+      }
+    } else if (quantity > 0) {
+      cart.push({ eventName, ticketType, quantity, price });
+    }
+
+    localStorage.setItem('eventCart', JSON.stringify(cart));
+    this.updateCartFromStorage();
+  }
+
   /** Handle avatar upload */
   onAvatarUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -86,6 +128,7 @@ export class BuyerNavbar implements OnInit {
     this.userName = 'Guest';
     this.avatarUrl = null;
     this.mobileMenuOpen = false;
+    this.cartOpen = false;
 
     this.router.navigate(['/login']);
   }
@@ -96,16 +139,25 @@ export class BuyerNavbar implements OnInit {
     const target = event.target as HTMLElement;
 
     const isDropdownBtn = target.closest('.dropdown-btn');
-    const isDropdownMenu = target.closest('.dropdown-menu');
+    const isDropdownMenu = target.closest('[id$="-dropdown"]');
     const isMobileMenuBtn = target.closest('[aria-label="Open Menu"]');
     const isMobileMenu = target.closest('.mobile-menu');
+    const isCartBtn = target.closest('button[aria-label="View cart"]');
+    const isCartMenu = target.closest('.animate-fadeIn');
 
+    // Close dropdowns
     if (!isDropdownBtn && !isDropdownMenu) {
       this.walletOpen = this.pointsOpen = this.profileOpen = false;
     }
 
+    // Close mobile menu
     if (this.mobileMenuOpen && !isMobileMenuBtn && !isMobileMenu) {
       this.mobileMenuOpen = false;
+    }
+
+    // Close cart
+    if (this.cartOpen && !isCartBtn && !isCartMenu) {
+      this.cartOpen = false;
     }
   }
 

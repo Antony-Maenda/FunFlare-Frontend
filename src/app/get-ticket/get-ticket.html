@@ -1,3 +1,5 @@
+
+
 <!-- Event Card -->
 <article *ngIf="!loading && eventWithTickets" class="bg-white/95 backdrop-blur-2xl rounded-3xl shadow-xl ring-1 ring-gray-200/40 overflow-hidden p-5 sm:p-7">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
@@ -157,3 +159,10 @@
     </div>
   </div>
 </article>
+
+<app-purchase
+  *ngIf="showPurchaseForm"
+  [subtotal]="subtotal"
+  (close)="closePurchaseForm()"
+  (submit)="onPurchaseSubmit($event)"
+></app-purchase>

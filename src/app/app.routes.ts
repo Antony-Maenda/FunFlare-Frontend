@@ -1,3 +1,4 @@
+// app.routes.ts
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingPage } from './landing-page/landing-page';
@@ -12,37 +13,21 @@ import { OrganizerDashboardHomeComponent } from './Home/home';
 import { TicketsComponent } from './tickets/tickets';
 import { FinanceComponent } from './finance/finance';
 import { EventDetailsComponent } from './event-details/event-details';
-import { LayoutComponent } from './components/layout/layout';
-import { BuyerNavbar } from './navbar/buyer-navbar/buyer-navbar';
-import { LandingPageNavbar } from './navbar/landing-page-navbar/landing-page-navbar';
+import { PurchaseComponent } from './purchase/purchase';
 import { GetTicketComponent } from './get-ticket/get-ticket';
 
 export const routes: Routes = [
-  { path: '', 
-    component: LandingPage,
-    children: [
-      { path: 'layout', component: LayoutComponent },
-      { path: 'landing-navbar', component: LandingPageNavbar },
-      
-    ]
-   },
-
+  // Public Routes
+  { path: '', component: LandingPage },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify-email', component: VerifyEmailComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
- 
+  { path: 'purchase', component: PurchaseComponent },
 
-  
-  { path: 'buyer-dashboard', 
-    component: BuyerDashboard,
-    children: [
-      { path: 'layout', component: LayoutComponent },
-      { path: 'buyer-navbar', component: BuyerNavbar },
-    ]
-   },
+  // Buyer Dashboard
+  {path: 'buyer-dashboard',component: BuyerDashboard},
 
-  
+  // Organizer Dashboard
   {
     path: 'organizer-dashboard',
     component: OrganizerDashboardComponent,
@@ -58,7 +43,11 @@ export const routes: Routes = [
     ]
   },
 
-  { path: 'get-ticket/:id', component: GetTicketComponent }  // New route for GetTicketComponent
+  // Get Ticket Page (uses current navbar logic)
+  { path: 'get-ticket/:id', component: GetTicketComponent },
+
+  // Fallback
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

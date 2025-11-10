@@ -1,3 +1,6 @@
+//.service.ts
+
+
 // src/app/services/get-ticket.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

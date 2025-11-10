@@ -23,7 +23,7 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Assuming aligned to 'email' per prior DTO fix
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -40,23 +40,29 @@ export class LoginComponent {
         next: (response) => {
           console.log('Login response:', response);
 
-          if (!response.jwtToken) { // ✅ Changed from 'token' to 'jwtToken'
+          if (!response.jwtToken) {
             this.errorMessage = 'Invalid login response from server.';
             this.isLoading = false;
             return;
           }
 
-          // Save jwtToken & role in localStorage (use 'jwtToken' key for consistency)
-          localStorage.setItem('jwtToken', response.jwtToken); // ✅ Use 'jwtToken' to match response
-          localStorage.setItem('role', response.role);
-          localStorage.setItem('username', response.username); // ✅ New: Store username
+          // ✅ Save jwtToken
+          localStorage.setItem('jwtToken', response.jwtToken);
+
+          // ✅ Normalize role: attendee → buyer
+          const role = response.role?.toLowerCase();
+          const normalizedRole = role === 'attendee' ? 'buyer' : role;
+
+          // ✅ Store user details
+          localStorage.setItem('role', normalizedRole);
+          localStorage.setItem('username', response.username);
 
           alert('✅ Login successful!');
 
-          // Redirect based on role (ATTENDEE matches logs)
-          if (response.role === 'attendee' || response.role === 'ATTENDEE') { // ✅ Handle both cases (if normalized)
+          // ✅ Redirect based on normalized role
+          if (normalizedRole === 'buyer') {
             this.router.navigate(['/buyer-dashboard']);
-          } else if (response.role === 'organizer' || response.role === 'ORGANIZER') {
+          } else if (normalizedRole === 'organizer') {
             this.router.navigate(['/organizer-dashboard']);
           } else {
             this.errorMessage = 'Unknown role. Please contact support.';

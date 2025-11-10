@@ -22,7 +22,7 @@ interface Event {
     FormsModule,
     CommonModule,
     LayoutComponent,
-    LandingPageNavbar
+    
 ],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css'
