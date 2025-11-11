@@ -13,7 +13,7 @@ import { OrganizerDashboardHomeComponent } from './Home/home';
 import { TicketsComponent } from './tickets/tickets';
 import { FinanceComponent } from './finance/finance';
 import { EventDetailsComponent } from './event-details/event-details';
-import { PurchaseComponent } from './purchase/purchase';
+import { PurchaseComponent } from './purchase/purchase'; // ← CORRECT
 import { GetTicketComponent } from './get-ticket/get-ticket';
 
 export const routes: Routes = [
@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'purchase', component: PurchaseComponent },
 
   // Buyer Dashboard
-  {path: 'buyer-dashboard',component: BuyerDashboard},
+  { path: 'buyer-dashboard', component: BuyerDashboard },
 
   // Organizer Dashboard
   {
@@ -43,8 +43,11 @@ export const routes: Routes = [
     ]
   },
 
-  // Get Ticket Page (uses current navbar logic)
+  // Get Ticket Page
   { path: 'get-ticket/:id', component: GetTicketComponent },
+
+  // ← REDIRECT TO PURCHASES PAGE (uses your existing PurchaseComponent)
+  { path: 'purchases', component: PurchaseComponent },
 
   // Fallback
   { path: '**', redirectTo: '' }

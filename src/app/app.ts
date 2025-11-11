@@ -8,7 +8,7 @@ import { BuyerNavbar } from './navbar/buyer-navbar/buyer-navbar';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, LandingPageNavbar, BuyerNavbar],
+  imports: [RouterOutlet, FormsModule, CommonModule,  BuyerNavbar],
   templateUrl: './app.html',
   styleUrl: './app.css',
   

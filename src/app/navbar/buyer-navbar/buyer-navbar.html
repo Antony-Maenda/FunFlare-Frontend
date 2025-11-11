@@ -1,3 +1,4 @@
+<!-- src/app/navbar/buyer-navbar/buyer-navbar.html -->
 <header class="sticky top-0 z-50 bg-white/70 backdrop-blur-xl shadow-lg ring-1 ring-white/20">
   <nav class="container mx-auto flex flex-col lg:flex-row items-center justify-between py-4 px-4 sm:px-6 lg:px-8 gap-4">
 
@@ -27,10 +28,10 @@
       </div>
     </div>
 
-    <!-- Right: Cart + Dropdowns -->
+    <!-- Right Section: Cart + User Actions -->
     <div class="flex items-center gap-3 w-full lg:w-auto">
 
-      <!-- Cart Button -->
+      <!-- Cart Button + Dropdown -->
       <div class="relative">
         <button
           (click)="toggleCart()"
@@ -61,7 +62,7 @@
             </button>
           </div>
 
-          <!-- Empty -->
+          <!-- Empty State -->
           <div *ngIf="cartItems.length === 0" class="text-center py-8 text-gray-500">
             <svg class="mx-auto w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -70,14 +71,14 @@
             <p class="text-sm font-medium">Your cart is empty</p>
           </div>
 
-          <!-- Items -->
+          <!-- Cart Items -->
           <div *ngIf="cartItems.length > 0" class="space-y-3 max-h-96 overflow-y-auto">
             <div *ngFor="let item of cartItems" class="flex items-center justify-between p-3 bg-gray-50/70 rounded-xl">
               <div class="flex-1">
                 <p class="text-sm font-semibold text-gray-800">{{ item.eventName }}</p>
                 <p class="text-xs text-gray-600">{{ item.ticketType }} × {{ item.quantity }}</p>
               </div>
-              <p class="text-sm font-bold text-gray-900">Ksh {{ (item.price * item.quantity).toFixed(2) }}</p>
+              <p class="text-sm font-bold text-gray-900">KSh {{ (item.price * item.quantity).toFixed(2) }}</p>
             </div>
           </div>
 
@@ -85,14 +86,14 @@
           <div *ngIf="cartItems.length > 0" class="border-t border-gray-200 pt-4 mt-4">
             <div class="flex justify-between text-lg font-bold">
               <span class="text-gray-700">Total</span>
-              <span class="text-gray-900">Ksh {{ cartTotal.toFixed(2) }}</span>
+              <span class="text-gray-900">KSh {{ cartTotal.toFixed(2) }}</span>
             </div>
           </div>
 
-          <!-- Checkout -->
+          <!-- Checkout Button -->
           <button
+            (click)="openPurchaseModal()"
             [disabled]="cartItems.length === 0"
-            routerLink="/checkout"
             class="w-full mt-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
           >
             Proceed to Checkout
@@ -100,7 +101,7 @@
         </div>
       </div>
 
-      <!-- Existing Dropdowns (Wallet, Points, Profile) -->
+      <!-- Desktop: Wallet, Points, Profile -->
       <div class="hidden lg:flex items-center gap-4" *ngIf="userName !== 'Guest'">
         <!-- Wallet -->
         <div class="relative group">
@@ -114,7 +115,7 @@
           <div *ngIf="walletOpen" class="absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-cyan-200/50 py-3 z-50">
             <div class="px-4 py-2">
               <p class="text-sm font-medium text-gray-600">Current Balance</p>
-              <p class="text-2xl font-bold text-cyan-600">$120.00</p>
+              <p class="text-2xl font-bold text-cyan-600">KSh 12,000.00</p>
             </div>
             <div class="border-t border-gray-100 mt-2 pt-2 px-4">
               <button class="text-sm text-cyan-600 hover:text-cyan-700 font-medium">Top Up</button>
@@ -161,14 +162,14 @@
               Upload Avatar
               <input type="file" accept="image/*" (change)="onAvatarUpload($event)" class="hidden" />
             </label>
-            <button (click)="logout()" class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-medium text-sm flex items-center gap-3">
+            <button (click)="logout()" class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-medium text-sm">
               Logout
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Mobile Menu Button -->
+      <!-- Mobile Menu Toggle -->
       <button
         *ngIf="userName !== 'Guest'"
         (click)="toggleMobileMenu()"
@@ -182,14 +183,13 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu (unchanged) -->
+  <!-- Mobile Menu -->
   <div *ngIf="mobileMenuOpen && userName !== 'Guest'"
        class="lg:hidden bg-white/95 backdrop-blur-xl shadow-2xl rounded-b-3xl px-6 py-6 space-y-6 animate-in slide-in-from-top duration-300">
-    <!-- Wallet, Points, Profile – unchanged -->
     <div class="flex justify-between items-center p-4 bg-gradient-to-r from-cyan-50 to-teal-50 rounded-2xl">
       <div>
         <p class="text-sm font-medium text-cyan-700">Wallet Balance</p>
-        <p class="text-2xl font-bold text-cyan-600">$120.00</p>
+        <p class="text-2xl font-bold text-cyan-600">KSh 12,000.00</p>
       </div>
       <button class="text-cyan-600 font-medium text-sm">Top Up</button>
     </div>
@@ -221,3 +221,13 @@
     </div>
   </div>
 </header>
+
+<!-- PURCHASE MODAL — Renders perfectly on top -->
+<app-purchase
+  *ngIf="showPurchaseModal"
+  [subtotal]="cartTotal"
+  [cartItems]="cartItems"
+  (close)="closePurchaseModal()"
+  (submit)="onPurchaseSubmit($event)"
+  class="fixed inset-0 z-[9999]"
+></app-purchase>
