@@ -1,3 +1,4 @@
+<!-- organizer-dashboard.html -->
 <div class="flex min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-cyan-50">
   <!-- Sidebar -->
   <aside
@@ -122,7 +123,7 @@
         Dashboard
       </h1>
 
-      <!-- Profile (Replicated from Buyer Dashboard) -->
+      <!-- Profile -->
       <div class="flex items-center gap-3" *ngIf="userName !== 'Guest'">
         <div class="relative group">
           <button
@@ -134,15 +135,12 @@
             }"
             aria-label="View Profile"
             [attr.aria-expanded]="profileOpen"
-            aria-describedby="profile-dropdown"
           >
             <img
               *ngIf="avatarUrl"
               [src]="avatarUrl"
               class="w-full h-full object-cover"
               alt="User Avatar"
-              loading="lazy"
-              decoding="async"
             />
             <span *ngIf="!avatarUrl" class="font-bungee text-white text-xl">{{ userName.charAt(0).toUpperCase() }}</span>
           </button>
@@ -150,12 +148,7 @@
           <!-- Dropdown -->
           <div
             *ngIf="profileOpen"
-            id="profile-dropdown"
-            class="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-gray-200/50 py-3 z-50 transition-all duration-300 ease-out"
-            [ngClass]="{
-              'opacity-0 scale-95 -translate-y-2': !profileOpen,
-              'opacity-100 scale-100 translate-y-0': profileOpen
-            }"
+            class="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl ring-1 ring-gray-200/50 py-3 z-50"
           >
             <div class="px-4 py-3 border-b border-gray-100">
               <p class="text-base font-bold text-gray-800">{{ userName }}</p>
@@ -173,7 +166,7 @@
               />
             </label>
             <button
-              (click)="logout()"
+              (click)="confirmLogout()"
               class="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-medium text-sm transition-colors flex items-center gap-3"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,4 +184,47 @@
       <router-outlet></router-outlet>
     </div>
   </main>
+</div>
+
+<!-- ELEGANT LOGOUT CONFIRMATION MODAL -->
+<div *ngIf="showLogoutConfirm"
+     class="fixed inset-0 z-[9999] flex items-center justify-center px-4"
+     (click)="showLogoutConfirm = false">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
+  <div class="relative w-full max-w-md" (click)="$event.stopPropagation()">
+    <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl ring-1 ring-white/30 overflow-hidden animate-in fade-in zoom-in duration-300">
+      
+      <!-- Gradient Header -->
+      <div class="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 p-8 text-white text-center">
+        <div class="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+          <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+        </div>
+        <h3 class="text-3xl font-bold font-bungee">See You Soon?</h3>
+        <p class="text-white/90 mt-2 text-lg">Are you sure you want to log out?</p>
+      </div>
+
+      <!-- Body -->
+      <div class="p-8 space-y-6 text-center">
+        <p class="text-gray-600 text-lg leading-relaxed">
+          You'll be missed! Come back soon to manage your epic events
+        </p>
+        
+        <div class="flex gap-4">
+          <button (click)="showLogoutConfirm = false"
+                  class="flex-1 py-4 px-6 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-2xl transition-all transform hover:scale-105 active:scale-95">
+            Stay Logged In
+          </button>
+          
+          <button (click)="logout()"
+                  class="flex-1 py-4 px-6 bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all">
+            Yes, Log Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

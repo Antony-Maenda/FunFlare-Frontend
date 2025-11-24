@@ -14,10 +14,12 @@ export interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
+  private readonly STORAGE_KEY = 'funflare_cart';
+
   private items = new BehaviorSubject<CartItem[]>([]);
   items$ = this.items.asObservable();
 
-  // NEW: Trigger purchase from GetTicketComponent → BuyerNavbar
+  // Trigger purchase flow (from ticket page → navbar)
   private purchaseTrigger = new Subject<{
     eventId: number;
     selectedTickets: Array<{
@@ -32,54 +34,97 @@ export class CartService {
   }>();
   purchase$ = this.purchaseTrigger.asObservable();
 
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  /** Load cart from localStorage on app start */
+  private loadFromStorage(): void {
+    try {
+      const saved = localStorage.getItem(this.STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        this.items.next(parsed);
+      }
+    } catch (e) {
+      console.warn('Failed to load cart from storage', e);
+      this.items.next([]);
+    }
+  }
+
+  /** Save current cart to localStorage */
+  private saveToStorage(): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.items.value));
+    } catch (e) {
+      console.warn('Failed to save cart to storage', e);
+    }
+  }
+
   /**
-   * Add or update item in cart
+   * Add item or update existing one
    */
-  addItem(item: CartItem): void {
+  addItem(newItem: CartItem): void {
     const current = this.items.value;
 
-    // Use eventId + ticketType as unique key (more reliable than eventName)
     const existingIndex = current.findIndex(
-      i => i.eventId === item.eventId && i.ticketType === item.ticketType
+      i => i.eventId === newItem.eventId && i.ticketType === newItem.ticketType
     );
 
     let updated: CartItem[];
 
     if (existingIndex > -1) {
-      if (item.quantity <= 0) {
-        // Remove item
-        updated = current.filter((_, idx) => idx !== existingIndex);
-      } else {
-        // Update quantity
-        updated = current.map((i, idx) =>
-          idx === existingIndex ? { ...i, quantity: item.quantity } : i
-        );
-      }
-    } else if (item.quantity > 0) {
-      // Add new
-      updated = [...current, item];
+      // Update existing item
+      updated = current.map((item, idx) =>
+        idx === existingIndex
+          ? { ...item, quantity: item.quantity + newItem.quantity }
+          : item
+      );
     } else {
-      updated = current;
+      // Add new item
+      updated = [...current, newItem];
     }
 
     this.items.next(updated);
+    this.saveToStorage();
   }
 
   /**
-   * Remove specific item by eventId + ticketType
+   * Update quantity directly (used by navbar +/− buttons)
+   */
+  updateQuantity(eventId: number, ticketType: string, newQuantity: number): void {
+    if (newQuantity < 1) {
+      this.removeItem(eventId, ticketType);
+      return;
+    }
+
+    const updated = this.items.value.map(item =>
+      item.eventId === eventId && item.ticketType === ticketType
+        ? { ...item, quantity: newQuantity }
+        : item
+    );
+
+    this.items.next(updated);
+    this.saveToStorage();
+  }
+
+  /**
+   * Remove specific item from cart
    */
   removeItem(eventId: number, ticketType: string): void {
     const updated = this.items.value.filter(
       i => !(i.eventId === eventId && i.ticketType === ticketType)
     );
+
     this.items.next(updated);
+    this.saveToStorage();
   }
 
   /**
    * Get current cart items (snapshot)
    */
   getItems(): CartItem[] {
-    return [...this.items.value]; // Return copy
+    return [...this.items.value];
   }
 
   /**
@@ -87,10 +132,11 @@ export class CartService {
    */
   clear(): void {
     this.items.next([]);
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 
   /**
-   * Get total items count
+   * Get total number of tickets
    */
   getTotalItems(): number {
     return this.items.value.reduce((sum, i) => sum + i.quantity, 0);
@@ -104,7 +150,7 @@ export class CartService {
   }
 
   /**
-   * Trigger purchase flow — called from GetTicketComponent
+   * Trigger purchase flow (called from ticket page)
    */
   triggerPurchase(data: {
     eventId: number;

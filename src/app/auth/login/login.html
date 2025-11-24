@@ -1,6 +1,16 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50 py-6 px-4">
-  <!-- Glass Card (Optimized) -->
-  <div class="w-full max-w-md bg-white/75 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-purple-100/30 p-6 sm:p-7 border border-white/25">
+<div class="min-h-screen flex items-center justify-center py-6 px-4 relative"
+     style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-attachment: scroll;"> <!-- Use 'fixed' for parallax, 'scroll' for reliability -->
+
+  <!-- Adjustable Overlay -->
+  <!-- Change /50 to /30 (lighter), /60 (darker), etc. -->
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <!-- Glass Card (100% unchanged) -->
+  <div class="relative w-full max-w-md bg-white/75 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-purple-100/30 p-6 sm:p-7 border border-white/25">
     
     <!-- Header -->
     <div class="text-center mb-7">
@@ -10,25 +20,20 @@
       <p class="mt-1.5 text-sm text-gray-600">Access your FunFlare account</p>
     </div>
 
-    <!-- Form -->
+    <!-- Form (unchanged) -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4.5">
       
       <!-- Email -->
       <div class="relative group">
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
+        <input id="email" type="email" formControlName="email"
           class="peer w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
-          placeholder="Email"
-        />
+          placeholder="Email" />
         <label for="email"
           class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
                  peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
                  peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600">
           Email
         </label>
-
         <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-600 text-xs mt-1 pl-1">
           <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</span>
           <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</span>
@@ -37,13 +42,9 @@
 
       <!-- Password -->
       <div class="relative group">
-        <input
-          id="password"
-          [type]="showPassword ? 'text' : 'password'"
-          formControlName="password"
+        <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
           class="peer w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl text-gray-900 placeholder-transparent pr-11 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors duration-200"
-          placeholder="Password"
-        />
+          placeholder="Password" />
         <label for="password"
           class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
                  peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
@@ -52,12 +53,9 @@
         </label>
 
         <!-- Toggle Icon -->
-        <button
-          type="button"
-          (click)="showPassword = !showPassword"
+        <button type="button" (click)="showPassword = !showPassword"
           class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-purple-600 focus:outline-none transition-colors"
-          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-        >
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
           <svg *ngIf="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -91,11 +89,8 @@
       </div>
 
       <!-- Submit Button -->
-      <button
-        type="submit"
-        [disabled]="isLoading || loginForm.invalid"
-        class="w-full mt-5 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base rounded-xl shadow-md hover:shadow-lg transform hover:scale-[1.01] focus:scale-[0.99] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden"
-      >
+      <button type="submit" [disabled]="isLoading || loginForm.invalid"
+        class="w-full mt-5 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-base rounded-xl shadow-md hover:shadow-lg transform hover:scale-[1.01] focus:scale-[0.99] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden">
         <span class="relative z-10">{{ isLoading ? 'Logging in...' : 'Login' }}</span>
         <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
       </button>

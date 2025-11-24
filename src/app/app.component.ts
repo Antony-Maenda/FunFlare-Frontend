@@ -4,13 +4,10 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 
-import { LandingPageNavbar } from './navbar/landing-page-navbar/landing-page-navbar';
-import { BuyerNavbar } from './navbar/buyer-navbar/buyer-navbar';
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LandingPageNavbar, BuyerNavbar, RouterOutlet],
+  imports: [CommonModule,RouterOutlet],
   templateUrl: './app.html',
   styles: []
 })

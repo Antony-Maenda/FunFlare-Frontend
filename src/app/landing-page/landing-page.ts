@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../components/layout/layout'; // Correct path
-import { LandingPageNavbar } from '../navbar/landing-page-navbar/landing-page-navbar';
+import { SharedNavbarComponent } from '../shared-navbar/shared-navbar';
 
 interface Event {
   title: string;
@@ -22,6 +22,8 @@ interface Event {
     FormsModule,
     CommonModule,
     LayoutComponent,
+    SharedNavbarComponent
+    
     
 ],
   templateUrl: './landing-page.html',

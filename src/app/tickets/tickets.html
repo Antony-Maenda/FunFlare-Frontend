@@ -1,168 +1,228 @@
-<div class="mx-auto p-4 sm:p-6 lg:p-8 bg-white/85 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-cyan-100/30 max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
-  <!-- Header -->
-  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">
-    Set Tickets for {{ eventData.name || 'New Event' }}
-  </h2>
+<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Main Glass Container -->
+  <div class="overflow-hidden rounded-3xl bg-white/80 backdrop-blur-2xl shadow-2xl ring-1 ring-cyan-100/50">
+    <!-- Header -->
+    <div class="px-8 pt-10 pb-8 text-center">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-600 bg-clip-text text-transparent">
+        Set Tickets for {{ eventData.name || 'New Event' }}
+      </h2>
+      <p class="mt-3 text-lg text-gray-600">Configure pricing, availability, and discounts</p>
+    </div>
 
-  <form class="space-y-6">
-    <!-- Ticket Type Loop -->
-    <div *ngFor="let ticket of ticketTypes; let i = index" class="border-b border-gray-200/50 pb-6 last:border-0">
-      <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-        {{ ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) }} Tickets
-      </h3>
+    <form class="space-y-10 pb-10">
+      <!-- Ticket Type Cards -->
+      <div *ngFor="let ticket of ticketTypes; let i = index" class="mx-6">
+        <div class="overflow-hidden rounded-2xl bg-gradient-to-br from-white/90 to-gray-50/90 shadow-xl ring-1 ring-gray-200/50 backdrop-blur-sm transition-all hover:shadow-2xl">
+          <div class="bg-gradient-to-r from-cyan-500/10 to-teal-500/10 px-8 py-6">
+            <h3 class="text-2xl font-bold text-gray-800">
+              {{ ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) }} Tickets
+            </h3>
+          </div>
 
-      <!-- Responsive Grid: 1 → 2 → 3 → 4 columns -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <!-- Quantity -->
-        <div class="relative group">
-          <input
-            type="number"
-            id="quantity-{{i}}"
-            name="quantity-{{i}}"
-            [(ngModel)]="ticket.quantity"
-            (change)="onQuantityChange(i, $event)"
-            min="0"
-            [max]="eventCapacity"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Quantity"
-          />
-          <label for="quantity-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-cyan-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-cyan-600">
-            Quantity
-          </label>
-        </div>
+          <div class="p-6 sm:p-8">
+            <!-- Responsive Grid -->
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <!-- Quantity -->
+              <div class="group relative">
+                <input
+                  type="number"
+                  [(ngModel)]="ticket.quantity"
+                  (change)="onQuantityChange(i, $event)"
+                  [max]="eventCapacity"
+                  min="0"
+                  required
+                  name="quantity_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg font-medium text-gray-900 placeholder-transparent backdrop-blur-sm focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-300/30"
+                  placeholder="Quantity"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-cyan-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-cyan-600">
+                  Quantity
+                </label>
+              </div>
 
-        <!-- Price -->
-        <div class="relative group">
-          <input
-            type="number"
-            id="price-{{i}}"
-            name="price-{{i}}"
-            [(ngModel)]="ticket.price"
-            (input)="onPriceChange(i, $event)"
-            min="0"
-            step="0"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Price (Ksh)"
-          />
-          <label for="price-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-teal-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-teal-600">
-            Price (Ksh)
-          </label>
-        </div>
+              <!-- Price -->
+              <div class="group relative">
+                <input
+                  type="number"
+                  [(ngModel)]="ticket.price"
+                  (input)="onPriceChange(i, $event)"
+                  min="0"
+                  step="0.01"
+                  required
+                  name="price_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg font-medium text-gray-900 placeholder-transparent backdrop-blur-sm focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-300/30"
+                  placeholder="Price"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-teal-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-teal-600">
+                  Price (KSh)
+                </label>
+              </div>
 
-        <!-- Sale Start Date -->
-        <div class="relative group">
-          <input
-            type="date"
-            id="saleStartDate-{{i}}"
-            name="saleStartDate-{{i}}"
-            [(ngModel)]="ticket.saleStartDate"
-            (change)="onSaleStartDateChange(i, $event)"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Sale Start Date"
-          />
-          <label for="saleStartDate-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600">
-            Sale Start Date
-          </label>
-        </div>
+              <!-- Sale Start Date -->
+              <div class="group relative">
+                <input
+                  type="date"
+                  [(ngModel)]="ticket.saleStartDate"
+                  required
+                  name="startDate_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-300/30"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-purple-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-purple-600">
+                  Sale Start Date
+                </label>
+              </div>
 
-        <!-- Sale Start Time -->
-        <div class="relative group">
-          <input
-            type="time"
-            id="saleStartTime-{{i}}"
-            name="saleStartTime-{{i}}"
-            [(ngModel)]="ticket.saleStartTime"
-            step="1"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Sale Start Time"
-          />
-          <label for="saleStartTime-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-purple-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-purple-600">
-            Sale Start Time
-          </label>
-        </div>
+              <!-- Sale Start Time -->
+              <div class="group relative">
+                <input
+                  type="time"
+                  [(ngModel)]="ticket.saleStartTime"
+                  required
+                  name="startTime_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-300/30"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-purple-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-purple-600">
+                  Sale Start Time
+                </label>
+              </div>
 
-        <!-- Sale End Date -->
-        <div class="relative group">
-          <input
-            type="date"
-            id="saleEndDate-{{i}}"
-            name="saleEndDate-{{i}}"
-            [(ngModel)]="ticket.saleEndDate"
-            (change)="onSaleEndDateChange(i, $event)"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Sale End Date"
-          />
-          <label for="saleEndDate-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-pink-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-pink-600">
-            Sale End Date
-          </label>
-        </div>
+              <!-- Sale End Date -->
+              <div class="group relative">
+                <input
+                  type="date"
+                  [(ngModel)]="ticket.saleEndDate"
+                  required
+                  name="endDate_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg text-gray-900 focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-300/30"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-pink-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-pink-600">
+                  Sale End Date
+                </label>
+              </div>
 
-        <!-- Sale End Time -->
-        <div class="relative group">
-          <input
-            type="time"
-            id="saleEndTime-{{i}}"
-            name="saleEndTime-{{i}}"
-            [(ngModel)]="ticket.saleEndTime"
-            step="1"
-            required
-            class="peer w-full px-4 py-3 bg-white/60 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-900 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 shadow-inner"
-            placeholder="Sale End Time"
-          />
-          <label for="saleEndTime-{{i}}"
-            class="absolute left-4 -top-2.5 text-xs font-medium text-pink-600 bg-white px-2 transition-all duration-200 
-                   peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 
-                   peer-focus:-top-2.5 peer-focus:text-xs peer-focus:text-pink-600">
-            Sale End Time
-          </label>
+              <!-- Sale End Time -->
+              <div class="group relative">
+                <input
+                  type="time"
+                  [(ngModel)]="ticket.saleEndTime"
+                  required
+                  name="endTime_{{i}}"
+                  class="peer w-full rounded-xl border border-gray-300 bg-white/70 px-5 py-4 text-lg text-gray-900 focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-300/30"
+                />
+                <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-semibold text-pink-600 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-pink-600">
+                  Sale End Time
+                </label>
+              </div>
+            </div>
+
+            <!-- Discount Section -->
+            <div class="mt-8 rounded-2xl bg-gradient-to-r from-amber-50/80 to-orange-50/80 p-6 ring-1 ring-orange-200">
+              <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-3">
+                  <label class="relative inline-flex cursor-pointer items-center">
+                    <input
+                      type="checkbox"
+                      [checked]="ticket.hasDiscount"
+                      (change)="onDiscountToggle(i, $event.target.checked)"
+                      class="sr-only peer"
+                    />
+                    <div class="h-7 w-12 rounded-full bg-gray-300 after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-red-500 peer-checked:after:translate-x-full"></div>
+                  </label>
+                  <span class="ml-4 text-xl font-bold text-orange-800">Apply Discount</span>
+                </div>
+                <div *ngIf="ticket.hasDiscount" class="rounded-full bg-orange-500 px-5 py-2 text-lg font-bold text-white shadow-lg animate-pulse">
+                  ACTIVE
+                </div>
+              </div>
+
+              <div *ngIf="ticket.hasDiscount" class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <div class="group relative">
+                  <input
+                    type="number"
+                    [(ngModel)]="ticket.discountValue"
+                    (input)="onDiscountValueChange(i, $event)"
+                    min="0"
+                    step="0.01"
+                    placeholder="25 or 1000"
+                    name="discountValue_{{i}}"
+                    class="peer w-full rounded-xl border-2 border-orange-300 bg-white/80 px-5 py-4 text-lg font-medium focus:ring-4 focus:ring-orange-300/50"
+                  />
+                  <label class="pointer-events-none absolute -top-2.5 left-4 bg-white px-2 text-sm font-bold text-orange-600">
+                    {{ ticket.discountType === 'percentage' ? 'Discount (%)' : 'Discount (KSh)' }}
+                  </label>
+                </div>
+
+                <select
+                  [(ngModel)]="ticket.discountType"
+                  (change)="onDiscountTypeChange(i, ticket.discountType || 'percentage')"
+                  name="discountType_{{i}}"
+                  class="rounded-xl border-2 border-orange-300 bg-white/80 px-5 py-4 text-lg font-medium focus:ring-4 focus:ring-orange-300/50"
+                >
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed">Fixed Amount (KSh)</option>
+                </select>
+
+                <div class="flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-orange-100 to-red-100 p-6 shadow-inner ring-2 ring-orange-400">
+                  <p class="text-sm font-semibold uppercase tracking-wider text-orange-700">Final Price</p>
+                  <p class="mt-2 text-4xl font-extrabold text-orange-600">
+                    KSh {{ finalPrice(ticket) | number:'1.2-2' }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue Card -->
+            <div class="mt-8 rounded-2xl bg-gradient-to-r from-emerald-50 to-teal-50 p-7 shadow-xl ring-2 ring-emerald-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-lg font-bold uppercase tracking-wider text-emerald-800">
+                    {{ ticket.type }} Revenue
+                  </p>
+                </div>
+                <p class="text-4xl font-extrabold text-emerald-600 drop-shadow-md">
+                  KSh {{ ticketRevenue(ticket) | number:'1.2-2' }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Total Tickets -->
-    <div class="flex justify-center items-center py-4">
-      <p class="text-sm sm:text-base font-medium text-gray-700">
-        Total Tickets: 
-        <span class="font-bold text-cyan-600">{{ totalTickets }}</span> / 
-        <span class="text-teal-600">{{ eventCapacity }}</span>
-      </p>
-    </div>
+      <!-- Grand Summary -->
+      <div class="mx-6 mt-12 rounded-3xl bg-gradient-to-r from-violet-100 via-purple-100 to-pink-100 p-10 shadow-2xl ring-4 ring-purple-300">
+        <div class="grid grid-cols-1 gap-10 text-center md:grid-cols-2">
+          <div class="rounded-3xl bg-white/95 p-10 shadow-2xl ring-2 ring-cyan-300">
+            <p class="text-2xl font-bold text-gray-700">Total Tickets Allocated</p>
+            <p class="mt-4 text-6xl font-extrabold text-cyan-700">
+              {{ totalTickets }}
+              <span class="ml-3 text-3xl text-gray-500">/ {{ eventCapacity }}</span>
+            </p>
+          </div>
+          <div class="rounded-3xl bg-white/95 p-10 shadow-2xl ring-2 ring-purple-400">
+            <p class="text-2xl font-bold text-gray-700">Total Expected Revenue</p>
+            <p class="mt-4 text-6xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              KSh {{ totalEarnings | number:'1.2-2' }}
+            </p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Error -->
-    <div *ngIf="error" class="text-red-600 text-sm text-center mt-2 font-medium bg-red-50/60 rounded-lg py-2 px-4 animate-pulse">
-      {{ error }}
-    </div>
+      <!-- Error -->
+      <div *ngIf="error" class="mx-6 mt-8 rounded-2xl bg-red-100/90 p-6 text-center text-xl font-bold text-red-700 shadow-lg ring-2 ring-red-400 animate-pulse">
+        {{ error }}
+      </div>
 
-    <!-- Finish Button -->
-    <button
-      type="button"
-      (click)="onFinish()"
-      [disabled]="error || totalTickets === 0"
-      class="w-full mt-6 py-3.5 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white font-bold text-base rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.01] focus:scale-[0.99] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
-    >
-      <span class="relative z-10">Finish</span>
-      <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-      <div class="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-emerald-400 blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10"></div>
-    </button>
-  </form>
+      <!-- Finish Button -->
+      <div class="mx-6 mt-10">
+        <button
+          type="button"
+          (click)="onFinish()"
+          [disabled]="error || totalTickets === 0"
+          class="w-full rounded-2xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-600 py-6 text-3xl font-bold text-white shadow-2xl transition-all hover:scale-105 hover:shadow-3xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+        >
+          Finish & Launch Event
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,8 +1,7 @@
 // organizer-dashboard.ts
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { NgClass } from '@angular/common';
-import { CommonModule } from '@angular/common';
+import { NgClass, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-organizer-dashboard',
@@ -17,6 +16,11 @@ export class OrganizerDashboardComponent implements OnInit {
 
   // Dropdown states
   profileOpen = false;
+
+  // Logout confirmation modal
+  showLogoutConfirm = false;
+
+  // User data
   userName: string = 'Guest';
   avatarUrl: string | null = null;
 
@@ -65,7 +69,14 @@ export class OrganizerDashboardComponent implements OnInit {
     }
   }
 
-  logout() {
+  // Show logout confirmation modal
+  confirmLogout(): void {
+    this.showLogoutConfirm = true;
+    this.profileOpen = false; // Close dropdown when opening modal
+  }
+
+  // Actual logout (called only when user confirms)
+  logout(): void {
     // Clear session
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('role');
@@ -75,8 +86,9 @@ export class OrganizerDashboardComponent implements OnInit {
 
     this.userName = 'Guest';
     this.avatarUrl = null;
-    console.log('Logged out');
+    this.showLogoutConfirm = false;
 
+    console.log('Logged out');
     this.router.navigate(['/login']);
   }
 

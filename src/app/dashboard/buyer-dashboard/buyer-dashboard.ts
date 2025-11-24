@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LayoutComponent } from '../../components/layout/layout'; 
-import { BuyerNavbar} from '../../navbar/buyer-navbar/buyer-navbar';
+import { SharedNavbarComponent } from '../../shared-navbar/shared-navbar';
 
 @Component({
   selector: 'app-buyer-dashboard',
@@ -13,7 +13,8 @@ import { BuyerNavbar} from '../../navbar/buyer-navbar/buyer-navbar';
     CommonModule,
     FormsModule,
     LayoutComponent,
-    BuyerNavbar
+    SharedNavbarComponent,
+    
   ],
   templateUrl: './buyer-dashboard.html',
   styleUrls: ['./buyer-dashboard.css']

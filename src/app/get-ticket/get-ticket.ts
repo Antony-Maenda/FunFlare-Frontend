@@ -1,17 +1,12 @@
 // src/app/components/get-ticket/get-ticket.component.ts
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GetTicketService, EventWithTickets } from '../services/get-ticket.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PurchaseComponent } from '../purchase/purchase';
 import { CartService } from '../services/cart.service';
-import { BuyerNavbar } from '../navbar/buyer-navbar/buyer-navbar';
+import { SharedNavbarComponent } from '../shared-navbar/shared-navbar';
 
 @Component({
   selector: 'app-get-ticket',
@@ -20,7 +15,7 @@ import { BuyerNavbar } from '../navbar/buyer-navbar/buyer-navbar';
     CommonModule,
     PurchaseComponent,
     RouterModule,
-    BuyerNavbar
+    SharedNavbarComponent
   ],
   templateUrl: './get-ticket.html',
   styleUrls: ['./get-ticket.css'],
@@ -70,6 +65,7 @@ export class GetTicketComponent implements OnInit {
     });
   }
 
+  // Enhanced: Increment with cart update
   incrementQuantity(index: number): void {
     const ticket = this.eventWithTickets!.tickets[index];
     const current = this.selectedQuantities[index] ?? 0;
@@ -81,10 +77,53 @@ export class GetTicketComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
+  // Enhanced: Decrement with cart update
   decrementQuantity(index: number): void {
-    if ((this.selectedQuantities[index] ?? 0) <= 0) return;
+    const current = this.selectedQuantities[index] ?? 0;
+    if (current <= 0) return;
 
     this.selectedQuantities[index]--;
+    this.updateSubtotal();
+    this.saveCartItem(index);
+    this.cdr.markForCheck();
+  }
+
+  // NEW: Handle direct input in number field
+  onQuantityInput(event: Event, index: number): void {
+    const input = event.target as HTMLInputElement;
+    const rawValue = input.value;
+    let value = parseInt(rawValue, 10);
+
+    // Handle empty or invalid
+    if (isNaN(value) || rawValue === '' || value < 0) {
+      value = 0;
+    }
+
+    const max = this.eventWithTickets!.tickets[index].quantity;
+    if (value > max) {
+      value = max;
+    }
+
+    this.selectedQuantities[index] = value;
+    input.value = value.toString(); // Sync UI
+
+    this.updateSubtotal();
+    this.saveCartItem(index);
+    this.cdr.markForCheck();
+  }
+
+  // NEW: Validate on blur (user leaves input)
+  validateQuantityInput(index: number): void {
+    const max = this.eventWithTickets!.tickets[index].quantity;
+    let value = this.selectedQuantities[index] ?? 0;
+
+    if (value > max) {
+      value = max;
+    } else if (value < 0) {
+      value = 0;
+    }
+
+    this.selectedQuantities[index] = value;
     this.updateSubtotal();
     this.saveCartItem(index);
     this.cdr.markForCheck();
@@ -106,6 +145,7 @@ export class GetTicketComponent implements OnInit {
     if (!this.eventWithTickets) return;
     const ticket = this.eventWithTickets.tickets[index];
     const qty = this.selectedQuantities[index] ?? 0;
+
     if (qty <= 0) {
       this.cartService.removeItem(this.eventWithTickets.id, ticket.type);
       return;
@@ -130,7 +170,6 @@ export class GetTicketComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  // FIXED: Now accepts the FULL DTO from PurchaseComponent
   onPurchaseSubmit(data: {
     eventId: number;
     selectedTickets: Array<{
@@ -144,14 +183,8 @@ export class GetTicketComponent implements OnInit {
     guestName: string;
   }): void {
     console.log('Purchase DTO ready:', data);
-
-    // Trigger global purchase via CartService (so navbar can handle it)
     this.cartService.triggerPurchase(data);
-
-    // Optionally close modal immediately
     this.closePurchaseForm();
-
-    // Optional: Show confirmation
     alert(`Processing payment...\nMPESA prompt sent to ${data.phoneNumber}`);
   }
 

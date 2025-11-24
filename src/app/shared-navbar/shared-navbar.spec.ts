@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
- import { LandingPageNavbar } from './landing-page-navbar';
 
-describe('LandingPageNavbar', () => {
-  let component: LandingPageNavbar;
-  let fixture: ComponentFixture<LandingPageNavbar>;
+import { SharedNavbar } from './shared-navbar';
+
+describe('SharedNavbar', () => {
+  let component: SharedNavbar;
+  let fixture: ComponentFixture<SharedNavbar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LandingPageNavbar]
+      imports: [SharedNavbar]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LandingPageNavbar);
+    fixture = TestBed.createComponent(SharedNavbar);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
