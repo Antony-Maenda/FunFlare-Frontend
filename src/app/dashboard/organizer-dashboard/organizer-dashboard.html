@@ -22,7 +22,7 @@
         routerLinkActive="bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 shadow-md"
         class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-teal-50 hover:text-cyan-600 rounded-xl transition-all duration-200"
         [routerLinkActiveOptions]="{ exact: true }"
-        aria-label="Home"
+        aria-label="My Events"
         [attr.aria-current]="router.isActive('/organizer-dashboard', true) ? 'page' : undefined"
       >
         <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-purple-400 to-blue-500 p-2 group-hover:scale-110 transition-transform duration-200">
@@ -30,26 +30,10 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
           </svg>
         </div>
-        <span class="ml-3">Home</span>
+        <span class="ml-3">My Events</span>
       </a>
 
-      <!-- Events -->
-      <a
-        routerLink="/organizer-dashboard/events"
-        routerLinkActive="bg-gradient-to-r from-pink-100 to-red-100 text-pink-700 shadow-md"
-        class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-pink-50 hover:to-red-50 hover:text-pink-600 rounded-xl transition-all duration-200"
-        [routerLinkActiveOptions]="{ exact: false }"
-        aria-label="Events"
-        [attr.aria-current]="router.isActive('/organizer-dashboard/events', false) ? 'page' : undefined"
-      >
-        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-red-400 to-pink-500 p-2 group-hover:scale-110 transition-transform duration-200">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-        </div>
-        <span class="ml-3">Events</span>
-      </a>
-
+      
       <!-- Tickets -->
       <a
         routerLink="/organizer-dashboard/tickets"
@@ -69,19 +53,19 @@
 
       <!-- Orders -->
       <a
-        routerLink="/organizer-dashboard/orders"
+        routerLink="/organizer-dashboard/ticket-orders"
         routerLinkActive="bg-gradient-to-r from-green-100 to-emerald-100 text-emerald-700 shadow-md"
         class="group flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:text-emerald-600 rounded-xl transition-all duration-200"
         [routerLinkActiveOptions]="{ exact: false }"
-        aria-label="Orders"
-        [attr.aria-current]="router.isActive('/organizer-dashboard/orders', false) ? 'page' : undefined"
+        aria-label="Ticket Orders"
+        [attr.aria-current]="router.isActive('/organizer-dashboard/ticket-orders', false) ? 'page' : undefined"
       >
         <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 p-2 group-hover:scale-110 transition-transform duration-200">
           <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 7h18M3 12h18m-6 5h6"/>
           </svg>
         </div>
-        <span class="ml-3">Orders</span>
+        <span class="ml-3">Ticket Orders</span>
       </a>
 
       <!-- Finance -->

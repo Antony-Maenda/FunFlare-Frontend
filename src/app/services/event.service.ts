@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-// === ORGANIZER INTERFACES (EXISTING) ===
+// === ORGANIZER INTERFACES ===
 export interface EventCreate {
   name: string;
   description?: string;
@@ -27,6 +27,8 @@ export interface EventResponse {
   eventCapacity: number;
   eventCategory?: string;
   eventStatus?: string;
+  ticketsSold?: number;           // <-- NEW: For delete rules
+  isDeleted?: boolean;            // <-- NEW: Soft delete flag
   createdAt?: string;
   updatedAt?: string;
   eventStartDate: string;
@@ -47,9 +49,11 @@ export interface Event {
   eventEndDate: string;
   eventStartTime: string;
   eventEndTime: string;
+  ticketsSold: number;            // <-- Critical for delete logic
+  isDeleted?: boolean;            // <-- Soft delete marker (optional in UI)
 }
 
-// === BUYER (PUBLIC) INTERFACES (NEW) ===
+// === BUYER (PUBLIC) INTERFACES ===
 export interface TicketInfo {
   type: string;
   price: number;
@@ -63,8 +67,8 @@ export interface PublicEvent {
   location: string;
   eventPosterUrl: string;
   eventPosterBase64?: string;
-  startDate: string;     // "2025-11-15"
-  startTime: string;     // "09:00:00"
+  startDate: string;
+  startTime: string;
   endDate: string;
   endTime: string;
   tickets: TicketInfo[];
@@ -84,29 +88,28 @@ export class EventService {
     formData.append('dto', JSON.stringify(eventData));
     if (poster) formData.append('poster', poster, poster.name);
 
-    const token = this.getToken();
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-
+    const headers = this.getAuthHeaders();
     return this.http.post<EventResponse>(`${this.baseUrl}/create/event`, formData, { headers }).pipe(
       catchError(err => this.handleError(err, 'create event'))
     );
   }
 
-  // === ORGANIZER: GET OWN EVENTS ===
+  // === ORGANIZER: GET OWN EVENTS (EXCLUDES SOFT-DELETED) ===
   getOrganizerEvents(): Observable<Event[]> {
-    const token = this.getToken();
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    const headers = this.getAuthHeaders();
 
     return this.http.get<EventResponse[]>(`${this.baseUrl}/organizer`, { headers }).pipe(
-      map(events => events.map(e => this.mapToEvent(e))),
+      map(events => events
+        .filter(e => !e.isDeleted) // <-- Automatically hide soft-deleted events
+        .map(e => this.mapToEvent(e))
+      ),
       catchError(err => this.handleError(err, 'load organizer events'))
     );
   }
 
-  // === ORGANIZER: GET SINGLE EVENT ===
+  // === ORGANIZER: GET SINGLE EVENT (Admin can still access deleted ones if needed) ===
   getEventById(eventId: number): Observable<Event> {
-    const token = this.getToken();
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    const headers = this.getAuthHeaders();
 
     return this.http.get<EventResponse>(`${this.baseUrl}/${eventId}`, { headers }).pipe(
       map(response => this.mapToEvent(response)),
@@ -114,25 +117,41 @@ export class EventService {
     );
   }
 
-  // === ORGANIZER: DELETE EVENT ===
-  deleteEvent(eventId: number): Observable<void> {
-    const token = this.getToken();
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  // === ORGANIZER: SOFT DELETE EVENT (NEW) ===
+  softDeleteEvent(eventId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
 
-    return this.http.delete<void>(`${this.baseUrl}/${eventId}`, { headers }).pipe(
-      catchError(err => this.handleError(err, 'delete event'))
+    return this.http.patch<any>(
+      `${this.baseUrl}/${eventId}/soft-delete`,
+      { isDeleted: true }, // Backend should set isDeleted = true
+      { headers }
+    ).pipe(
+      catchError(err => this.handleError(err, 'soft delete event'))
     );
   }
 
-  // === BUYER: GET PUBLIC EVENTS (NEW) ===
+  // === HARD DELETE (Keep if needed for admin) ===
+  deleteEvent(eventId: number): Observable<void> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<void>(`${this.baseUrl}/${eventId}`, { headers }).pipe(
+      catchError(err => this.handleError(err, 'permanently delete event'))
+    );
+  }
+
+  // === BUYER: GET PUBLIC EVENTS ===
   getPublicEvents(): Observable<PublicEvent[]> {
-    // NO JWT NEEDED
     return this.http.get<PublicEvent[]>(`${this.baseUrl}/public`).pipe(
       catchError(err => {
         console.error('Failed to load public events:', err);
         return throwError(() => new Error('Failed to load events. Please try again.'));
       })
     );
+  }
+
+  // === HELPER: Auth Headers ===
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
   // === HELPER: Get JWT Token ===
@@ -155,14 +174,16 @@ export class EventService {
       eventStartDate: response.eventStartDate,
       eventEndDate: response.eventEndDate,
       eventStartTime: response.eventStartTime,
-      eventEndTime: response.eventEndTime
+      eventEndTime: response.eventEndTime,
+      ticketsSold: response.ticketsSold || 0,        // Default 0
+      isDeleted: response.isDeleted || false
     };
   }
 
   // === HELPER: Centralized Error Handling ===
   private handleError(error: any, action: string): Observable<never> {
     console.error(`Failed to ${action}:`, error);
-    const message = error.error?.message || `Failed to ${action}. Please try again.`;
+    const message = error.error?.message || error.message || `Failed to ${action}. Please try again.`;
     return throwError(() => new Error(message));
   }
 }
